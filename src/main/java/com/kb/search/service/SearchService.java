@@ -1,6 +1,6 @@
 package com.kb.search.service;
 
-import com.kb.search.dto.Subway;
+import com.kb.search.dto.SearchParam;
 import com.kb.search.dto.University;
 import com.kb.search.mapper.SearchMapper;
 import java.util.List;
@@ -17,13 +17,14 @@ public class SearchService {
 
     private final SearchMapper searchMapper;
 
-    public List<Subway> getAllSubway() {
-
-        return searchMapper.findAllSubway();
-    }
-
     public List<University> getAllUniversity() {
 
         return searchMapper.findAllUniversity();
     }
+
+    public SearchParam getOneUniversity(String name) {
+
+        return searchMapper.findOneUniversity(name);
+    }
+
 }
