@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.room.mapper.RoomMapper">
+
+    <!-- Room Result Map 정의 -->
+    <resultMap id="roomResultMap" type="com.kb.room.dto.Room">
+        <id property="roomId" column="room_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="roomCnt" column="room_cnt"/>
+        <result property="roomName" column="room_name"/>
+        <result property="floor" column="floor"/>
+        <result property="houseTypeCd" column="house_type_cd"/>
+        <result property="houseTypeNms" column="house_type_nms"/>
+        <result property="genderCd" column="gender_cd"/>
+        <result property="tags" column="tags"/>
+        <result property="imgId" column="img_id"/>
+        <result property="roomAddr" column="room_addr"/>
+        <result property="roomAddrFl" column="room_addr_fl"/>
+        <result property="roomLat" column="room_lat"/>
+        <result property="roomLong" column="room_long"/>
+        <result property="depositMax" column="deposit_max"/>
+        <result property="depositMin" column="deposit_min"/>
+        <result property="priceMax" column="price_max"/>
+        <result property="priceMin" column="price_min"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!-- 위치를 기준으로 고시원을 찾는 쿼리 -->
+    <select id="findGosiwonsByLocation" resultMap="roomResultMap">
+    <![CDATA[
+        SELECT *,
+               (6371 * acos(cos(radians(#{lat}))
+                                * cos(radians(room_lat))
+                                * cos(radians(room_long) - radians(#{lng}))
+                   + sin(radians(#{lat}))
+                                * sin(radians(room_lat)))) AS distance
+        FROM sy_test
+        HAVING distance < 3
+        ORDER BY distance;
+        ]]>
+    </select>
+
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.search.mapper.SearchMapper">
+
+
+    <select id="findAllUniversity" resultType="com.kb.search.dto.University">
+        SELECT
+            university_id AS universityId,
+            university_name AS universityName,
+            university_lat AS universityLat,
+            university_long AS universityLong,
+            type
+        FROM university
+    </select>
+
+</mapper>
