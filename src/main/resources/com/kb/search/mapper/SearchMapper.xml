@@ -16,4 +16,16 @@
         FROM university
     </select>
 
+    <select id="findOneUniversity" parameterType="String" resultType="com.kb.search.dto.SearchParam">
+        SELECT
+            university_lat AS universityLat,
+            university_long AS universityLong
+        FROM
+            university
+        WHERE
+            university_name LIKE CONCAT('%', #{name}, '%')
+            LIMIT 1;
+    </select>
+
+
 </mapper>
