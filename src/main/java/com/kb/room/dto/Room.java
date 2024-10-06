@@ -29,6 +29,7 @@ public class Room {
     private Long depositMin;
     private Double priceMax;
     private Double priceMin;
+    private String isSoldOut;
     private Date createdAt;
     private Date updatedAt;
 
