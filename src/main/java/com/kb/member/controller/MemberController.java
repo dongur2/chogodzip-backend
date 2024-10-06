@@ -1,6 +1,7 @@
 package com.kb.member.controller;
 
 import com.kb.common.util.UploadFiles;
+import com.kb.kakao.KaKaoLoginService;
 import com.kb.member.dto.ChangePasswordDTO;
 import com.kb.member.dto.Member;
 import com.kb.member.dto.MemberDTO;
@@ -11,11 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -30,6 +35,9 @@ public class MemberController {
 
     private final MemberService service;
 
+    private final KaKaoLoginService kaKaoLoginService;
+
+
     @GetMapping("/checkid/{id}")
     public ResponseEntity<Boolean> checkDuplicate(@PathVariable String id) {
         return ResponseEntity.ok().body(service.checkDuplicate(id));
@@ -38,6 +46,17 @@ public class MemberController {
     @GetMapping("/{id}")
     public ResponseEntity<Member> get(@PathVariable String id) {
         return ResponseEntity.ok(service.getMember(id));
+    }
+
+
+    @GetMapping("/kakaoInfo/{code}")
+    public ResponseEntity<Map<String,Object>> getKakaoInfo(@PathVariable String code) throws IOException {
+        String enrollUrl = "http://localhost:5173/auth/kakaojoin";
+        String token = kaKaoLoginService.getToken(code, enrollUrl);
+        System.out.println("@@@" + token);
+        Map<String, Object> map = kaKaoLoginService.getUserInfo(token);
+        System.out.println(map);
+        return ResponseEntity.ok(map);
     }
 
     @GetMapping("/{id}/avatar")
@@ -53,10 +72,13 @@ public class MemberController {
 
     @PostMapping("")
     public ResponseEntity<Member> join(MemberDTO memberDTO,
-                                       @RequestParam(name = "avatar", required = false) MultipartFile avatar) throws IllegalAccessException {
+                                       @RequestParam(name = "avatar", required = false)
+                                       MultipartFile avatar) throws IllegalAccessException {
         Member member = memberDTO.toMember();
+        System.out.println("@@@" + member);
         return ResponseEntity.ok(service.join(member, avatar));
     }
+
 
     @PutMapping("/{id}/changepassword")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePassword) {
@@ -64,9 +86,12 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
+
+
+
+    @PutMapping("/kakaoInfo/{code}")
     public ResponseEntity<Member> changeProfile(MemberDTO memberDTO,
-                @RequestParam(name = "avatar", required = false) MultipartFile avatar) throws IllegalAccessException {
+                                                @RequestParam(name = "avatar", required = false) MultipartFile avatar) throws IllegalAccessException {
         Member member = memberDTO.toMember();
         return ResponseEntity.ok(service.update(member, avatar));
     }
