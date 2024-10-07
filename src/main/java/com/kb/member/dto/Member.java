@@ -22,6 +22,7 @@ public class Member implements UserDetails {
     private String name;        // 사용자이름
     private String email;       // 이메일
     private String status; 		// 활성화 여부, Y, N
+    private String kakaoId;     // 카카오 아이디
     private Date createDate;    // 생성일
     private Date modifyDate;    // 수정일
 

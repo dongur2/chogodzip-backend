@@ -31,7 +31,6 @@ public class MemberService{
     final PasswordEncoder passwordEncoder;
     final MemberMapper mapper;
 
-
     public Member login(Member member) {
         Member saveMember = mapper.selectById(member.getId());
         if(passwordEncoder.matches(member.getPassword(), saveMember.getPassword())) {
@@ -46,6 +45,11 @@ public class MemberService{
     public boolean checkDuplicate(String id) {
         Member member = mapper.selectById(id);
         return member != null;
+    }
+
+    public Member getMemberByKakaoId(String id) {
+        return Optional.ofNullable(mapper.selectBykakaoId(id))
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public Member getMember(String id) {
