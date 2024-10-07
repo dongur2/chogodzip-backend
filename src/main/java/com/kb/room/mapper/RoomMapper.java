@@ -8,4 +8,6 @@ public interface RoomMapper {
 
 
     List<Room> findGosiwonsByLocation(@Param("lat") String lat, @Param("lng") String lng);
+
+    Room findOneGosiwon(@Param("id") Long id);
 }

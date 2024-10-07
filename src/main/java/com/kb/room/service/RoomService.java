@@ -23,4 +23,7 @@ public class RoomService {
     }
 
 
+    public Room getOneGosiwons(Long id) {
+        return roomMapper.findOneGosiwon(id);
+    }
 }
