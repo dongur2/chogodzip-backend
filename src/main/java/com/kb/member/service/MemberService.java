@@ -47,8 +47,8 @@ public class MemberService{
         return member != null;
     }
 
-    public Member getMemberByKakaoId(String id) {
-        return Optional.ofNullable(mapper.selectBykakaoId(id))
+    public Member getMemberByKakaoId(String kakao_id) {
+        return Optional.ofNullable(mapper.selectBykakaoId(kakao_id))
                 .orElseThrow(NoSuchElementException::new);
     }
 
@@ -125,5 +125,15 @@ public class MemberService{
         }
         changePassword.setNewPassword(passwordEncoder.encode(changePassword.getNewPassword()));
         mapper.updatePassword(changePassword);
+    }
+
+    public Boolean checkKaKaoDuplicate(String id) {
+        Member member = mapper.selectBykakaoId(id);
+        if(member != null){
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

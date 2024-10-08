@@ -2,7 +2,6 @@ package com.kb.security.filter;
 
 
 import com.kb.kakao.KaKaoLoginService;
-import com.kb.member.dto.KakaoLoginDTO;
 import com.kb.member.dto.LoginDTO;
 import com.kb.member.dto.Member;
 import com.kb.member.service.MemberService;
@@ -41,11 +40,11 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     public JwtUsernamePasswordAuthenticationFilter(
             AuthenticationManager authenticationManager,
             LoginSuccessHandler loginSuccessHandler,
-            LoginFailureHandler loginFailureHandler ) {
+            LoginFailureHandler loginFailureHandler) {
         super(authenticationManager);
 
-        setFilterProcessesUrl("/api/auth/login");		          // POST 로그인 요청 url
-        setAuthenticationSuccessHandler(loginSuccessHandler);	// 로그인 성공 핸들러 등록
+        setFilterProcessesUrl("/api/auth/login");                  // POST 로그인 요청 url
+        setAuthenticationSuccessHandler(loginSuccessHandler);    // 로그인 성공 핸들러 등록
         setAuthenticationFailureHandler(loginFailureHandler);  // 로그인 실패 핸들러 등록
     }
 
@@ -54,13 +53,13 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        KakaoLoginDTO kakaoLogin = KakaoLoginDTO.of(request);
+        LoginDTO login = LoginDTO.of(request);
 
-        if(kakaoLogin != null){
+        if (login.getCode() != null) {
             String enrollUrl = "http://localhost:5173/auth/kakaologin";
-            String token = kaKaoLoginService.getToken(kakaoLogin.getCode(), enrollUrl);
+            String token = kaKaoLoginService.getToken(login.getCode(), enrollUrl);
             Map<String, Object> map = kaKaoLoginService.getUserInfo(token);
-            String kakaoId = (String)map.get("id");
+            String kakaoId = (String) map.get("id");
             Member member = service.getMemberByKakaoId(kakaoId);
 
             UserDetails princiapl = userDetailsService.loadUserByUsername(member.getId());
@@ -71,14 +70,12 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             return authenticationToken;
         }
 
-        // 요청 BODY의 JSON에서 id, password  LoginDTO
-        LoginDTO login = LoginDTO.of(request);
         // 인증 토큰(UsernamePasswordAuthenticationToken) 구성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(login.getId(), login.getPassword());
 
         // AuthenticationManager에게 인증 요청
         return getAuthenticationManager().authenticate(authenticationToken);
-    }
 
+    }
 }
