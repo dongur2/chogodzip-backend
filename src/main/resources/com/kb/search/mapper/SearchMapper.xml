@@ -8,22 +8,18 @@
 
     <select id="findAllUniversity" resultType="com.kb.search.dto.University">
         SELECT
-            university_id AS universityId,
-            university_name AS universityName,
-            university_lat AS universityLat,
-            university_long AS universityLong,
-            type
-        FROM university
+           *
+        FROM university_subway
     </select>
 
     <select id="findOneUniversity" parameterType="String" resultType="com.kb.search.dto.SearchParam">
         SELECT
-            university_lat AS universityLat,
-            university_long AS universityLong
+            lat,
+            lng
         FROM
-            university
+            university_subway
         WHERE
-            university_name LIKE CONCAT('%', #{name}, '%')
+            name LIKE CONCAT('%', #{name}, '%')
             LIMIT 1;
     </select>
 
