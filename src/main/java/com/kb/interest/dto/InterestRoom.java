@@ -1,4 +1,4 @@
-package com.kb.search.dto;
+package com.kb.interest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class SearchParam {
-    String lat;
-    String lng;
+public class InterestRoom {
+    private Long iroomId;
+    private Long userId;
+    private Long roomId;
+    private String createdAt;
 }

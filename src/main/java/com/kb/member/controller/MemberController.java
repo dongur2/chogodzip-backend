@@ -9,6 +9,7 @@ import com.kb.member.service.MemberService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +38,23 @@ public class MemberController {
 
     private final KaKaoLoginService kaKaoLoginService;
 
+    @RequestMapping("/auth/kakaojoin")
+    public String kakaoRedirect(@RequestBody Map<String, Object> requestBody) {
+        // requestBody로 넘어온 데이터에서 id 값 추출
+        String kakaoId = (String) requestBody.get("id");
+        service.getMemberByKakaoId(kakaoId);
+        log.info("아이디입니다요@@@@@@ : " + kakaoId);
+        return "redirect:/auth/kakaologin";
+    }
 
     @GetMapping("/checkid/{id}")
     public ResponseEntity<Boolean> checkDuplicate(@PathVariable String id) {
         return ResponseEntity.ok().body(service.checkDuplicate(id));
+    }
+    
+    @GetMapping("/checkkakaoid/{id}")
+    public ResponseEntity<Boolean> checkKakaoDuplicate(@PathVariable String id) {
+        return ResponseEntity.ok().body(service.checkKaKaoDuplicate(id));
     }
 
     @GetMapping("/{id}")

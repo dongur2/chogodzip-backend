@@ -8,12 +8,14 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedInputStream;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class LoginDTO {
     private String id;
+    private String code;
     private String password;
 
     public static LoginDTO of(HttpServletRequest request) throws AuthenticationException {

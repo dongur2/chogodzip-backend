@@ -1,7 +1,6 @@
 package com.kb.search.controller;
 
 import com.kb.search.dto.SearchParam;
-import com.kb.search.dto.Subway;
 import com.kb.search.dto.University;
 import com.kb.search.service.SearchService;
 import io.swagger.annotations.Api;
@@ -41,6 +40,7 @@ public class SearchController {
 
         return ResponseEntity.ok(searchParam);
     }
+
 
 
 }
