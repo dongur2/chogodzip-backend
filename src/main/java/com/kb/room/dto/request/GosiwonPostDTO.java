@@ -5,6 +5,7 @@ import com.kb.room.vo.RoomTemp;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 
 @Setter @Getter
@@ -38,26 +39,29 @@ public class GosiwonPostDTO {
                 .postcode(basicInfo.getAddr().get("postcode").toString())
                 .address(basicInfo.getAddr().get("address").toString())
                 .detailAddress(basicInfo.getAddr().get("detailAddress").toString())
-                .priceMin((Integer) basicInfo.getPrice().get("priceMin"))
-                .priceMax((Integer) basicInfo.getPrice().get("priceMax"))
-                .depositMin((Integer) basicInfo.getPrice().get("depositMin"))
-                .depositMax((Integer) basicInfo.getPrice().get("depositMax"))
-                .maintenanceFee((Integer) basicInfo.getPrice().get("maintenanceFee"))
+                .priceMin(Integer.parseInt(basicInfo.getPrice().get("priceMin").toString()))
+                .priceMax(Integer.parseInt(basicInfo.getPrice().get("priceMax").toString()))
+                .depositMin(Integer.parseInt(basicInfo.getPrice().get("depositMin").toString()))
+                .depositMax(Integer.parseInt(basicInfo.getPrice().get("depositMax").toString()))
+                .maintenanceFee(Integer.parseInt(basicInfo.getPrice().get("maintenanceFee").toString()))
                 .privateFacilities(basicInfo.getPrivateFacilities().toString())
                 .services(basicInfo.getServices().toString())
                 .languages(basicInfo.getLanguages().toString())
                 .etc(basicInfo.getEtc().toString())
+                .desc(basicInfo.getDesc())
                 .pics(basicInfo.getPics())
-                .genderLimit((Integer) basicInfo.getJachiElse().get("genderLimit"))
-                .ageMin((Integer) basicInfo.getAge().get("ageMin"))
-                .ageMax((Integer) basicInfo.getAge().get("ageMax"))
-                .facilityHeating(facilitiesInfo.getFacilityHeating().toString())
-                .facilityCooling(facilitiesInfo.getFacilityCooling().toString())
-                .facilityLife(facilitiesInfo.getFacilityLife().toString())
-                .facilitySecurity(facilitiesInfo.getFacilitySecurity().toString())
+                .genderLimit(Integer.parseInt(basicInfo.getJachiElse().get("genderLimit").toString()))
+                .ageMin(Integer.parseInt(((Map<String, Object>)(basicInfo.getJachiElse().get("age"))).get("ageMin").toString()))
+                .ageMax(Integer.parseInt(((Map<String, Object>)(basicInfo.getJachiElse().get("age"))).get("ageMax").toString()))
+                .type(basicInfo.getGosiwon().get("type").toString().equals("gosiwon") ? 0:1)
+                .contractMin(Integer.parseInt(basicInfo.getJachiElse().get("contractMin").toString()))
+                .facilityHeating(facilitiesInfo.getFacilityHeating().get("res").toString())
+                .facilityCooling(facilitiesInfo.getFacilityCooling().get("res").toString())
+                .facilityLife(facilitiesInfo.getFacilityLife().get("res").toString())
+                .facilitySecurity(facilitiesInfo.getFacilitySecurity().get("res").toString())
                 .buildingType(Integer.parseInt(buildingInfo.getBuildingType()))
-                .canParking(Integer.parseInt(buildingInfo.getCanParking()))
-                .hasElevator(Integer.parseInt(buildingInfo.getHasElevator()))
+                .canParking(Boolean.parseBoolean(buildingInfo.getCanParking()) ? 1:0)
+                .hasElevator(Boolean.parseBoolean(buildingInfo.getHasElevator()) ? 1:0)
                 .isSoldOut(false)
                 .build();
     }

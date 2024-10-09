@@ -4,9 +4,6 @@ import com.kb._config.RootConfig;
 import com.kb._config.ServletConfig;
 import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
-import com.kb.room.dto.request.BasicInfo;
-import com.kb.room.dto.request.GosiwonPostDTO;
-import com.kb.room.dto.request.RoomTempPostDTO;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.RoomTemp;
 import com.kb.room.vo.RoomWithLoan;
@@ -19,9 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 @Slf4j
 @WebAppConfiguration
@@ -29,6 +26,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class, WebMvcConfig.class, ServletConfig.class})
 class RoomMapperTest {
     @Autowired private RoomMapper mapper;
+
+    @Test
+    @DisplayName("ROOM_ID로 고시원 조회")
+    void findOneByRoomId() {
+        Gosiwon gosiwon = mapper.findOneByRoomId(17L);
+        assertThat(gosiwon.getTitle()).isEqualTo("고시원 제목2 - 대출 가능");
+    }
 
     @Test
     @DisplayName("ROOM 작성")
@@ -42,7 +46,7 @@ class RoomMapperTest {
                 .build();
 
         mapper.saveRoom(room);
-        Assertions.assertEquals(14L, room.getRoomId());
+        assertThat(room.getRoomId()).isEqualTo(14L);
     }
 
     @Test
@@ -90,7 +94,7 @@ class RoomMapperTest {
                 .build();
 
         mapper.saveGosiwon(gosiwon);
-        Assertions.assertEquals(4L, gosiwon.getGswId());
+        assertThat(gosiwon.getGswId()).isEqualTo(4L);
     }
 
     @Test
@@ -106,13 +110,13 @@ class RoomMapperTest {
                 .build();
 
         mapper.saveRoom(room);
-        Assertions.assertEquals(18L, room.getRoomId());
+        assertThat(room.getRoomId()).isEqualTo(20L);
 
         //고시원
         Gosiwon gosiwon = Gosiwon.builder()
                 .room(room)
                 .category("gosiwon")
-                .title("고시원 제목2 - 대출 가능")
+                .title("[테스트] 고시원 제목3 - 대출 가능")
                 .postcode("06903")
                 .address("서울특별시 관악구 서림 7길")
                 .detailAddress("99 4층")
@@ -141,7 +145,7 @@ class RoomMapperTest {
                 .build();
 
         mapper.saveGosiwon(gosiwon);
-        Assertions.assertEquals(6L, gosiwon.getGswId());
+        assertThat(gosiwon.getGswId()).isEqualTo(7L);
 
         //대출
         if(room.getCanLoan()) {
@@ -151,7 +155,10 @@ class RoomMapperTest {
                     .build();
 
             mapper.saveRoomWithLoan(rwl);
-            Assertions.assertEquals(3L, rwl.getRoomLoanId());
+
+            assertThat(rwl.getRoomLoanId()).isEqualTo(4L);
         }
+
+        assertThat(mapper.findOneByRoomId(room.getRoomId()).getTitle()).isEqualTo("[테스트] 고시원 제목3 - 대출 가능");
     }
 }
