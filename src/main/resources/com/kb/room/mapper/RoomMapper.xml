@@ -47,6 +47,45 @@
         ]]>
     </select>
 
+
+    <!-- 고시원 resultMap 설정 -->
+    <resultMap id="gosiwonMap" type="com.kb.room.vo.Gosiwon">
+        <id property="gswId" column="gsw_id" />
+        <result property="category" column="category" />
+        <result property="title" column="title" />
+        <result property="postcode" column="postcode" />
+        <result property="address" column="address" />
+        <result property="detailAddress" column="detail_address" />
+        <result property="priceMin" column="price_min" />
+        <result property="priceMax" column="price_max" />
+        <result property="depositMin" column="deposit_min" />
+        <result property="depositMax" column="deposit_max" />
+        <result property="maintenanceFee" column="maintenance_fee" />
+        <result property="privateFacilities" column="private_facilities" />
+        <result property="services" column="services" />
+        <result property="languages" column="languages" />
+        <result property="etc" column="etc" />
+        <result property="desc" column="description" />
+        <result property="pics" column="pics" />
+        <result property="genderLimit" column="gender_limit" />
+        <result property="type" column="type" />
+        <result property="contractMin" column="contract_min" />
+        <result property="ageMax" column="age_max" />
+        <result property="ageMin" column="age_min" />
+        <result property="facilityHeating" column="facility_heating" />
+        <result property="facilityCooling" column="facility_cooling" />
+        <result property="facilityLife" column="facility_life" />
+        <result property="facilitySecurity" column="facility_security" />
+        <result property="buildingType" column="building_type" />
+        <result property="canParking" column="can_parking" />
+        <result property="hasElevator" column="has_elevator" />
+        <result property="isSoldOut" column="is_sold_out" />
+
+        <association property="room" javaType="com.kb.room.vo.RoomTemp">
+            <id property="roomId" column="room_id" />
+        </association>
+    </resultMap>
+
     <!--  모든 부동산 데이터 조회  -->
     <select id="findAll" resultType="com.kb.room.vo.RoomTemp">
        <![CDATA[
@@ -67,15 +106,31 @@
     </insert>
 
     <!--  고시원 작성  -->
-<!--    <insert id="saveGosiwon" parameterType="com.kb.room.dto.request.GosiwonPostDTO" useGeneratedKeys="true" keyProperty="gswId">-->
-<!--        <![CDATA[-->
-<!--            INSERT INTO GOSIWON (ROOM_ID, TITLE, POSTCODE, ADDRESS, DETAIL_ADDRESS, PRICE_MIN, PRICE_MAX, DEPOSIT_MIN, DEPOSIT_MAX, MAINTENANCE_FEE-->
-<!--            , PRIVATE_FACILITIES, SERVICES, LANGUAGES, ETC, DESCRIPTION, GENDER_LIMIT, TYPE, CONTRACT_MIN, AGE_MAX, AGE_MIN-->
-<!--            , FACILITY_HEATING, FACILITY_COOLING, FACILITY_LIFE, FACILITY_SECURITY, BUILDING_TYPE, CAN_PARKING, HAS_ELEVATOR-->
-<!--            , IS_SOLD_OUT)-->
-<!--            VALUES-->
-<!--            (#{roomId}, #{title}, #{postcode}, #{})-->
-<!--        ]]>-->
-<!--    </insert>-->
+    <insert id="saveGosiwon" parameterType="com.kb.room.vo.Gosiwon" useGeneratedKeys="true" keyProperty="gswId">
+        <![CDATA[
+            INSERT INTO GOSIWON (
+                ROOM_ID, TITLE, POSTCODE, ADDRESS, DETAIL_ADDRESS,
+                PRICE_MIN, PRICE_MAX, DEPOSIT_MIN, DEPOSIT_MAX, MAINTENANCE_FEE,
+                PRIVATE_FACILITIES, SERVICES, LANGUAGES, ETC, DESCRIPTION, GENDER_LIMIT,
+                TYPE, CONTRACT_MIN, AGE_MAX, AGE_MIN,
+                FACILITY_HEATING, FACILITY_COOLING, FACILITY_LIFE, FACILITY_SECURITY,
+                BUILDING_TYPE, CAN_PARKING, HAS_ELEVATOR,
+                IS_SOLD_OUT
+            )
+            VALUES (
+                #{room.roomId}, #{title}, #{postcode}, #{address}, #{detailAddress},
+                #{priceMin}, #{priceMax}, #{depositMin}, #{depositMax}, #{maintenanceFee},
+                #{privateFacilities}, #{services}, #{languages}, #{etc}, #{desc}, #{genderLimit},
+                #{type}, #{contractMin}, #{ageMax}, #{ageMin},
+                #{facilityHeating}, #{facilityCooling}, #{facilityLife}, #{facilitySecurity},
+                #{buildingType}, #{canParking}, #{hasElevator},
+                #{isSoldOut}
+             )
+        ]]>
+
+        <selectKey keyProperty="gswId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 
 </mapper>
