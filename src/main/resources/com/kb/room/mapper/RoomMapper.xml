@@ -31,9 +31,20 @@
         <result property="maintainCost" column="maintain_cost"/>
     </resultMap>
 
+    <resultMap id="reviewResultMap" type="com.kb.room.dto.UserReview">
+        <id property="reviewId" column="REVIEW_ID"/>
+        <result property="roomId" column="ROOM_ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="reviewContent" column="REVIEW_CONTENT"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="isDeleted" column="IS_DELETED"/>
+    </resultMap>
+
+
+
     <!-- 위치를 기준으로 고시원을 찾는 쿼리 -->
-    <select id="findGosiwonsByLocation" resultMap="roomResultMap">
-    <![CDATA[
+    <select id="findGosiwonsByLocation" resultType="com.kb.room.dto.Room">
+        <![CDATA[
         SELECT *,
                (6371 * acos(cos(radians(#{lat}))
                                 * cos(radians(room_lat))
@@ -41,11 +52,37 @@
                    + sin(radians(#{lat}))
                                 * sin(radians(room_lat)))) AS distance
         FROM oneroom
-        where house_type_cd IN ('HOUTP00001', 'HOUTP00003')
+        WHERE house_type_cd IN ('HOUTP00001', 'HOUTP00003')
+    ]]>
+
+        <if test="gender != null and gender != ''">
+            <![CDATA[
+        AND gender_cd = #{gender}
+        ]]>
+        </if>
+
+        <if test="deposit != null and deposit != ''">
+            <![CDATA[
+        AND deposit_max <= #{deposit}
+        ]]>
+        </if>
+
+        <if test="price != null and price != ''">
+            <![CDATA[
+        AND price_max <= #{price}
+        ]]>
+        </if>
+
+        <if test="loanType != null and loanType != ''">
+            <![CDATA[
+        AND tags LIKE CONCAT('%', #{loanType}, '%')
+        ]]>
+        </if>
+
+        <![CDATA[
         HAVING distance < 1
         ORDER BY distance;
-
-        ]]>
+    ]]>
     </select>
 
     <select id="findOneGosiwon" resultMap="roomResultMap">
@@ -53,5 +90,23 @@
         from oneroom
         where room_id = #{id}
     </select>
+
+    <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">
+        INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)
+        VALUES (#{roomId}, #{userId}, #{reviewContent}, NOW(), #{isDeleted})
+    </insert>
+
+    <select id="findFavoriteCnt" resultType="int">
+        select count(*)
+        from INTEREST_ROOM
+        where room_id = #{roomId}
+    </select>
+
+    <select id="findAllReview" resultMap="reviewResultMap" parameterType="Long">
+        SELECT *
+        FROM USER_REVIEW
+        WHERE room_id = #{roomId} AND is_deleted = 'N'
+    </select>
+
 
 </mapper>

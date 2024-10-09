@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class University {
 
-    private int universityId;
-    private String universityName;
-    private Double universityLat;
-    private Double universityLong;
+    private int unisubId;
+    private String name;
+    private Double lat;
+    private Double lng;
+    private String line;
     private String type;
 
 }

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class SearchParam {
-    String universityLat;
-    String universityLong;
+    String lat;
+    String lng;
 }
