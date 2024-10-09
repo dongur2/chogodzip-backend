@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class RoomTempServiceI implements RoomTempService{
                 .toList();
     }
 
-    @Override
+    @Override @Transactional
     public Long addRoom(GosiwonPostDTO dto) {
         //부동산 + 고시원 작성
         RoomTemp roomVO = dto.toRoomVO(1L); //임시 유저아이디 고정

@@ -26,7 +26,7 @@ public class GosiwonPostDTO {
                 .roomLong(new BigDecimal(basicInfo.getAddr().get("roomLong").toString()))
                 //임시 썸네일 고정
                 .thumbnail("https://image.neoflat.net/XE4sQE1a8q3_f-wusCuxHFfpbFk=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/7095/768d02bd-f00e-45c1-b7a7-936b2f403736.jpg")
-                .canLoan(loanInfo.getLoans().get("res") != null || !loanInfo.getLoans().get("res").toString().trim().isEmpty())
+                .canLoan(!loanInfo.getLoans().get("res").toString().equals("none"))
                 .build();
     }
 
@@ -44,10 +44,10 @@ public class GosiwonPostDTO {
                 .depositMin(Integer.parseInt(basicInfo.getPrice().get("depositMin").toString()))
                 .depositMax(Integer.parseInt(basicInfo.getPrice().get("depositMax").toString()))
                 .maintenanceFee(Integer.parseInt(basicInfo.getPrice().get("maintenanceFee").toString()))
-                .privateFacilities(basicInfo.getPrivateFacilities().toString())
-                .services(basicInfo.getServices().toString())
-                .languages(basicInfo.getLanguages().toString())
-                .etc(basicInfo.getEtc().toString())
+                .privateFacilities(basicInfo.getPrivateFacilities().get("res").toString())
+                .services(basicInfo.getServices().get("res").toString())
+                .languages(basicInfo.getLanguages().get("res").toString())
+                .etc(basicInfo.getEtc().get("res").toString())
                 .desc(basicInfo.getDesc())
                 .pics(basicInfo.getPics())
                 .genderLimit(Integer.parseInt(basicInfo.getJachiElse().get("genderLimit").toString()))
