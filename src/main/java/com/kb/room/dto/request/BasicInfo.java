@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.Map;
 
-@Setter @Getter @ToString
+@Setter @Getter @Builder @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class BasicInfo {
     private String title;

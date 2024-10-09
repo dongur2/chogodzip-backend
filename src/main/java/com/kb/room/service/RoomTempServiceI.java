@@ -1,5 +1,6 @@
 package com.kb.room.service;
 
+import com.kb.room.dto.request.GosiwonPostDTO;
 import com.kb.room.dto.response.RoomTempDTO;
 import com.kb.room.mapper.RoomMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,4 +23,11 @@ public class RoomTempServiceI implements RoomTempService{
                 .map(RoomTempDTO::from)
                 .toList();
     }
+
+    @Override
+    public Long addRoom(GosiwonPostDTO dto) {
+        return 0L;
+    }
+
+
 }

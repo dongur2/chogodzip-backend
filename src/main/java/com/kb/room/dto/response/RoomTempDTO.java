@@ -4,9 +4,10 @@ import com.kb.room.vo.RoomTemp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter @Builder
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class RoomTempDTO {
     private Long roomId;
     private Long userId;
