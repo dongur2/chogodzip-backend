@@ -7,6 +7,7 @@ import com.kb.room.dto.request.GosiwonPostDTO;
 import com.kb.room.dto.request.RoomTempPostDTO;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.RoomTemp;
+import com.kb.room.vo.RoomWithLoan;
 import org.apache.ibatis.annotations.Param;
 
 public interface RoomMapper {
@@ -16,4 +17,5 @@ public interface RoomMapper {
 
     Long saveRoom(RoomTemp room); //매물 작성
     Long saveGosiwon(Gosiwon gosiwon); //고시원 작성
+    Long saveRoomWithLoan(RoomWithLoan roomWithLoan);
 }

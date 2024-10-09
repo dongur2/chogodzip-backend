@@ -133,4 +133,13 @@
         </selectKey>
     </insert>
 
+    <!--  대출 가능할 경우 부동산과 대출 연결   -->
+    <insert id="saveRoomWithLoan" parameterType="com.kb.room.vo.RoomWithLoan" useGeneratedKeys="true" keyProperty="roomLoanId">
+        INSERT INTO ROOM_LOAN (ROOM_ID, LOAN_ID) VALUES (#{roomId}, #{loanId})
+
+        <selectKey keyProperty="roomLoanId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
 </mapper>
