@@ -47,4 +47,11 @@
         ]]>
     </select>
 
+    <!--  모든 부동산 데이터 조회  -->
+    <select id="findAll" resultType="com.kb.room.vo.RoomTemp">
+       <![CDATA[
+            SELECT * FROM ROOM
+        ]]>
+    </select>
+
 </mapper>
