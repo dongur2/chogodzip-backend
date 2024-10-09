@@ -1,14 +1,12 @@
 package com.kb.room.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter @Builder
+
+@Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Gosiwon {
-    private Long roomId;
+    private RoomTemp room;
     private String category;
 
     private Long gswId;

@@ -25,19 +25,14 @@ public class RoomTempController {
     //[TEST] 모든 부동산 목록 가져오기
     @GetMapping
     public ResponseEntity<List<RoomTempDTO>> getRooms() {
-        try {
-            log.info("Controller :: getRooms()");
-            List<RoomTempDTO> list = service.fetchAllRooms();
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<RoomTempDTO> list = service.fetchAllRooms();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     //[TEMP] 고시원 매물 등록
     @PostMapping
-    public ResponseEntity<HttpStatus> createRoom(@RequestBody GosiwonPostDTO dto) {
-        log.info(dto.toString());
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> createRoom(@RequestBody GosiwonPostDTO dto) {
+        Long roomId = service.addRoom(dto);
+        return new ResponseEntity<>(roomId, HttpStatus.OK);
     }
 }

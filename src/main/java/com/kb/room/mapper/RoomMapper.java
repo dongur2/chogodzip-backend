@@ -7,13 +7,18 @@ import com.kb.room.dto.request.GosiwonPostDTO;
 import com.kb.room.dto.request.RoomTempPostDTO;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.RoomTemp;
+import com.kb.room.vo.RoomWithLoan;
+
 import org.apache.ibatis.annotations.Param;
+
 
 public interface RoomMapper {
     List<Room> findGosiwonsByLocation(@Param("lat") String lat, @Param("lng") String lng);
 
+    Gosiwon findOneByRoomId(@Param("roomId") Long roomId);
     List<RoomTemp> findAll();
 
-    Long saveRoom(RoomTempPostDTO room); //매물 작성
-    Long saveGosiwon(GosiwonPostDTO gosiwon);
+    Long saveRoom(RoomTemp room); //매물 작성
+    Long saveGosiwon(Gosiwon gosiwon); //고시원 작성
+    Long saveRoomWithLoan(RoomWithLoan roomWithLoan); //매물 & 대출 연결
 }
