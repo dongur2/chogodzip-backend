@@ -27,6 +27,7 @@ public class Room {
     private Double roomLong;
     private Long depositMax;
     private Long depositMin;
+    private Integer maintainCost;
     private Double priceMax;
     private Double priceMin;
     private String isSoldOut;
