@@ -1,0 +1,72 @@
+-- 부동산
+DROP TABLE IF EXISTS ROOM;
+CREATE TABLE ROOM
+(
+    ROOM_ID     BIGINT PRIMARY KEY AUTO_INCREMENT,
+    USER_ID     BIGINT,
+    ROOM_LAT    DECIMAL(10, 7),
+    ROOM_LONG   DECIMAL(10, 7),
+    THUMBNAIL   VARCHAR(2000),
+    CAN_LOAN    TINYINT(1), -- 0:불가 1:가능 -> 가능이면 ROOM_LOAN 쿼리
+    UPDATED_AT  DATETIME default now(),
+    CREATED_AT  DATETIME default now(),
+
+    CONSTRAINT FK_ROOm_MEMBER FOREIGN KEY (USER_ID) REFERENCES member(mno)
+);
+
+-- 대출과 부동산 연결 테이블
+DROP TABLE IF EXISTS ROOM_LOAN;
+CREATE TABLE ROOM_LOAN
+(
+    ROOM_LOAN_ID    BIGINT PRIMARY KEY AUTO_INCREMENT,
+    ROOM_ID         BIGINT,
+    LOAN_ID         BIGINT,
+
+    CONSTRAINT FK_ROOM_LOAN_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE,
+    CONSTRAINT FK_ROOM_LOAN_LOAN_TYPE FOREIGN KEY (LOAN_ID) REFERENCES LOAN_TYPE(LOAN_ID) ON DELETE CASCADE
+);
+
+-- 고시원
+DROP TABLE IF EXISTS GOSIWON;
+CREATE TABLE GOSIWON
+(
+    GSW_ID                  BIGINT PRIMARY KEY AUTO_INCREMENT,
+    ROOM_ID                 BIGINT,
+    TITLE                   VARCHAR(255) NOT NULL,
+    POSTCODE                CHAR(5) NOT NULL,
+    ADDRESS                 VARCHAR(255) NOT NULL,
+    DETAIL_ADDRESS          VARCHAR(255) NOT NULL,
+    PRICE_MIN               INT NOT NULL,
+    PRICE_MAX               INT NOT NULL,
+    DEPOSIT_MIN             INT,
+    DEPOSIT_MAX             INT,
+    MAINTENANCE_FEE         INT,
+    PRIVATE_FACILITIES      VARCHAR(255), -- |기준으로 split
+    SERVICES                VARCHAR(255), -- |기준으로 split
+    LANGUAGES               VARCHAR(255), -- |기준으로 split
+    ETC                     VARCHAR(255), -- |기준으로 split
+    DESCRIPTION             TEXT,
+
+    GENDER_LIMIT            TINYINT(1) NOT NULL, -- 0:구분없음 1:분리 2:여성 3:남성
+    TYPE                    TINYINT(1) NOT NULL, -- 0:고시원 1:원룸텔
+    CONTRACT_MIN            TINYINT(1) NOT NULL, -- 1/2/3/4
+    AGE_MAX                 INT, -- 0 or NULL 이면 없음
+    AGE_MIN                 INT, -- 0 or NULL 이면 없음
+
+    FACILITY_HEATING        VARCHAR(255),
+    FACILITY_COOLING        VARCHAR(255),
+    FACILITY_LIFE           VARCHAR(255),
+    FACILITY_SECURITY       VARCHAR(255),
+
+    BUILDING_TYPE           TINYINT(1), -- 0:상가건물 1:단독 2:공동
+    CAN_PARKING             TINYINT(1), -- 0:불가 1:가능
+    HAS_ELEVATOR            TINYINT(1), -- 0:없음 1:있음
+
+    IS_SOLD_OUT             TINYINT(1), -- 0:판매중 1:판매완료
+
+    CONSTRAINT FK_GOSIWON_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS GOSIWON;
+DROP TABLE IF EXISTS ROOM_LOAN;
+DROP TABLE IF EXISTS ROOM;
