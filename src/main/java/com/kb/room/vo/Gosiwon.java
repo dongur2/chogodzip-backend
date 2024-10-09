@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Gosiwon {
-    private Long roomId;
+    private RoomTemp room;
     private String category;
 
     private Long gswId;

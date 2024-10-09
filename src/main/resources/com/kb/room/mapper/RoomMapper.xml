@@ -55,14 +55,27 @@
     </select>
 
     <!--  부동산 작성  -->
-    <insert id="saveRoom" parameterType="com.kb.room.dto.request.RoomTempPostDTO" useGeneratedKeys="true" keyProperty="roomId">
+    <insert id="saveRoom" parameterType="com.kb.room.vo.RoomTemp" useGeneratedKeys="true" keyProperty="roomId">
         <![CDATA[
             INSERT INTO ROOM (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, CAN_LOAN, UPDATED_AT, CREATED_AT)
             VALUES (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{canLoan}, NOW(), NOW())
         ]]>
+
+        <selectKey keyProperty="roomId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
     <!--  고시원 작성  -->
-    <insert id="saveGosiwon"></insert>
+<!--    <insert id="saveGosiwon" parameterType="com.kb.room.dto.request.GosiwonPostDTO" useGeneratedKeys="true" keyProperty="gswId">-->
+<!--        <![CDATA[-->
+<!--            INSERT INTO GOSIWON (ROOM_ID, TITLE, POSTCODE, ADDRESS, DETAIL_ADDRESS, PRICE_MIN, PRICE_MAX, DEPOSIT_MIN, DEPOSIT_MAX, MAINTENANCE_FEE-->
+<!--            , PRIVATE_FACILITIES, SERVICES, LANGUAGES, ETC, DESCRIPTION, GENDER_LIMIT, TYPE, CONTRACT_MIN, AGE_MAX, AGE_MIN-->
+<!--            , FACILITY_HEATING, FACILITY_COOLING, FACILITY_LIFE, FACILITY_SECURITY, BUILDING_TYPE, CAN_PARKING, HAS_ELEVATOR-->
+<!--            , IS_SOLD_OUT)-->
+<!--            VALUES-->
+<!--            (#{roomId}, #{title}, #{postcode}, #{})-->
+<!--        ]]>-->
+<!--    </insert>-->
 
 </mapper>

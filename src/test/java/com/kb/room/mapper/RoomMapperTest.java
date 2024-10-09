@@ -31,7 +31,7 @@ class RoomMapperTest {
     @Test
     @DisplayName("ROOM 작성")
     void saveRoom() {
-        RoomTempPostDTO dto = RoomTempPostDTO.builder()
+        RoomTemp room = RoomTemp.builder()
                 .userId(2L)
                 .roomLat(new BigDecimal("37.0996527684079"))
                 .roomLong(new BigDecimal("126.839982282494"))
@@ -39,7 +39,7 @@ class RoomMapperTest {
                 .canLoan(false)
                 .build();
 
-        Long saved = mapper.saveRoom(dto);
-        Assertions.assertEquals(saved, 1L);
+        mapper.saveRoom(room);
+        Assertions.assertEquals(14L, room.getRoomId());
     }
 }

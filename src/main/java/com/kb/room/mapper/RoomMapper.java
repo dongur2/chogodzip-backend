@@ -14,6 +14,6 @@ public interface RoomMapper {
 
     List<RoomTemp> findAll();
 
-    Long saveRoom(RoomTempPostDTO room); //매물 작성
-    Long saveGosiwon(GosiwonPostDTO gosiwon);
+    Long saveRoom(RoomTemp room); //매물 작성
+    Long saveGosiwon(Gosiwon gosiwon);
 }
