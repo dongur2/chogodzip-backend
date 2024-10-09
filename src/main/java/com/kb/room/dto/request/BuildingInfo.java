@@ -3,7 +3,7 @@ package com.kb.room.dto.request;
 import lombok.*;
 
 
-@Getter @Setter @ToString
+@Getter @Setter @Builder @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class BuildingInfo {
     private String buildingType;
