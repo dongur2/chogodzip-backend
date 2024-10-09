@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
 public interface RoomMapper {
     List<Room> findGosiwonsByLocation(@Param("lat") String lat, @Param("lng") String lng);
 
+    Gosiwon findOneByRoomId(@Param("roomId") Long roomId);
     List<RoomTemp> findAll();
 
     Long saveRoom(RoomTemp room); //매물 작성
