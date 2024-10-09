@@ -2,6 +2,7 @@ package com.kb.room.vo;
 
 import lombok.*;
 
+
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Gosiwon {

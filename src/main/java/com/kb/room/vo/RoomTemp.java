@@ -2,9 +2,9 @@ package com.kb.room.vo;
 
 import com.kb.member.dto.Member;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
+
 
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor

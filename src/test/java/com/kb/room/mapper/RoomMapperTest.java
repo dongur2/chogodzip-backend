@@ -16,9 +16,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @WebAppConfiguration

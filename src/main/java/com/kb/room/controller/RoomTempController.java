@@ -32,7 +32,6 @@ public class RoomTempController {
     //[TEMP] 고시원 매물 등록
     @PostMapping
     public ResponseEntity<Long> createRoom(@RequestBody GosiwonPostDTO dto) {
-        log.info(dto);
         Long roomId = service.addRoom(dto);
         return new ResponseEntity<>(roomId, HttpStatus.OK);
     }

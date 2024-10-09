@@ -8,8 +8,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 
-@Setter @Getter
-@Builder @ToString
+@Setter @Getter @Builder @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class GosiwonPostDTO {
     private String category;
@@ -17,6 +16,7 @@ public class GosiwonPostDTO {
     private LoanInfo loanInfo;
     private FacilitiesInfo facilitiesInfo;
     private BuildingInfo buildingInfo;
+  
 
     //DTO => RoomVO
     public RoomTemp toRoomVO(Long userId) {
