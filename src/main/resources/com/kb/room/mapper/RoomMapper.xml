@@ -54,4 +54,15 @@
         ]]>
     </select>
 
+    <!--  부동산 작성  -->
+    <insert id="saveRoom" parameterType="com.kb.room.dto.request.RoomTempPostDTO" useGeneratedKeys="true" keyProperty="roomId">
+        <![CDATA[
+            INSERT INTO ROOM (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, CAN_LOAN, UPDATED_AT, CREATED_AT)
+            VALUES (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{canLoan}, NOW(), NOW())
+        ]]>
+    </insert>
+
+    <!--  고시원 작성  -->
+    <insert id="saveGosiwon"></insert>
+
 </mapper>
