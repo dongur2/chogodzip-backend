@@ -15,6 +15,7 @@ public class CommunityDetailDTO {
     private String content;
     private String tag;
     private Date createdAt;
+    private int views;
 
     //VO => DTO
     public static CommunityDetailDTO from(Community community) {
@@ -25,6 +26,7 @@ public class CommunityDetailDTO {
                 .content(community.getContent())
                 .tag(community.getTag())
                 .createdAt(community.getCreatedAt())
+                .views(community.getViews())
                 .build();
     }
 }

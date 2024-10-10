@@ -13,6 +13,7 @@
         <result property="createdAt" column="created_at" />
         <result property="updatedAt" column="updated_at" />
         <result property="isDeleted" column="is_deleted" />
+        <result property="views" column="views" />
 
         <association property="user" javaType="com.kb.member.dto.Member">
             <id property="mno" column="mno" />
@@ -33,8 +34,8 @@
 
     <insert id="save" parameterType="com.kb.community.vo.Community" useGeneratedKeys="true" keyProperty="communityId">
         <![CDATA[
-            INSERT INTO COMMUNITY (USER_ID, TITLE, CONTENT, TAG, IS_DELETED, UPDATED_AT, CREATED_AT)
-            VALUES (#{user.mno}, #{title}, #{content}, #{tag}, false, now(), now())
+            INSERT INTO COMMUNITY (USER_ID, TITLE, CONTENT, TAG, IS_DELETED, UPDATED_AT, CREATED_AT, VIEWS)
+            VALUES (#{user.mno}, #{title}, #{content}, #{tag}, false, now(), now(), 0)
         ]]>
 
         <selectKey keyProperty="communityId" resultType="long" order="AFTER">

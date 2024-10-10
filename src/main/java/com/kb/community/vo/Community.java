@@ -18,4 +18,5 @@ public class Community {
     private Date updatedAt;
 
     private Boolean isDeleted;
+    private Integer views;
 }
