@@ -1,5 +1,6 @@
 package com.kb.room.mapper;
 
+import com.kb.room.dto.GosiwonRoomDTO;
 import com.kb.room.dto.UserReview;
 import com.kb.room.dto.Room;
 import com.kb.room.dto.RoomParam;
@@ -15,9 +16,8 @@ import org.apache.ibatis.annotations.Param;
 
 
 public interface RoomMapper {
-    List<Room> findGosiwonsByLocation(@Param("lat") String lat, @Param("lng") String lng);
 
-    List<Room> findGosiwonsByLocation(RoomParam roomParam);
+    List<GosiwonRoomDTO> findGosiwonsByLocation(RoomParam roomParam);
 
     Room findOneGosiwon(@Param("id") Long id);
 

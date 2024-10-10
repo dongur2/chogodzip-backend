@@ -1,5 +1,6 @@
 package com.kb.room.controller;
 
+import com.kb.room.dto.GosiwonRoomDTO;
 import com.kb.room.dto.Room;
 import com.kb.room.dto.RoomParam;
 import com.kb.room.service.RoomService;
@@ -27,12 +28,12 @@ public class RoomController {
     private final RoomService roomService;
 
 
-    @GetMapping("/gosiwon")
-    public ResponseEntity<List<Room>> getAllAvailableRooms(RoomParam roomParam) {
-
-        List<Room> rooms = roomService.getAllGosiwons(roomParam);
-        return ResponseEntity.ok(rooms);
-    }
+//    @GetMapping("/gosiwon")
+//    public ResponseEntity<List<Room>> getAllAvailableRooms(RoomParam roomParam) {
+//
+//        List<Room> rooms = roomService.getAllGosiwons(roomParam);
+//        return ResponseEntity.ok(rooms);
+//    }
 
     @GetMapping("/favorite")
     public ResponseEntity<Integer> getAllFavoriteRooms(@RequestParam int roomId) {
@@ -40,5 +41,12 @@ public class RoomController {
         return ResponseEntity.ok(result);
     }
 
+
+    @GetMapping("/gosiwon")
+    public ResponseEntity<List<GosiwonRoomDTO>> getAllGosiwons( RoomParam roomParam) {
+        List<GosiwonRoomDTO> rooms = roomService.getAllGosiwons(roomParam);
+
+        return ResponseEntity.ok(rooms);
+    }
 
 }

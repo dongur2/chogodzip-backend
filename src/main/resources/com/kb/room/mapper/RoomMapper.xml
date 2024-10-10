@@ -40,50 +40,110 @@
         <result property="isDeleted" column="IS_DELETED"/>
     </resultMap>
 
+    <resultMap id="GosiwonRoomResultMap" type="com.kb.room.dto.GosiwonRoomDTO">
+        <!-- Gosiwon fields -->
+        <id property="gswId" column="gsw_id" />
+        <result property="title" column="title" />
+        <result property="postcode" column="postcode" />
+        <result property="address" column="address" />
+        <result property="detailAddress" column="detail_address" />
+        <result property="priceMin" column="price_min" />
+        <result property="priceMax" column="price_max" />
+        <result property="depositMin" column="deposit_min" />
+        <result property="depositMax" column="deposit_max" />
+        <result property="maintenanceFee" column="maintenance_fee" />
+        <result property="privateFacilities" column="private_facilities" />
+        <result property="services" column="services" />
+        <result property="languages" column="languages" />
+        <result property="etc" column="etc" />
+        <result property="description" column="description" />
+        <result property="genderLimit" column="gender_limit" />
+        <result property="type" column="type" />
+        <result property="contractMin" column="contract_min" />
+        <result property="ageMax" column="age_max" />
+        <result property="ageMin" column="age_min" />
+        <result property="facilityHeating" column="facility_heating" />
+        <result property="facilityCooling" column="facility_cooling" />
+        <result property="facilityLife" column="facility_life" />
+        <result property="facilitySecurity" column="facility_security" />
+        <result property="buildingType" column="building_type" />
+        <result property="canParking" column="can_parking" />
+        <result property="hasElevator" column="has_elevator" />
+        <result property="isSoldOut" column="is_sold_out" />
+
+        <!-- Room fields -->
+        <result property="roomId" column="room_id" />
+        <result property="userId" column="user_id" />
+        <result property="roomLat" column="room_lat" />
+        <result property="roomLong" column="room_long" />
+        <result property="thumbnail" column="thumbnail" />
+        <result property="canLoan" column="can_loan" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+
+
 
 
     <!-- 위치를 기준으로 고시원을 찾는 쿼리 -->
-    <select id="findGosiwonsByLocation" resultType="com.kb.room.dto.Room">
+<!--    <select id="findGosiwonsByLocation" resultType="com.kb.room.dto.GosiwonRoomDTO">-->
+<!--        <![CDATA[-->
+<!--        SELECT *,-->
+<!--               (6371 * acos(cos(radians(#{lat}))-->
+<!--                                * cos(radians(room_lat))-->
+<!--                                * cos(radians(room_long) - radians(#{lng}))-->
+<!--                   + sin(radians(#{lat}))-->
+<!--                                * sin(radians(room_lat)))) AS distance-->
+<!--        FROM oneroom-->
+<!--        WHERE house_type_cd IN ('HOUTP00001', 'HOUTP00003')-->
+<!--    ]]>-->
+
+<!--        <if test="gender != null and gender != ''">-->
+<!--            <![CDATA[-->
+<!--        AND gender_cd = #{gender}-->
+<!--        ]]>-->
+<!--        </if>-->
+
+<!--        <if test="deposit != null and deposit != ''">-->
+<!--            <![CDATA[-->
+<!--        AND deposit_max <= #{deposit}-->
+<!--        ]]>-->
+<!--        </if>-->
+
+<!--        <if test="price != null and price != ''">-->
+<!--            <![CDATA[-->
+<!--        AND price_max <= #{price}-->
+<!--        ]]>-->
+<!--        </if>-->
+
+<!--        <if test="loanType != null and loanType != ''">-->
+<!--            <![CDATA[-->
+<!--        AND tags LIKE CONCAT('%', #{loanType}, '%')-->
+<!--        ]]>-->
+<!--        </if>-->
+
+<!--        <![CDATA[-->
+<!--        HAVING distance < 1-->
+<!--        ORDER BY distance;-->
+<!--    ]]>-->
+<!--    </select>-->
+
+    <select id="findGosiwonsByLocation" resultType="com.kb.room.dto.GosiwonRoomDTO">
         <![CDATA[
-        SELECT *,
-               (6371 * acos(cos(radians(#{lat}))
-                                * cos(radians(room_lat))
-                                * cos(radians(room_long) - radians(#{lng}))
-                   + sin(radians(#{lat}))
-                                * sin(radians(room_lat)))) AS distance
-        FROM oneroom
-        WHERE house_type_cd IN ('HOUTP00001', 'HOUTP00003')
-    ]]>
-
-        <if test="gender != null and gender != ''">
-            <![CDATA[
-        AND gender_cd = #{gender}
-        ]]>
-        </if>
-
-        <if test="deposit != null and deposit != ''">
-            <![CDATA[
-        AND deposit_max <= #{deposit}
-        ]]>
-        </if>
-
-        <if test="price != null and price != ''">
-            <![CDATA[
-        AND price_max <= #{price}
-        ]]>
-        </if>
-
-        <if test="loanType != null and loanType != ''">
-            <![CDATA[
-        AND tags LIKE CONCAT('%', #{loanType}, '%')
-        ]]>
-        </if>
-
-        <![CDATA[
-        HAVING distance < 1
-        ORDER BY distance;
-    ]]>
+            SELECT g.*, r.*,
+                   (6371 * acos(cos(radians(#{lat}))
+                                    * cos(radians(r.room_lat))
+                                    * cos(radians(r.room_long) - radians(#{lng}))
+                       + sin(radians(#{lat}))
+                                    * sin(radians(r.room_lat)))) AS distance
+            FROM GOSIWON g
+                     JOIN ROOM r ON g.room_id = r.room_id
+            WHERE 1 = 1
+            HAVING distance < 100
+            ORDER BY distance;
+            ]]>
     </select>
+
 
     <select id="findOneGosiwon" resultMap="roomResultMap">
         select *

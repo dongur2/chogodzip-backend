@@ -1,5 +1,6 @@
 package com.kb.room.service;
 
+import com.kb.room.dto.GosiwonRoomDTO;
 import com.kb.room.dto.UserReview;
 import com.kb.room.dto.Room;
 import com.kb.room.dto.RoomParam;
@@ -35,7 +36,7 @@ public class RoomService {
 
 
 
-    public List<Room> getAllGosiwons(RoomParam roomParam) {
+    public List<GosiwonRoomDTO> getAllGosiwons(RoomParam roomParam) {
 
         return roomMapper.findGosiwonsByLocation(roomParam);
     }
