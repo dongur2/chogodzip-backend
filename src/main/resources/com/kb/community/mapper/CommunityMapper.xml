@@ -19,12 +19,17 @@
         </association>
     </resultMap>
 
+    <select id="findAll" resultType="com.kb.community.vo.Community">
+        <![CDATA[
+            SELECT * FROM COMMUNITY
+        ]]>
+    </select>
+
     <select id="findById" resultType="com.kb.community.vo.Community" parameterType="long">
         <![CDATA[
             SELECT * FROM COMMUNITY WHERE COMMUNITY_ID = #{communityId}
         ]]>
     </select>
-
 
     <insert id="save" parameterType="com.kb.community.vo.Community" useGeneratedKeys="true" keyProperty="communityId">
         <![CDATA[
