@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.community.mapper.CommunityMapper">
+    <!-- Community resultMap   -->
+    <resultMap id="communityMap" type="com.kb.community.vo.Community">
+        <id property="communityId" column="community_id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="tag" column="tag" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="isDeleted" column="is_deleted" />
+
+        <association property="user" javaType="com.kb.member.dto.Member">
+            <id property="mno" column="user_id" />
+        </association>
+    </resultMap>
+
+    <select id="findById" resultType="com.kb.community.vo.Community" parameterType="long">
+        <![CDATA[
+            SELECT * FROM COMMUNITY WHERE COMMUNITY_ID = #{communityId}
+        ]]>
+    </select>
+
+
+    <insert id="save" parameterType="com.kb.community.vo.Community" useGeneratedKeys="true" keyProperty="communityId">
+        <![CDATA[
+            INSERT INTO COMMUNITY (USER_ID, TITLE, CONTENT, TAG, IS_DELETED, UPDATED_AT, CREATED_AT)
+            VALUES (#{user.mno}, #{title}, #{content}, #{tag}, false, now(), now())
+        ]]>
+
+        <selectKey keyProperty="communityId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+</mapper>
