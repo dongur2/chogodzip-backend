@@ -5,6 +5,7 @@ import com.kb._config.ServletConfig;
 import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
 import com.kb.community.dto.request.CommunityPostDTO;
+import com.kb.community.dto.response.CommunityDetailDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +35,13 @@ class CommunityServiceTest {
                 .build();
 
         Long added = service.add(dto);
-        Assertions.assertThat(added).isEqualTo(2L);
+        Assertions.assertThat(added).isEqualTo(9L);
+    }
+
+    @Test
+    @DisplayName("커뮤니티 상세 글 조회")
+    void getDetail() {
+        CommunityDetailDTO dto = service.getDetail(8L);
+        Assertions.assertThat(dto.getTitle()).isEqualTo("[서비스 테스트] 커뮤니티 제목");
     }
 }
