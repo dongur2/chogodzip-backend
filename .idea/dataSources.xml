@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@database-1.clasuc2gyqz1.ap-northeast-2.rds.amazonaws.com" uuid="1e61e882-09d3-41d8-ba4a-8a2e1f3f6594">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://database-1.clasuc2gyqz1.ap-northeast-2.rds.amazonaws.com:3306</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="@database-1.clasuc2gyqz1.ap-northeast-2.rds.amazonaws.com [2]" uuid="473e350b-b911-4259-8c12-167b41489b67">
+    <data-source source="LOCAL" name="@database-1.clasuc2gyqz1.ap-northeast-2.rds.amazonaws.com" uuid="4a6efeef-27b6-4c3a-8551-441bf2fbe74d">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
