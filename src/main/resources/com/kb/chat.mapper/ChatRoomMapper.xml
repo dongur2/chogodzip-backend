@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.kb.chat.mapper.ChatRoomMapper">
+
+    <select id="findChatRoom" resultType="com.kb.chat.dto.ChatRoom" parameterType="map">
+        SELECT *
+        FROM CHAT_ROOM
+        WHERE room_id = #{roomId}
+          AND sender_id = #{senderId}
+          AND receiver_id = #{receiverId}
+    </select>
+
+    <insert id="insertChatRoom" parameterType="com.kb.chat.dto.ChatRoom">
+        INSERT INTO CHAT_ROOM (room_id, sender_id, receiver_id, created_at, updated_at)
+        VALUES (#{roomId}, #{senderId}, #{receiverId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
+
+</mapper>
