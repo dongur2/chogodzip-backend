@@ -37,6 +37,14 @@
         WHERE m.status = 'y'
     </select>
 
+    <select id="selectByNo" resultMap="memberResultMap" parameterType="long">
+        SELECT
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+        FROM
+            member m
+                LEFT OUTER JOIN member_auth a ON m.id = a.id
+        WHERE m.status = 'y' and m.mno = #{no}
+    </select>
 
     <select id="selectById" resultMap="memberResultMap" parameterType="string">
         SELECT
