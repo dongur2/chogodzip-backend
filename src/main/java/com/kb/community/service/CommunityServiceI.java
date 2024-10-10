@@ -1,6 +1,7 @@
 package com.kb.community.service;
 
 import com.kb.community.dto.request.CommunityPostDTO;
+import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.mapper.CommunityMapper;
 import com.kb.community.vo.Community;
 import com.kb.member.mapper.MemberMapper;
@@ -18,6 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommunityServiceI implements CommunityService {
     @Autowired private CommunityMapper communityMapper;
     @Autowired private MemberMapper memberMapper;
+
+    @Override
+    public CommunityDetailDTO getDetail(Long id) {
+        return CommunityDetailDTO.from(communityMapper.findById(id));
+    }
 
     @Override @Transactional
     public Long add(CommunityPostDTO dto) {
