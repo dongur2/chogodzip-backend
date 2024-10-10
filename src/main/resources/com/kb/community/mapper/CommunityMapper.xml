@@ -15,7 +15,7 @@
         <result property="isDeleted" column="is_deleted" />
 
         <association property="user" javaType="com.kb.member.dto.Member">
-            <id property="mno" column="user_id" />
+            <id property="mno" column="mno" />
         </association>
     </resultMap>
 
