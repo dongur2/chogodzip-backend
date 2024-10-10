@@ -31,7 +31,7 @@ class CommunityMapperTest {
     @DisplayName("커뮤니티 글 작성 & ID로 단일 조회")
     void save() {
         Community vo = Community.builder()
-                .user(memberMapper.selectById("1L"))
+                .user(memberMapper.selectByNo(1L))
                 .title("[테스트] 커뮤니티 제목 02")
                 .content("[테스트] 커뮤니티 컨텐츠 01")
                 .tag("부동산")
@@ -40,12 +40,15 @@ class CommunityMapperTest {
 
         Community saved = mapper.findById(vo.getCommunityId());
         Assertions.assertThat(saved.getTitle()).isEqualTo("[테스트] 커뮤니티 제목 02");
+        Assertions.assertThat(saved.getUser()).isNotNull();
+
+        log.info(saved.getUser().getId());
     }
 
     @Test
     @DisplayName("커뮤니티 글 전체 조회")
     void findAll() {
         List<Community> all = mapper.findAll();
-        Assertions.assertThat(all.size()).isEqualTo(9);
+        Assertions.assertThat(all.size()).isEqualTo(10);
     }
 }

@@ -6,6 +6,7 @@ import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
 import com.kb.community.dto.request.CommunityPostDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
+import com.kb.community.dto.response.CommunityListDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.List;
 
 
 @Slf4j
@@ -43,5 +46,12 @@ class CommunityServiceTest {
     void getDetail() {
         CommunityDetailDTO dto = service.getDetail(2L);
         Assertions.assertThat(dto.getTitle()).isEqualTo("[서비스 테스트] 커뮤니티 제목");
+    }
+
+    @Test
+    @DisplayName("커뮤니티 전체 글 조회")
+    void getAll() {
+        List<CommunityListDTO> all = service.getAll();
+        Assertions.assertThat(all.size()).isEqualTo(4L);
     }
 }
