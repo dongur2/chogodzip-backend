@@ -32,7 +32,13 @@ public class CommunityServiceI implements CommunityService {
     //커뮤니티 상세글 조회
     @Override
     public CommunityDetailDTO getDetail(Long id) {
-        return CommunityDetailDTO.from(communityMapper.findById(id));
+        CommunityDetailDTO dto = null;
+        try {
+            dto = CommunityDetailDTO.from(communityMapper.findById(id));
+        } catch (Exception e) {
+            log.error("상세 게시글 조회 실패: {}", e);
+        }
+        return dto;
     }
 
     //커뮤니티 작성

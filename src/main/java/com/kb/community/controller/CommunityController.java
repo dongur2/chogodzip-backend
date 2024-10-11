@@ -1,6 +1,7 @@
 package com.kb.community.controller;
 
 import com.kb.community.dto.request.CommunityPostDTO;
+import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.service.CommunityService;
 import io.swagger.annotations.Api;
@@ -29,7 +30,11 @@ public class CommunityController {
 
     @PostMapping
     public ResponseEntity<Long> post(@RequestBody CommunityPostDTO data) {
-        Long communityId = service.add(data);
-        return new ResponseEntity<>(communityId, HttpStatus.OK);
+        return new ResponseEntity<>(service.add(data), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CommunityDetailDTO> selectOne(@PathVariable("id") Long communityId) {
+        return new ResponseEntity<>(service.getDetail(communityId), HttpStatus.OK);
     }
 }
