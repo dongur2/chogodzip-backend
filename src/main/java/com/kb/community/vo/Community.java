@@ -9,7 +9,7 @@ import java.util.Date;
 @NoArgsConstructor @AllArgsConstructor
 public class Community {
     private Long communityId;
-    private Member user;
+    private Member member; //has-a
     private String title;
     private String content;
     private String tag;

@@ -1,7 +1,6 @@
 package com.kb.community.dto.response;
 
 import com.kb.community.vo.Community;
-import com.kb.member.dto.Member;
 import lombok.*;
 
 import java.util.Date;
@@ -10,7 +9,8 @@ import java.util.Date;
 @NoArgsConstructor @AllArgsConstructor
 public class CommunityDetailDTO {
     private Long communityId;
-    private Member user;
+    private Long mNo; //member
+    private String nickname; //member
     private String title;
     private String content;
     private String tag;
@@ -21,7 +21,8 @@ public class CommunityDetailDTO {
     public static CommunityDetailDTO from(Community community) {
         return CommunityDetailDTO.builder()
                 .communityId(community.getCommunityId())
-                .user(community.getUser())
+                .mNo(community.getMember().getMno())
+                .nickname(community.getMember().getName())
                 .title(community.getTitle())
                 .content(community.getContent())
                 .tag(community.getTag())

@@ -11,8 +11,8 @@ public class CommunityListDTO {
     private Long communityId;
     private String tag;
     private String title;
-    private Long userNo;
-    private String nickname;
+    private Long mNo; //member
+    private String nickname; //member
     private Date createdAt;
     private int views;
 
@@ -22,8 +22,8 @@ public class CommunityListDTO {
                 .communityId(community.getCommunityId())
                 .tag(community.getTag())
                 .title(community.getTitle())
-                .userNo(community.getUser().getMno())
-                .nickname(community.getUser().getName())
+                .mNo(community.getMember().getMno())
+                .nickname(community.getMember().getName())
                 .createdAt(community.getCreatedAt())
                 .views(community.getViews())
                 .build();

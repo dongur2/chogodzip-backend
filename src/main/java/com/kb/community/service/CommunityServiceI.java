@@ -23,20 +23,23 @@ public class CommunityServiceI implements CommunityService {
     @Autowired private CommunityMapper communityMapper;
     @Autowired private MemberMapper memberMapper;
 
+    //커뮤니티 모든 글 조회
     @Override
     public List<CommunityListDTO> getAll() {
         return communityMapper.findAll().stream().map(CommunityListDTO::from).toList();
     }
 
+    //커뮤니티 상세글 조회
     @Override
     public CommunityDetailDTO getDetail(Long id) {
         return CommunityDetailDTO.from(communityMapper.findById(id));
     }
 
+    //커뮤니티 작성
     @Override @Transactional
     public Long add(CommunityPostDTO dto) {
         Community vo = dto.toVO();
-        vo.setUser(memberMapper.selectByNo(dto.getUserId()));
+        vo.setMember(memberMapper.selectByNo(dto.getMNo()));
         communityMapper.save(vo);
         return vo.getCommunityId();
     }
