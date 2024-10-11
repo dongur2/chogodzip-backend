@@ -1,6 +1,9 @@
+USE chogodzip;
+
 DROP TABLE IF EXISTS COMMUNITY_COMMENT;
 DROP TABLE IF EXISTS FILE_REPO;
 DROP TABLE IF EXISTS COMMUNITY;
+
 
 # 커뮤니티
 CREATE TABLE COMMUNITY
@@ -9,7 +12,7 @@ CREATE TABLE COMMUNITY
     M_NO            BIGINT,
     TITLE           VARCHAR(100),
     CONTENT         TEXT,
-    TAG             VARCHAR(50),
+    TAG             VARCHAR(50), -- REPI(정책,투자)/REHT(핫이슈)/RERV(후기)/CTRV(계약,입주후기)/ITRV(인테리어)/LNQS(대출)/LTQS(분양,청약)
     VIEWS           INT default 0,
     IS_DELETED      TINYINT(1), -- 0:존재 1:삭제
     UPDATED_AT      DATETIME default now(),
