@@ -31,27 +31,28 @@ class CommunityServiceTest {
     @DisplayName("커뮤니티 글 작성")
     void add() {
         CommunityPostDTO dto = CommunityPostDTO.builder()
-                .mNo(3L)
-                .title("[서비스 테스트] 커뮤니티 제목")
-                .content("[서비스 테스트] 커뮤니티 본문")
-                .tag("realEstate")
+                .mNo(16L)
+                .title("[SERVICE TEST] 커뮤니티 제목 2")
+                .content("[SERVICE TEST] 커뮤니티 본문 2")
+                .tag("RE")
                 .build();
 
         Long added = service.add(dto);
-        Assertions.assertThat(added).isEqualTo(2L);
+        Assertions.assertThat(added).isEqualTo(8L);
     }
 
     @Test
     @DisplayName("커뮤니티 상세 글 조회")
     void getDetail() {
-        CommunityDetailDTO dto = service.getDetail(2L);
-        Assertions.assertThat(dto.getTitle()).isEqualTo("[서비스 테스트] 커뮤니티 제목");
+        CommunityDetailDTO dto = service.getDetail(8L);
+        Assertions.assertThat(dto.getTitle()).isEqualTo("[SERVICE TEST] 커뮤니티 제목 2");
+        Assertions.assertThat(dto.getNickname()).isEqualTo("hyeonseokcute");
     }
 
     @Test
     @DisplayName("커뮤니티 전체 글 조회")
     void getAll() {
         List<CommunityListDTO> all = service.getAll();
-        Assertions.assertThat(all.size()).isEqualTo(4L);
+        Assertions.assertThat(all.size()).isEqualTo(8);
     }
 }

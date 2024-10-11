@@ -15,6 +15,7 @@ public class CommunityPostDTO {
     //DTO => VO
     public Community toVO() {
         return Community.builder()
+                .mNo(mNo)
                 .title(title)
                 .content(content)
                 .tag(tag)
