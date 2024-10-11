@@ -1,6 +1,6 @@
 package com.kb.room.dto.response;
 
-import com.kb.room.vo.RoomTemp;
+import com.kb.room.vo.Room;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ public class RoomTempDTO {
     private Long userId;
 
     //VO => DTO
-    public static RoomTempDTO from(RoomTemp vo) {
+    public static RoomTempDTO from(Room vo) {
         return RoomTempDTO.builder()
                 .roomId(vo.getRoomId())
                 .userId(vo.getUserId())

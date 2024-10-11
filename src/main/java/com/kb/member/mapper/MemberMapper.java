@@ -16,4 +16,6 @@ public interface MemberMapper {
     int deleteMember(long mno);
     int insertAuth(Auth auth);
     int deleteAuth(Auth auth);
+
+    Long searchOneMember(String userName);
 }

@@ -4,7 +4,7 @@ import com.kb.room.dto.request.GosiwonPostDTO;
 import com.kb.room.dto.response.RoomTempDTO;
 import com.kb.room.mapper.RoomMapper;
 import com.kb.room.vo.Gosiwon;
-import com.kb.room.vo.RoomTemp;
+import com.kb.room.vo.Room;
 import com.kb.room.vo.RoomWithLoan;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -32,7 +32,7 @@ public class RoomTempServiceI implements RoomTempService{
     @Override @Transactional
     public Long addRoom(GosiwonPostDTO dto) {
         //부동산 + 고시원 작성
-        RoomTemp roomVO = dto.toRoomVO(1L); //임시 유저아이디 고정
+        Room roomVO = dto.toRoomVO(1L); //임시 유저아이디 고정
         Gosiwon gosiwonVO = dto.toGosiwonVO(roomVO);
 
         mapper.saveRoom(roomVO);

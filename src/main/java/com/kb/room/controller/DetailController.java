@@ -2,8 +2,9 @@ package com.kb.room.controller;
 
 import com.kb.member.dto.Member;
 import com.kb.room.dto.UserReview;
-import com.kb.room.dto.Room;
 import com.kb.room.service.RoomService;
+import com.kb.room.vo.Gosiwon;
+import com.kb.room.vo.GosiwonStatus;
 import io.swagger.annotations.Api;
 import java.util.Date;
 import java.util.List;
@@ -30,9 +31,9 @@ public class DetailController {
     private final RoomService roomService;
 
     @GetMapping("/gosiwons/{id}")
-    private ResponseEntity<Room> detailGosiwons(@PathVariable Long id) {
+    private ResponseEntity<Gosiwon> detailGosiwons(@PathVariable Long id) {
 
-        Room getRoom = roomService.getOneGosiwons(id);
+        Gosiwon getRoom = roomService.getOneGosiwons(id);
         return ResponseEntity.ok(getRoom);
     }
 
@@ -59,6 +60,14 @@ public class DetailController {
 
         return ResponseEntity.ok(list);
 
+    }
+
+    @GetMapping("/status")
+    private ResponseEntity<GosiwonStatus> getStatus(String location) {
+
+        GosiwonStatus result  = roomService.calStatus(location);
+        System.out.println(location+" dfadfasdfasdf " + result);
+        return ResponseEntity.ok(result);
     }
 
 

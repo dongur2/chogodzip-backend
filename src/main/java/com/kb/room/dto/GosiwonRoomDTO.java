@@ -1,5 +1,6 @@
 package com.kb.room.dto;
 
+import com.kb.interest.dto.InterestRoom;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +28,8 @@ public class GosiwonRoomDTO {
     private String languages;
     private String etc;
     private String description;
-    private boolean genderLimit;
-    private boolean type;
+    private String genderLimit;
+    private Integer type;
     private boolean contractMin;
     private Integer ageMax;
     private Integer ageMin;
