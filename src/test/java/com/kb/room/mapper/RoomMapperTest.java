@@ -5,7 +5,7 @@ import com.kb._config.ServletConfig;
 import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
 import com.kb.room.vo.Gosiwon;
-import com.kb.room.vo.RoomTemp;
+import com.kb.room.vo.Room;
 import com.kb.room.vo.RoomWithLoan;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -16,10 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @WebAppConfiguration
@@ -38,7 +36,7 @@ class RoomMapperTest {
     @Test
     @DisplayName("ROOM 작성")
     void saveRoom() {
-        RoomTemp room = RoomTemp.builder()
+        Room room = Room.builder()
                 .userId(2L)
                 .roomLat(new BigDecimal("37.0996527684079"))
                 .roomLong(new BigDecimal("126.839982282494"))
@@ -53,7 +51,7 @@ class RoomMapperTest {
     @Test
     @DisplayName("[대출 없음] 고시원 작성")
     void saveGosiwon() {
-        RoomTemp room = RoomTemp.builder()
+        Room room = Room.builder()
                 .userId(1L)
                 .roomLat(new BigDecimal("37.0996527684079"))
                 .roomLong(new BigDecimal("126.839982282494"))
@@ -102,7 +100,7 @@ class RoomMapperTest {
     @DisplayName("[대출 가능] 고시원 작성")
     void saveGosiwonWithLoan() {
         //부동산
-        RoomTemp room = RoomTemp.builder()
+        Room room = Room.builder()
                 .userId(1L)
                 .roomLat(new BigDecimal("37.0996527684079"))
                 .roomLong(new BigDecimal("126.839982282494"))

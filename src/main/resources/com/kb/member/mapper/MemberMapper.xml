@@ -28,6 +28,15 @@
         </constructor>
     </resultMap>
 
+    <select id="searchOneMember" resultType="long">
+        SELECT
+            mno
+        FROM
+           member
+        WHERE id = #{userName}
+    </select>
+
+
     <select id="selectMemberAll" resultMap="memberResultMap">
         SELECT
             mno, m.id, password, name, email, status, create_date, modify_date, a.authority

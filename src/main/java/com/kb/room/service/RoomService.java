@@ -2,9 +2,10 @@ package com.kb.room.service;
 
 import com.kb.room.dto.GosiwonRoomDTO;
 import com.kb.room.dto.UserReview;
-import com.kb.room.dto.Room;
 import com.kb.room.dto.RoomParam;
 import com.kb.room.mapper.RoomMapper;
+import com.kb.room.vo.Gosiwon;
+import com.kb.room.vo.GosiwonStatus;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class RoomService {
     }
 
 
-    public Room getOneGosiwons(Long id) {
+    public Gosiwon getOneGosiwons(Long id) {
         return roomMapper.findOneGosiwon(id);
     }
 
@@ -53,5 +54,9 @@ public class RoomService {
     public List<UserReview> getAllReview(Long roomId) {
 
         return roomMapper.findAllReview(roomId);
+    }
+
+    public GosiwonStatus calStatus(String location) {
+        return roomMapper.calGosiwonStatus(location);
     }
 }
