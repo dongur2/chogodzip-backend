@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.interest.mapper.InterestMapper">
+
+    <select id="getUserInterestRoom" resultType="com.kb.interest.dto.InterestRoom">
+        select *
+        from INTEREST_ROOM
+        where user_Id = #{userId}
+    </select>
+
+    <insert id="addInterestRoom" parameterType="com.kb.interest.dto.InterestRoom">
+        INSERT INTO INTEREST_ROOM (user_Id, room_Id, created_At)
+        VALUES (#{userId}, #{roomId}, NOW())
+    </insert>
+
+    <delete id="deleteInterestRoom" parameterType="com.kb.interest.dto.InterestRoom">
+        DELETE FROM INTEREST_ROOM
+        WHERE user_Id = #{userId} AND room_Id = #{roomId}
+    </delete>
+</mapper>

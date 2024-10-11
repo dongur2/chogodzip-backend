@@ -1,6 +1,5 @@
 package com.kb.room.vo;
 
-import com.kb.member.dto.Member;
 import lombok.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,7 +7,7 @@ import java.util.Date;
 
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class RoomTemp {
+public class Room {
     private Long roomId;
     private Long userId;
     private BigDecimal roomLat;

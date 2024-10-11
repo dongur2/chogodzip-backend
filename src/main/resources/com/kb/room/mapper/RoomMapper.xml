@@ -5,31 +5,65 @@
 
 <mapper namespace="com.kb.room.mapper.RoomMapper">
 
-    <!-- Room Result Map 정의 -->
-    <resultMap id="roomResultMap" type="com.kb.room.dto.Room">
-        <id property="roomId" column="room_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="roomCnt" column="room_cnt"/>
-        <result property="roomName" column="room_name"/>
-        <result property="floor" column="floor"/>
-        <result property="houseTypeCd" column="house_type_cd"/>
-        <result property="houseTypeNms" column="house_type_nms"/>
-        <result property="genderCd" column="gender_cd"/>
-        <result property="tags" column="tags"/>
-        <result property="imgId" column="img_id"/>
-        <result property="roomAddr" column="room_addr"/>
-        <result property="roomAddrFl" column="room_addr_fl"/>
-        <result property="roomLat" column="room_lat"/>
-        <result property="roomLong" column="room_long"/>
-        <result property="depositMax" column="deposit_max"/>
-        <result property="depositMin" column="deposit_min"/>
-        <result property="priceMax" column="price_max"/>
-        <result property="priceMin" column="price_min"/>
-        <result property="isSoldOut" column="IS_SOLD_OUT"/>
-        <result property="createdAt" column="created_at"/>
-        <result property="updatedAt" column="updated_at"/>
-        <result property="maintainCost" column="maintain_cost"/>
+    <resultMap id="gosiwonResultMap" type="com.kb.room.vo.Gosiwon">
+        <id property="gswId" column="GSW_ID" />
+
+        <!-- BASIC INFO -->
+        <result property="category" column="CATEGORY" />
+        <result property="title" column="TITLE" />
+        <result property="postcode" column="POSTCODE" />
+        <result property="address" column="ADDRESS" />
+        <result property="detailAddress" column="DETAIL_ADDRESS" />
+        <result property="priceMin" column="PRICE_MIN" />
+        <result property="priceMax" column="PRICE_MAX" />
+        <result property="depositMin" column="DEPOSIT_MIN" />
+        <result property="depositMax" column="DEPOSIT_MAX" />
+        <result property="maintenanceFee" column="MAINTENANCE_FEE" />
+        <result property="privateFacilities" column="PRIVATE_FACILITIES" />
+        <result property="services" column="SERVICES" />
+        <result property="languages" column="LANGUAGES" />
+        <result property="etc" column="ETC" />
+        <result property="desc" column="DESCRIPTION" />
+        <result property="pics" column="PICS" />
+        <result property="genderLimit" column="GENDER_LIMIT" jdbcType="INTEGER" />
+        <result property="type" column="TYPE" jdbcType="INTEGER" />
+        <result property="contractMin" column="CONTRACT_MIN" jdbcType="INTEGER" />
+        <result property="ageMax" column="AGE_MAX" />
+        <result property="ageMin" column="AGE_MIN" />
+
+        <!-- FACILITY INFO -->
+        <result property="facilityHeating" column="FACILITY_HEATING" />
+        <result property="facilityCooling" column="FACILITY_COOLING" />
+        <result property="facilityLife" column="FACILITY_LIFE" />
+        <result property="facilitySecurity" column="FACILITY_SECURITY" />
+
+        <!-- BUILDING INFO -->
+        <result property="buildingType" column="BUILDING_TYPE" jdbcType="INTEGER" />
+        <result property="canParking" column="CAN_PARKING" jdbcType="INTEGER" />
+        <result property="hasElevator" column="HAS_ELEVATOR" jdbcType="INTEGER" />
+
+        <!-- SOLD OUT -->
+        <result property="isSoldOut" column="IS_SOLD_OUT" jdbcType="BIT" />
+
+        <!-- Room Association: comes after the result fields -->
+        <association property="room" javaType="com.kb.room.vo.Room">
+            <id property="roomId" column="ROOM_ID" />
+            <result property="userId" column="USER_ID" />
+            <result property="roomLat" column="ROOM_LAT" />
+            <result property="roomLong" column="ROOM_LONG" />
+            <result property="thumbnail" column="THUMBNAIL" />
+            <result property="canLoan" column="CAN_LOAN" jdbcType="BIT" />
+            <result property="createdAt" column="CREATED_AT" jdbcType="TIMESTAMP" />
+            <result property="updatedAt" column="UPDATED_AT" jdbcType="TIMESTAMP" />
+        </association>
     </resultMap>
+
+    <resultMap id="GosiwonStatusResultMap" type="com.kb.room.vo.GosiwonStatus">
+        <result property="maxPrice" column="maxPrice" />
+        <result property="avgPrice" column="avgPrice" />
+        <result property="minPrice" column="minPrice" />
+    </resultMap>
+
 
     <resultMap id="reviewResultMap" type="com.kb.room.dto.UserReview">
         <id property="reviewId" column="REVIEW_ID"/>
@@ -39,94 +73,6 @@
         <result property="createdAt" column="CREATED_AT"/>
         <result property="isDeleted" column="IS_DELETED"/>
     </resultMap>
-
-    <resultMap id="GosiwonRoomResultMap" type="com.kb.room.dto.GosiwonRoomDTO">
-        <!-- Gosiwon fields -->
-        <id property="gswId" column="gsw_id" />
-        <result property="title" column="title" />
-        <result property="postcode" column="postcode" />
-        <result property="address" column="address" />
-        <result property="detailAddress" column="detail_address" />
-        <result property="priceMin" column="price_min" />
-        <result property="priceMax" column="price_max" />
-        <result property="depositMin" column="deposit_min" />
-        <result property="depositMax" column="deposit_max" />
-        <result property="maintenanceFee" column="maintenance_fee" />
-        <result property="privateFacilities" column="private_facilities" />
-        <result property="services" column="services" />
-        <result property="languages" column="languages" />
-        <result property="etc" column="etc" />
-        <result property="description" column="description" />
-        <result property="genderLimit" column="gender_limit" />
-        <result property="type" column="type" />
-        <result property="contractMin" column="contract_min" />
-        <result property="ageMax" column="age_max" />
-        <result property="ageMin" column="age_min" />
-        <result property="facilityHeating" column="facility_heating" />
-        <result property="facilityCooling" column="facility_cooling" />
-        <result property="facilityLife" column="facility_life" />
-        <result property="facilitySecurity" column="facility_security" />
-        <result property="buildingType" column="building_type" />
-        <result property="canParking" column="can_parking" />
-        <result property="hasElevator" column="has_elevator" />
-        <result property="isSoldOut" column="is_sold_out" />
-
-        <!-- Room fields -->
-        <result property="roomId" column="room_id" />
-        <result property="userId" column="user_id" />
-        <result property="roomLat" column="room_lat" />
-        <result property="roomLong" column="room_long" />
-        <result property="thumbnail" column="thumbnail" />
-        <result property="canLoan" column="can_loan" />
-        <result property="updatedAt" column="updated_at" />
-        <result property="createdAt" column="created_at" />
-    </resultMap>
-
-
-
-
-    <!-- 위치를 기준으로 고시원을 찾는 쿼리 -->
-<!--    <select id="findGosiwonsByLocation" resultType="com.kb.room.dto.GosiwonRoomDTO">-->
-<!--        <![CDATA[-->
-<!--        SELECT *,-->
-<!--               (6371 * acos(cos(radians(#{lat}))-->
-<!--                                * cos(radians(room_lat))-->
-<!--                                * cos(radians(room_long) - radians(#{lng}))-->
-<!--                   + sin(radians(#{lat}))-->
-<!--                                * sin(radians(room_lat)))) AS distance-->
-<!--        FROM oneroom-->
-<!--        WHERE house_type_cd IN ('HOUTP00001', 'HOUTP00003')-->
-<!--    ]]>-->
-
-<!--        <if test="gender != null and gender != ''">-->
-<!--            <![CDATA[-->
-<!--        AND gender_cd = #{gender}-->
-<!--        ]]>-->
-<!--        </if>-->
-
-<!--        <if test="deposit != null and deposit != ''">-->
-<!--            <![CDATA[-->
-<!--        AND deposit_max <= #{deposit}-->
-<!--        ]]>-->
-<!--        </if>-->
-
-<!--        <if test="price != null and price != ''">-->
-<!--            <![CDATA[-->
-<!--        AND price_max <= #{price}-->
-<!--        ]]>-->
-<!--        </if>-->
-
-<!--        <if test="loanType != null and loanType != ''">-->
-<!--            <![CDATA[-->
-<!--        AND tags LIKE CONCAT('%', #{loanType}, '%')-->
-<!--        ]]>-->
-<!--        </if>-->
-
-<!--        <![CDATA[-->
-<!--        HAVING distance < 1-->
-<!--        ORDER BY distance;-->
-<!--    ]]>-->
-<!--    </select>-->
 
     <select id="findGosiwonsByLocation" resultType="com.kb.room.dto.GosiwonRoomDTO">
         <![CDATA[
@@ -145,11 +91,13 @@
     </select>
 
 
-    <select id="findOneGosiwon" resultMap="roomResultMap">
-        select *
-        from oneroom
-        where room_id = #{id}
+    <select id="findOneGosiwon" resultMap="gosiwonResultMap">
+        SELECT *
+        FROM GOSIWON g
+                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE g.ROOM_ID = #{id}
     </select>
+
 
     <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">
         INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)
@@ -168,44 +116,6 @@
         WHERE room_id = #{roomId} AND is_deleted = 'N'
     </select>
 
-    <!-- 고시원 resultMap 설정 -->
-    <resultMap id="gosiwonMap" type="com.kb.room.vo.Gosiwon">
-        <id property="gswId" column="gsw_id" />
-        <result property="category" column="category" />
-        <result property="title" column="title" />
-        <result property="postcode" column="postcode" />
-        <result property="address" column="address" />
-        <result property="detailAddress" column="detail_address" />
-        <result property="priceMin" column="price_min" />
-        <result property="priceMax" column="price_max" />
-        <result property="depositMin" column="deposit_min" />
-        <result property="depositMax" column="deposit_max" />
-        <result property="maintenanceFee" column="maintenance_fee" />
-        <result property="privateFacilities" column="private_facilities" />
-        <result property="services" column="services" />
-        <result property="languages" column="languages" />
-        <result property="etc" column="etc" />
-        <result property="desc" column="description" />
-        <result property="pics" column="pics" />
-        <result property="genderLimit" column="gender_limit" />
-        <result property="type" column="type" />
-        <result property="contractMin" column="contract_min" />
-        <result property="ageMax" column="age_max" />
-        <result property="ageMin" column="age_min" />
-        <result property="facilityHeating" column="facility_heating" />
-        <result property="facilityCooling" column="facility_cooling" />
-        <result property="facilityLife" column="facility_life" />
-        <result property="facilitySecurity" column="facility_security" />
-        <result property="buildingType" column="building_type" />
-        <result property="canParking" column="can_parking" />
-        <result property="hasElevator" column="has_elevator" />
-        <result property="isSoldOut" column="is_sold_out" />
-
-        <association property="room" javaType="com.kb.room.vo.RoomTemp">
-            <id property="roomId" column="room_id" />
-        </association>
-    </resultMap>
-
     <!--  부동산 데이터 조회  -->
     <select id="findOneByRoomId" resultType="com.kb.room.vo.Gosiwon" parameterType="long">
         <![CDATA[
@@ -214,14 +124,14 @@
     </select>
 
     <!--  모든 부동산 데이터 조회  -->
-    <select id="findAll" resultType="com.kb.room.vo.RoomTemp">
+    <select id="findAll" resultType="com.kb.room.vo.Room">
        <![CDATA[
             SELECT * FROM ROOM
         ]]>
     </select>
 
     <!--  부동산 작성  -->
-    <insert id="saveRoom" parameterType="com.kb.room.vo.RoomTemp" useGeneratedKeys="true" keyProperty="roomId">
+    <insert id="saveRoom" parameterType="com.kb.room.vo.Room" useGeneratedKeys="true" keyProperty="roomId">
         <![CDATA[
             INSERT INTO ROOM (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, CAN_LOAN, UPDATED_AT, CREATED_AT)
             VALUES (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{canLoan}, NOW(), NOW())
@@ -268,5 +178,16 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="calGosiwonStatus" parameterType="string" resultMap="GosiwonStatusResultMap">
+        SELECT
+            MAX(PRICE_MAX) AS maxPrice,
+            AVG(PRICE_MAX) AS avgPrice,
+            MIN(PRICE_MAX) AS minPrice
+        FROM
+            GOSIWON
+        WHERE
+            ADDRESS LIKE CONCAT('%', #{location}, '%');
+    </select>
 
 </mapper>
