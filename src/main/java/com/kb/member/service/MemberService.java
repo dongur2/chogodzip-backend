@@ -25,6 +25,7 @@ import java.util.Optional;
 @PropertySource({"classpath:/application.properties"})
 public class MemberService{
 
+    private final MemberMapper memberMapper;
     @Value("#{'${os_type}' == 'win' ? '${file_save_location_win}':'${file_save_location_other}'}")
     public String LOCATION;
 
@@ -136,4 +137,10 @@ public class MemberService{
         }
 
     }
+
+    public Long searchOneMember(String userName) {
+        return memberMapper.searchOneMember(userName);
+    }
+
+
 }

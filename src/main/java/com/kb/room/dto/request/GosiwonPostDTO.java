@@ -1,7 +1,7 @@
 package com.kb.room.dto.request;
 
 import com.kb.room.vo.Gosiwon;
-import com.kb.room.vo.RoomTemp;
+import com.kb.room.vo.Room;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,8 +19,8 @@ public class GosiwonPostDTO {
   
 
     //DTO => RoomVO
-    public RoomTemp toRoomVO(Long userId) {
-        return RoomTemp.builder()
+    public Room toRoomVO(Long userId) {
+        return Room.builder()
                 .userId(userId)
                 .roomLat(new BigDecimal(basicInfo.getAddr().get("roomLat").toString()))
                 .roomLong(new BigDecimal(basicInfo.getAddr().get("roomLong").toString()))
@@ -31,7 +31,7 @@ public class GosiwonPostDTO {
     }
 
     //DTO => GosiwonVO
-    public Gosiwon toGosiwonVO(RoomTemp room) {
+    public Gosiwon toGosiwonVO(Room room) {
         return Gosiwon.builder()
                 .room(room)
                 .category(category)

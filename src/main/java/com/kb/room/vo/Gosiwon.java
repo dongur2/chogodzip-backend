@@ -6,7 +6,7 @@ import lombok.*;
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Gosiwon {
-    private RoomTemp room;
+    private Room room;
     private String category;
 
     private Long gswId;
