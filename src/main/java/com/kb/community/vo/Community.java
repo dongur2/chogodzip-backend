@@ -1,6 +1,5 @@
 package com.kb.community.vo;
 
-import com.kb.member.dto.Member;
 import lombok.*;
 
 import java.util.Date;

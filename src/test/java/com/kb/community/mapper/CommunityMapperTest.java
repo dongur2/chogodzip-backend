@@ -32,9 +32,11 @@ class CommunityMapperTest {
                 .mNo(24L)
                 .title("[MAPPER TEST] 커뮤니티 제목 6")
                 .content("[MAPPER TEST] 커뮤니티 본문")
-                .tag("RE") //부동산
+                .tag("CTRV") //부동산
                 .build();
         mapper.save(vo);
+
+        Assertions.assertThat(vo.getCommunityId()).isNotNull();
     }
 
     @Test

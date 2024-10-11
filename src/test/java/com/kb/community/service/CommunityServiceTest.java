@@ -31,14 +31,14 @@ class CommunityServiceTest {
     @DisplayName("커뮤니티 글 작성")
     void add() {
         CommunityPostDTO dto = CommunityPostDTO.builder()
-                .mNo(16L)
+                .memberId("test1234")
                 .title("[SERVICE TEST] 커뮤니티 제목 2")
                 .content("[SERVICE TEST] 커뮤니티 본문 2")
-                .tag("RE")
+                .tag("CTRV")
                 .build();
 
         Long added = service.add(dto);
-        Assertions.assertThat(added).isEqualTo(8L);
+        Assertions.assertThat(added).isEqualTo(9L);
     }
 
     @Test

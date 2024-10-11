@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 public class CommunityPostDTO {
     private Long mNo;
+    private String memberId;
     private String title;
     private String content;
     private String tag;
