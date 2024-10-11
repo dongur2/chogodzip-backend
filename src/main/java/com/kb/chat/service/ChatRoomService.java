@@ -33,4 +33,8 @@ public class ChatRoomService {
         }
         return chatRoom;
     }
+
+    public void deleteChatRoom(Long chatRoomId) {
+        chatRoomMapper.deleteChatRoom(chatRoomId);
+    }
 }
