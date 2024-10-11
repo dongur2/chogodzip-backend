@@ -21,8 +21,8 @@ public class CommunityDetailDTO {
     public static CommunityDetailDTO from(Community community) {
         return CommunityDetailDTO.builder()
                 .communityId(community.getCommunityId())
-                .mNo(community.getMember().getMno())
-                .nickname(community.getMember().getName())
+                .mNo(community.getMNo())
+                .nickname(community.getMemberName())
                 .title(community.getTitle())
                 .content(community.getContent())
                 .tag(community.getTag())

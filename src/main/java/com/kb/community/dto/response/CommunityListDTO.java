@@ -22,8 +22,8 @@ public class CommunityListDTO {
                 .communityId(community.getCommunityId())
                 .tag(community.getTag())
                 .title(community.getTitle())
-                .mNo(community.getMember().getMno())
-                .nickname(community.getMember().getName())
+                .mNo(community.getMNo())
+                .nickname(community.getMemberName())
                 .createdAt(community.getCreatedAt())
                 .views(community.getViews())
                 .build();

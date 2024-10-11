@@ -31,7 +31,7 @@ class CommunityServiceTest {
     @DisplayName("커뮤니티 글 작성")
     void add() {
         CommunityPostDTO dto = CommunityPostDTO.builder()
-                .userId(3L)
+                .mNo(3L)
                 .title("[서비스 테스트] 커뮤니티 제목")
                 .content("[서비스 테스트] 커뮤니티 본문")
                 .tag("realEstate")

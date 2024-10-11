@@ -5,7 +5,6 @@ import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.mapper.CommunityMapper;
 import com.kb.community.vo.Community;
-import com.kb.member.mapper.MemberMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -21,7 +20,6 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class CommunityServiceI implements CommunityService {
     @Autowired private CommunityMapper communityMapper;
-    @Autowired private MemberMapper memberMapper;
 
     //커뮤니티 모든 글 조회
     @Override
@@ -39,7 +37,6 @@ public class CommunityServiceI implements CommunityService {
     @Override @Transactional
     public Long add(CommunityPostDTO dto) {
         Community vo = dto.toVO();
-        vo.setMember(memberMapper.selectByNo(dto.getMNo()));
         communityMapper.save(vo);
         return vo.getCommunityId();
     }
