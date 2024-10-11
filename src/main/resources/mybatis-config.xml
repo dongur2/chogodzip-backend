@@ -12,4 +12,8 @@
         <package name="com.kb.**.dto" />
     </typeAliases>
 
+    <mappers>
+        <mapper resource="com/kb/review.mapper/ReviewMapper.xml"/>
+    </mappers>
+
 </configuration>
