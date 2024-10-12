@@ -55,8 +55,8 @@
 
     <!--  커뮤니티 글 작성: 회원 아이디 포함해 저장 완료 - 저장 후 해당 글ID 리턴 -->
     <insert id="save" parameterType="com.kb.community.vo.Community" useGeneratedKeys="true" keyProperty="communityId">
-        INSERT INTO COMMUNITY (M_NO, TITLE, CONTENT, TAG, IS_DELETED, UPDATED_AT, CREATED_AT, VIEWS)
-        VALUES (#{mNo}, #{title}, #{content}, #{tag}, false, now(), now(), 0)
+        INSERT INTO COMMUNITY (M_NO, TITLE, CONTENT, TAG, PICS, IS_DELETED, UPDATED_AT, CREATED_AT, VIEWS)
+        VALUES (#{mNo}, #{title}, #{content}, #{tag}, #{pics}, false, now(), now(), 0)
 
         <selectKey keyProperty="communityId" resultType="long" order="AFTER">
             SELECT LAST_INSERT_ID()

@@ -13,6 +13,7 @@ public class Community {
     private String title;
     private String content;
     private String tag;
+    private String pics;
 
     private Date createdAt;
     private Date updatedAt;

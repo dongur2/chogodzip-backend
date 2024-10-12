@@ -11,6 +11,7 @@ public class CommunityPostDTO {
     private String title;
     private String content;
     private String tag;
+    private String pics;
 
 
     //DTO => VO
@@ -20,6 +21,7 @@ public class CommunityPostDTO {
                 .title(title)
                 .content(content)
                 .tag(tag)
+                .pics(pics)
                 .build();
     }
 }
