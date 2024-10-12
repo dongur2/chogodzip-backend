@@ -12,7 +12,6 @@
         <result property="category" column="CATEGORY" />
         <result property="title" column="TITLE" />
         <result property="postcode" column="POSTCODE" />
-        <result property="address" column="ADDRESS" />
         <result property="detailAddress" column="DETAIL_ADDRESS" />
         <result property="priceMin" column="PRICE_MIN" />
         <result property="priceMax" column="PRICE_MAX" />
@@ -52,6 +51,7 @@
             <result property="roomLat" column="ROOM_LAT" />
             <result property="roomLong" column="ROOM_LONG" />
             <result property="thumbnail" column="THUMBNAIL" />
+            <result property="address" column="ADDRESS" />
             <result property="canLoan" column="CAN_LOAN" jdbcType="BIT" />
             <result property="createdAt" column="CREATED_AT" jdbcType="TIMESTAMP" />
             <result property="updatedAt" column="UPDATED_AT" jdbcType="TIMESTAMP" />
@@ -85,7 +85,7 @@
             FROM GOSIWON g
                      JOIN ROOM r ON g.room_id = r.room_id
             WHERE 1 = 1
-            HAVING distance < 100
+            HAVING distance < 2
             ORDER BY distance;
             ]]>
     </select>
@@ -181,13 +181,16 @@
 
     <select id="calGosiwonStatus" parameterType="string" resultMap="GosiwonStatusResultMap">
         SELECT
-            MAX(PRICE_MAX) AS maxPrice,
-            AVG(PRICE_MAX) AS avgPrice,
-            MIN(PRICE_MAX) AS minPrice
+            MAX(g.PRICE_MAX) AS maxPrice,
+            AVG(g.PRICE_MAX) AS avgPrice,
+            MIN(g.PRICE_MAX) AS minPrice
         FROM
-            GOSIWON
+            GOSIWON g
+                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
         WHERE
-            ADDRESS LIKE CONCAT('%', #{location}, '%');
+            r.ADDRESS IS NOT NULL
+          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');
+
     </select>
 
 </mapper>

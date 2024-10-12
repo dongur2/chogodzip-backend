@@ -13,6 +13,7 @@ public class Room {
     private BigDecimal roomLat;
     private BigDecimal roomLong;
     private String thumbnail;
+    private String address;
     private Boolean canLoan;
     private Date createdAt;
     private Date updatedAt;
