@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InterestController {
 
     private final InterestService interestService;
-    private final MemberService memberService;
+    private final MemberService memberService;//멤버 조회
 
     @GetMapping("")
     public ResponseEntity<List<InterestRoom>> getInterestRooms(String userName) {
