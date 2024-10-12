@@ -29,7 +29,7 @@ public class GosiwonRoomDTO {
     private String etc;
     private String description;
     private String genderLimit;
-    private Integer type;
+    private String type;
     private boolean contractMin;
     private Integer ageMax;
     private Integer ageMin;

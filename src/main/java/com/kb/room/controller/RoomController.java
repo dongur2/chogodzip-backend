@@ -38,7 +38,6 @@ public class RoomController {
     @GetMapping("/gosiwon")
     public ResponseEntity<List<GosiwonRoomDTO>> getAllGosiwons(RoomParam roomParam) {
         List<GosiwonRoomDTO> rooms = roomService.getAllGosiwons(roomParam);
-
         return ResponseEntity.ok(rooms);
     }
 

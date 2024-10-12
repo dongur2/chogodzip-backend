@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kb.room.mapper.RoomMapper">
-
     <resultMap id="gosiwonResultMap" type="com.kb.room.vo.Gosiwon">
         <id property="gswId" column="GSW_ID" />
 
@@ -24,9 +23,9 @@
         <result property="etc" column="ETC" />
         <result property="desc" column="DESCRIPTION" />
         <result property="pics" column="PICS" />
-        <result property="genderLimit" column="GENDER_LIMIT" jdbcType="INTEGER" />
-        <result property="type" column="TYPE" jdbcType="INTEGER" />
-        <result property="contractMin" column="CONTRACT_MIN" jdbcType="INTEGER" />
+        <result property="genderLimit" column="GENDER_LIMIT" />
+        <result property="type" column="TYPE" />
+        <result property="contractMin" column="CONTRACT_MIN" />
         <result property="ageMax" column="AGE_MAX" />
         <result property="ageMin" column="AGE_MIN" />
 
@@ -37,14 +36,14 @@
         <result property="facilitySecurity" column="FACILITY_SECURITY" />
 
         <!-- BUILDING INFO -->
-        <result property="buildingType" column="BUILDING_TYPE" jdbcType="INTEGER" />
-        <result property="canParking" column="CAN_PARKING" jdbcType="INTEGER" />
-        <result property="hasElevator" column="HAS_ELEVATOR" jdbcType="INTEGER" />
+        <result property="buildingType" column="BUILDING_TYPE" />
+        <result property="canParking" column="CAN_PARKING" />
+        <result property="hasElevator" column="HAS_ELEVATOR" />
 
         <!-- SOLD OUT -->
-        <result property="isSoldOut" column="IS_SOLD_OUT" jdbcType="BIT" />
+        <result property="isSoldOut" column="IS_SOLD_OUT" />
 
-        <!-- Room Association: comes after the result fields -->
+        <!-- Room Association -->
         <association property="room" javaType="com.kb.room.vo.Room">
             <id property="roomId" column="ROOM_ID" />
             <result property="userId" column="USER_ID" />
@@ -52,11 +51,12 @@
             <result property="roomLong" column="ROOM_LONG" />
             <result property="thumbnail" column="THUMBNAIL" />
             <result property="address" column="ADDRESS" />
-            <result property="canLoan" column="CAN_LOAN" jdbcType="BIT" />
-            <result property="createdAt" column="CREATED_AT" jdbcType="TIMESTAMP" />
-            <result property="updatedAt" column="UPDATED_AT" jdbcType="TIMESTAMP" />
+            <result property="canLoan" column="CAN_LOAN" />
+            <result property="createdAt" column="CREATED_AT" />
+            <result property="updatedAt" column="UPDATED_AT" />
         </association>
     </resultMap>
+
 
     <resultMap id="GosiwonStatusResultMap" type="com.kb.room.vo.GosiwonStatus">
         <result property="maxPrice" column="maxPrice" />
@@ -101,7 +101,7 @@
 
     <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">
         INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)
-        VALUES (#{roomId}, #{userId}, #{reviewContent}, NOW(), #{isDeleted})
+        VALUES (#{roomId}, #{userId}, #{reply}, NOW(), 'N')
     </insert>
 
     <select id="findFavoriteCnt" resultType="int">

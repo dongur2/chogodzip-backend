@@ -5,6 +5,7 @@ import com.kb.member.dto.ChangePasswordDTO;
 import com.kb.member.dto.Member;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface MemberMapper {
     List<Member> selectMemberAll();
@@ -18,5 +19,5 @@ public interface MemberMapper {
     int insertAuth(Auth auth);
     int deleteAuth(Auth auth);
 
-    Long searchOneMember(String userName);
+    Long searchOneMember(@Param("userName") String userName);
 }
