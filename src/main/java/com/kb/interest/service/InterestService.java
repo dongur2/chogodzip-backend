@@ -41,4 +41,14 @@ public class InterestService {
         }
         return 0;
     }
+
+    public int isFavoriteRoom(Long userId, Long roomId) {
+        InterestRoom result = interestMapper.isFavoriteRoom(userId, roomId);
+        if(result != null) {
+            return 1;
+        }
+        return 0;
+    }
+
+
 }

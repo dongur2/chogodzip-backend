@@ -20,6 +20,7 @@ import java.util.List;
 @Api(value = "RoomTempController", tags = "매물 정보")
 @PropertySource({"classpath:/application.properties"})
 public class RoomTempController {
+
     private final RoomTempService service;
 
     //[TEST] 모든 부동산 목록 가져오기

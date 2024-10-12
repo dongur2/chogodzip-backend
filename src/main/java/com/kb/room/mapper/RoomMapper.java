@@ -33,4 +33,6 @@ public interface RoomMapper {
     Long saveRoomWithLoan(RoomWithLoan roomWithLoan); //매물 & 대출 연결
 
     GosiwonStatus calGosiwonStatus(String location);
+
+    int insertReply(@Param("userId")Long userId, @Param("roomId")Long roomId, @Param("reply") String reply);
 }
