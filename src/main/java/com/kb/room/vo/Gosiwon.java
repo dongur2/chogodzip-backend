@@ -14,7 +14,6 @@ public class Gosiwon {
     //BASIC INFO ----
     private String title;
     private String postcode;
-    private String address;
     private String detailAddress;
     private Integer priceMin;
     private Integer priceMax;
