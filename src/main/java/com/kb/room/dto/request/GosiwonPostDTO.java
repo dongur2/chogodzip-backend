@@ -37,7 +37,6 @@ public class GosiwonPostDTO {
                 .category(category)
                 .title(basicInfo.getTitle())
                 .postcode(basicInfo.getAddr().get("postcode").toString())
-                .address(basicInfo.getAddr().get("address").toString())
                 .detailAddress(basicInfo.getAddr().get("detailAddress").toString())
                 .priceMin(Integer.parseInt(basicInfo.getPrice().get("priceMin").toString()))
                 .priceMax(Integer.parseInt(basicInfo.getPrice().get("priceMax").toString()))
