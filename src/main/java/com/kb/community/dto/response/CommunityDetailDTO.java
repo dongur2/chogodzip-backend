@@ -10,6 +10,7 @@ import java.util.Date;
 public class CommunityDetailDTO {
     private Long communityId;
     private Long mNo; //member
+    private String memberId; //member
     private String nickname; //member
     private String title;
     private String content;
@@ -22,6 +23,7 @@ public class CommunityDetailDTO {
         return CommunityDetailDTO.builder()
                 .communityId(community.getCommunityId())
                 .mNo(community.getMNo())
+                .memberId(community.getMemberId())
                 .nickname(community.getMemberName())
                 .title(community.getTitle())
                 .content(community.getContent())
