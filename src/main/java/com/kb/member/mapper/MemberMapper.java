@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface MemberMapper {
     List<Member> selectMemberAll();
+    Member selectByNo(Long no);
     Member selectById(String id);
     Member selectBykakaoId(String kakaoId);
     int insertMember(Member member);
