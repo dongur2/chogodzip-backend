@@ -2,35 +2,56 @@ package com.kb.chat.service;
 
 import com.kb.chat.dto.ChatRoom;
 import com.kb.chat.mapper.ChatRoomMapper;
+import com.kb.member.dto.Member;
+import com.kb.member.mapper.MemberMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-
 @Service
+@NoArgsConstructor @AllArgsConstructor
 public class ChatRoomService {
 
-    private final ChatRoomMapper chatRoomMapper;
+    @Autowired
+    private ChatRoomMapper chatRoomMapper;
 
-    public ChatRoomService(ChatRoomMapper chatRoomMapper) {
-        this.chatRoomMapper = chatRoomMapper;
-    }
+    @Autowired
+    private MemberMapper memberMapper;
 
-    public ChatRoom findOrCreateChatRoom(Long roomId, Long senderId, Long receiverId){
+    public ChatRoom findOrCreateChatRoom(Long roomId, Long senderId, Long receiverId) {
+        Member sender = memberMapper.selectByNo(senderId);
+        if (sender == null) {
+            throw new IllegalArgumentException("Invalid senderId: " + senderId);
+        }
+        Long senderMno = sender.getMno();
+
+        Member receiver = memberMapper.selectByNo(receiverId);
+        if (receiver == null) {
+            throw new IllegalArgumentException("Invalid receiverId: " + receiverId);
+        }
+        Long receiverMno = receiver.getMno();
 
         Map<String, Object> map = new HashMap<>();
         map.put("roomId", roomId);
-        map.put("senderId", senderId);
-        map.put("receiverId", receiverId);
+        map.put("senderId", senderMno);
+        map.put("receiverId", receiverMno);
 
         ChatRoom chatRoom = chatRoomMapper.findChatRoom(map);
-        if(chatRoom == null){
+        if (chatRoom == null) {
             chatRoom = new ChatRoom();
             chatRoom.setRoomId(roomId);
-            chatRoom.setSenderId(senderId);
-            chatRoom.setReceiverId(receiverId);
+            chatRoom.setSenderId(senderMno);
+            chatRoom.setReceiverId(receiverMno);
             chatRoomMapper.insertChatRoom(chatRoom);
         }
         return chatRoom;
+    }
+
+
+    public void deleteChatRoom(Long chatRoomId) {
+        chatRoomMapper.deleteChatRoom(chatRoomId);
     }
 }

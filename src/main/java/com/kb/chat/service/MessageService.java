@@ -4,7 +4,9 @@ import com.kb.chat.dto.Message;
 import com.kb.chat.mapper.MessageMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MessageService {
@@ -25,5 +27,16 @@ public class MessageService {
         message.setContent(content);
         message.setReadStatus(false);
         messageMapper.insertMessage(message);
+    }
+
+    public int getUnreadMessageCount(Long chatroomId, Long senderId) {
+        return messageMapper.countUnreadMessages(chatroomId, senderId);
+    }
+
+    public void markMessagesAsRead(Long chatRoomId, Long senderId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chatRoomId", chatRoomId);
+        params.put("senderId", senderId);
+        messageMapper.updateReadStatus(params);
     }
 }
