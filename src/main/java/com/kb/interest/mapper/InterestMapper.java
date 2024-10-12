@@ -11,4 +11,7 @@ public interface InterestMapper {
     int addInterestRoom(@Param("userId") Long userId, @Param("roomId") Long roomId);
 
     int deleteInterestRoom(@Param("userId") Long userId, @Param("roomId") Long roomId);
+
+    InterestRoom isFavoriteRoom(@Param("userId") Long userId,  @Param("roomId")Long roomId);
+
 }

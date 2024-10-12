@@ -114,4 +114,6 @@ public class MemberController {
     public ResponseEntity<Member> delete(@PathVariable String id) {
         return ResponseEntity.ok(service.delete(id));
     }
+
+
 }

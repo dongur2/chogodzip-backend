@@ -1,6 +1,7 @@
 package com.kb.room.controller;
 
 import com.kb.member.dto.Member;
+import com.kb.member.service.MemberService;
 import com.kb.room.dto.UserReview;
 import com.kb.room.service.RoomService;
 import com.kb.room.vo.Gosiwon;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DetailController {
 
     private final RoomService roomService;
+    private final MemberService memberService;
 
     @GetMapping("/gosiwons/{id}")
     private ResponseEntity<Gosiwon> detailGosiwons(@PathVariable Long id) {
@@ -37,21 +39,11 @@ public class DetailController {
         return ResponseEntity.ok(getRoom);
     }
 
-    @PostMapping("/reply/{roomId}")
-    private ResponseEntity<UserReview> registReivew(@PathVariable Long roomId,
-                                                    @AuthenticationPrincipal Member member,
-                                                    @RequestParam String reviewContent) {
-
-        UserReview review = UserReview.builder()
-                .roomId(roomId)
-                .userId(member.getMno()) // Assuming `member.getMno()` returns the user's ID.
-                .reviewContent(reviewContent)
-                .createdAt(new Date()) // Automatically set the current date.
-                .isDeleted("F") // Default to "F" (false) meaning the review is not deleted.
-                .build();
-
-        // Save the review through the service layer
-        return ResponseEntity.ok(roomService.registReply(review));
+    @PostMapping("/regist")
+    public ResponseEntity<Integer> detailRegist(String userName, Long roomId, String reply) {
+        Long userId = memberService.searchOneMember(userName);
+        int result = roomService.registReply(userId, roomId, reply);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/review/{roomId}")
@@ -69,6 +61,7 @@ public class DetailController {
         System.out.println(location+" dfadfasdfasdf " + result);
         return ResponseEntity.ok(result);
     }
+
 
 
 }

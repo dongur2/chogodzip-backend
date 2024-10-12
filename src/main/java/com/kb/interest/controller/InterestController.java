@@ -35,11 +35,26 @@ public class InterestController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/isFavorite")
+    public ResponseEntity<Integer> getInterestRoomsFavorite(String userName, Long roomId) {
+        Long userId = memberService.searchOneMember(userName);
+        int result = interestService.isFavoriteRoom(userId,roomId);
+
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Integer> addInterestRoom(String userName, Long roomId) {
         Long userId = memberService.searchOneMember(userName);
         int interestRoom = interestService.addInterestRoom(userId, roomId);
         return ResponseEntity.ok(interestRoom);
+    }
+
+    @GetMapping("/isOwn")
+    public ResponseEntity<Long> getIsOwn(String userName) {
+        Long userId = memberService.searchOneMember(userName);
+
+        return ResponseEntity.ok(userId);
     }
 
     @DeleteMapping("/delete")

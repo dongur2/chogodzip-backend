@@ -20,4 +20,10 @@
         DELETE FROM INTEREST_ROOM
         WHERE user_Id = #{userId} AND room_Id = #{roomId}
     </delete>
+
+    <select id="isFavoriteRoom" resultType="com.kb.interest.dto.InterestRoom">
+        select *
+        from INTEREST_ROOM
+        where user_Id = #{userId} And room_id = #{roomId}
+    </select>
 </mapper>
