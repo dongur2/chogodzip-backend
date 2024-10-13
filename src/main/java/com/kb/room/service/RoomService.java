@@ -6,6 +6,8 @@ import com.kb.room.dto.RoomParam;
 import com.kb.room.mapper.RoomMapper;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.GosiwonStatus;
+import com.kb.room.vo.Jachi;
+import com.kb.room.vo.ShareHouse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -52,5 +54,14 @@ public class RoomService {
 
     public GosiwonStatus calStatus(String location) {
         return roomMapper.calGosiwonStatus(location);
+    }
+
+    public List<Jachi> getAllJachis(RoomParam roomParam) {
+        return roomMapper.findJachiByLocation(roomParam);
+    }
+
+    public List<ShareHouse> getAllShareHouse(RoomParam roomParam) {
+
+        return roomMapper.findShareHouseByLocation(roomParam);
     }
 }

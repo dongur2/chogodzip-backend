@@ -30,11 +30,17 @@ public class ChatController {
         return ResponseEntity.ok(chatRoom);
     }
 
-    // 특정 채팅방의 모든 메시지 조회
+    // 메시지 조회
     @GetMapping("/messages")
     public ResponseEntity<List<Message>> getMessages(@RequestParam Long chatRoomId) {
         List<Message> messages = messageService.getMessagesByChatRoom(chatRoomId);
         return ResponseEntity.ok(messages);
+    }
+
+    @PostMapping("/messages/mark-read")
+    public ResponseEntity<Void> markMessagesAsRead(@RequestParam Long chatRoomId, @RequestParam Long senderId) {
+        messageService.markMessagesAsRead(chatRoomId, senderId);
+        return ResponseEntity.ok().build();
     }
 
     // 메시지 전송
@@ -42,6 +48,18 @@ public class ChatController {
     public ResponseEntity<Void> sendMessage(@RequestBody MessageDto messageDto) {
         messageService.sendMessage(messageDto.getChatroomId(), messageDto.getSenderId(), messageDto.getContent());
         return ResponseEntity.ok().build();
+    }
+
+    // 채팅방 삭제
+    @DeleteMapping("/room/{chatRoomId}")
+    public ResponseEntity<Void> deleteChatRoom(@PathVariable Long chatRoomId) {
+        chatRoomService.deleteChatRoom(chatRoomId);
+        return ResponseEntity.ok().build();
+    }
+    // 특정 채팅방에서 수신자가 읽지 않은 메시지 수 조회
+    @GetMapping("/messages/unread-count")
+    public int countUnreadMessages(@RequestParam Long chatroomId, @RequestParam Long senderId) {
+        return messageService.getUnreadMessageCount(chatroomId, senderId);
     }
 }
 

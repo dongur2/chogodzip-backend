@@ -14,6 +14,9 @@ public class Room {
     private BigDecimal roomLong;
     private String thumbnail;
     private String address;
+    private String houseTypeCd;
+    private String houseTypeNm;
+    private String dongLiNm;
     private Boolean canLoan;
     private Date createdAt;
     private Date updatedAt;

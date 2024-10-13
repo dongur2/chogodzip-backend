@@ -12,4 +12,18 @@
         INSERT INTO MESSAGE (chatroom_id, sender_id, content, send_time, read_status)
         VALUES (#{chatroomId}, #{senderId}, #{content}, CURRENT_TIMESTAMP, #{readStatus})
     </insert>
+
+    <!-- 채팅방에서 특정 수신자가 읽지 않은 메시지 개수 조회 -->
+    <select id="countUnreadMessages" resultType="int">
+        SELECT COUNT(*)
+        FROM MESSAGE
+        WHERE chatroom_id = #{chatroomId}
+          AND sender_id = #{senderId}
+          AND read_status = false
+    </select>
+
+    <update id="updateReadStatus" parameterType="map">
+        UPDATE MESSAGE SET read_status = true
+        WHERE chatroom_id = #{chatRoomId} AND sender_id = #{senderId} AND read_status = false
+    </update>
 </mapper>

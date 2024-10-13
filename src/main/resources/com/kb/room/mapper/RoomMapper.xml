@@ -57,6 +57,113 @@
         </association>
     </resultMap>
 
+    <resultMap id="JachiResultMap" type="com.kb.room.vo.Jachi">
+        <id property="jachiId" column="JACHI_ID"/>
+        <result property="priceMin" column="PRICE_MIN"/>
+        <result property="priceMax" column="PRICE_MAX"/>
+        <result property="depositMin" column="DEPOSIT_MIN"/>
+        <result property="depositMax" column="DEPOSIT_MAX"/>
+        <result property="maintenanceFee" column="MAINTENANCE_FEE"/>
+        <result property="floor" column="FLOOR"/>
+        <result property="name" column="NAME"/>
+        <result property="roomType" column="ROOM_TYPE"/>
+        <result property="type" column="TYPE"/>
+        <result property="roomSize" column="ROOM_SIZE"/>
+        <result property="realSize" column="REAL_SIZE"/>
+        <result property="rentType" column="RENT_TYPE"/>
+        <result property="roomCnt" column="ROOM_CNT"/>
+        <result property="toiletCnt" column="TOILET_CNT"/>
+        <result property="sunDir" column="SUN_DIR"/>
+        <result property="avaMovinDate" column="AVA_MOVIN_DATE"/>
+        <result property="avaMovinDir" column="AVA_MOVIN_DIR"/>
+        <result property="parkAvail" column="PARK_AVAIL"/>
+        <result property="loanId" column="LOAN_ID"/>
+        <result property="facilityHeating" column="FACILITY_HEATING"/>
+        <result property="facilityCooling" column="FACILITY_COOLING"/>
+        <result property="facilityLife" column="FACILITY_LIFE"/>
+        <result property="facilitySecurity" column="FACILITY_SECURITY"/>
+        <result property="durationMin" column="DURATION_MIN"/>
+        <result property="buildingType" column="BUILDING_TYPE"/>
+        <result property="canParking" column="CAN_PARKING"/>
+        <result property="hasElevator" column="HAS_ELEVATOR"/>
+        <result property="approveDate" column="APPROVE_DATE"/>
+        <result property="isSoldOut" column="IS_SOLD_OUT"/>
+
+        <!-- Association for Room -->
+        <association property="room" javaType="com.kb.room.vo.Room">
+            <id property="roomId" column="ROOM_ID"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="roomLat" column="ROOM_LAT"/>
+            <result property="roomLong" column="ROOM_LONG"/>
+            <result property="thumbnail" column="THUMBNAIL"/>
+            <result property="address" column="ADDRESS"/>
+            <result property="houseTypeCd" column="HOUSE_TYPE_CD"/>
+            <result property="houseTypeNm" column="HOUSE_TYPE_NM"/>
+            <result property="dongLiNm" column="DONG_LI_NM"/>
+            <result property="canLoan" column="CAN_LOAN"/>
+            <result property="createdAt" column="CREATED_AT"/>
+            <result property="updatedAt" column="UPDATED_AT"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="ShareHouseResultMap" type="com.kb.room.vo.ShareHouse">
+        <!-- ShareHouse primary key -->
+        <id property="shareHouseId" column="SHAREHOUSE_ID"/>
+
+        <!-- Price and deposit information -->
+        <result property="priceMin" column="PRICE_MIN"/>
+        <result property="priceMax" column="PRICE_MAX"/>
+        <result property="depositMin" column="DEPOSIT_MIN"/>
+        <result property="depositMax" column="DEPOSIT_MAX"/>
+        <result property="maintenanceFee" column="MAINTENANCE_FEE"/>
+
+        <!-- Room information -->
+        <result property="genderLimit" column="GENDER_LIMIT"/>
+        <result property="type" column="TYPE"/>
+        <result property="contractMin" column="CONTRACT_MIN"/>
+        <result property="ageMax" column="AGE_MAX"/>
+        <result property="ageMin" column="AGE_MIN"/>
+        <result property="roomCnt" column="ROOM_CNT"/>
+        <result property="accomoCnt" column="ACCOMO_CNT"/>
+
+        <!-- Facilities -->
+        <result property="privateFacilities" column="PRIVATE_FACILITIES"/>
+        <result property="services" column="SERVICES"/>
+        <result property="languages" column="LANGUAGES"/>
+        <result property="etc" column="ETC"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="facilityHeating" column="FACILITY_HEATING"/>
+        <result property="facilityCooling" column="FACILITY_COOLING"/>
+        <result property="facilityLife" column="FACILITY_LIFE"/>
+        <result property="facilitySecurity" column="FACILITY_SECURITY"/>
+
+        <!-- Building information -->
+        <result property="buildingType" column="BUILDING_TYPE"/>
+        <result property="canParking" column="CAN_PARKING"/>
+        <result property="hasElevator" column="HAS_ELEVATOR"/>
+
+        <!-- Sale status -->
+        <result property="isSoldOut" column="IS_SOLD_OUT"/>
+
+        <!-- Room association -->
+        <association property="room" javaType="com.kb.room.vo.Room">
+            <id property="roomId" column="ROOM_ID"/>
+            <result property="userId" column="USER_ID"/>
+            <result property="roomLat" column="ROOM_LAT"/>
+            <result property="roomLong" column="ROOM_LONG"/>
+            <result property="thumbnail" column="THUMBNAIL"/>
+            <result property="address" column="ADDRESS"/>
+            <result property="houseTypeCd" column="HOUSE_TYPE_CD"/>
+            <result property="houseTypeNm" column="HOUSE_TYPE_NM"/>
+            <result property="dongLiNm" column="DONG_LI_NM"/>
+            <result property="canLoan" column="CAN_LOAN"/>
+            <result property="createdAt" column="CREATED_AT"/>
+            <result property="updatedAt" column="UPDATED_AT"/>
+        </association>
+    </resultMap>
+
+
+
 
     <resultMap id="GosiwonStatusResultMap" type="com.kb.room.vo.GosiwonStatus">
         <result property="maxPrice" column="maxPrice" />
@@ -88,6 +195,38 @@
             HAVING distance < 2
             ORDER BY distance;
             ]]>
+    </select>
+
+    <select id="findJachiByLocation" resultMap="JachiResultMap">
+        <![CDATA[
+        SELECT g.*, r.*,
+               (6371 * acos(cos(radians(#{lat}))
+                                * cos(radians(r.room_lat))
+                                * cos(radians(r.room_long) - radians(#{lng}))
+                   + sin(radians(#{lat}))
+                                * sin(radians(r.room_lat)))) AS distance
+        FROM JACHI g
+                 JOIN ROOM r ON g.room_id = r.room_id
+        WHERE 1 = 1
+        HAVING distance < 1
+        ORDER BY distance;
+        ]]>
+    </select>
+
+    <select id="findShareHouseByLocation" resultMap="ShareHouseResultMap">
+        <![CDATA[
+        SELECT g.*, r.*,
+               (6371 * acos(cos(radians(#{lat}))
+                                * cos(radians(r.room_lat))
+                                * cos(radians(r.room_long) - radians(#{lng}))
+                   + sin(radians(#{lat}))
+                                * sin(radians(r.room_lat)))) AS distance
+        FROM SHAREHOUSE g
+                 JOIN ROOM r ON g.room_id = r.room_id
+        WHERE 1 = 1
+        HAVING distance < 2
+        ORDER BY distance;
+        ]]>
     </select>
 
 

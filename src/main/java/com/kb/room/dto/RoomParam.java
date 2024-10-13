@@ -10,11 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class RoomParam {
-    String loanType;
-    String roomType;
-    String deposit;
-    String price;
-    String gender;
     String lat;
     String lng;
 }
