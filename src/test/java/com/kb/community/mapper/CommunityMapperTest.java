@@ -63,4 +63,27 @@ class CommunityMapperTest {
         Community vo = mapper.findById(2L);
         Assertions.assertThat(vo.getIsDeleted()).isTrue();
     }
+
+    @Test
+    @DisplayName("커뮤니티 글 수정")
+    void update() {
+        Community vo = Community.builder()
+                .mNo(24L)
+                .title("[MAPPER TEST] 커뮤니티 제목 (수정 전)")
+                .content("[MAPPER TEST] 커뮤니티 본문 (수정 전)")
+                .tag("CTRV")
+                .build();
+        mapper.save(vo); //저장
+
+        vo.setTitle("[MAPPER TEST] 커뮤니티 제목 (수정 후)");
+        vo.setContent("[MAPPER TEST] 커뮤니티 본문 (수정 후)");
+        vo.setTag("ITRV");
+
+        mapper.update(vo); //업데이트
+
+        Community updated = mapper.findById(vo.getCommunityId());
+        Assertions.assertThat(updated.getTitle()).isEqualTo("[MAPPER TEST] 커뮤니티 제목 (수정 후)");
+        Assertions.assertThat(updated.getContent()).isEqualTo("[MAPPER TEST] 커뮤니티 본문 (수정 후)");
+        Assertions.assertThat(updated.getTag()).isEqualTo("ITRV");
+    }
 }

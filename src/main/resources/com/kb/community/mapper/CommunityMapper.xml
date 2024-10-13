@@ -69,4 +69,11 @@
         UPDATE COMMUNITY SET IS_DELETED = 1 WHERE COMMUNITY_ID = #{communityId}
     </update>
 
+    <!--  커뮤니티 글 수정  -->
+    <update id="update" parameterType="com.kb.community.vo.Community">
+        UPDATE COMMUNITY
+        SET TITLE = #{title}, CONTENT = #{content}, TAG = #{tag}, PICS = #{pics}, UPDATED_AT = now()
+        WHERE COMMUNITY_ID = #{communityId}
+    </update>
+
 </mapper>

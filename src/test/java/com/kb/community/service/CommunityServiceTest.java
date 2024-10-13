@@ -4,6 +4,7 @@ import com.kb._config.RootConfig;
 import com.kb._config.ServletConfig;
 import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
+import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
@@ -38,7 +39,7 @@ class CommunityServiceTest {
                 .build();
 
         Long added = service.add(dto);
-        Assertions.assertThat(added).isEqualTo(4L);
+        Assertions.assertThat(added).isEqualTo(8L);
     }
 
     @Test
@@ -60,5 +61,23 @@ class CommunityServiceTest {
     void remove() {
         service.delete(4L);
         Assertions.assertThat(service.getAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("커뮤니티 수정")
+    void modifyPostContent() {
+        CommunityModifyDTO dto = CommunityModifyDTO.builder()
+                .communityId(8L)
+                .title("[SERVICE TEST] 수정 완")
+                .content("[SERVICE TEST] 수정 완")
+                .tag("ITRV")
+                .build();
+
+        Long updatedId = service.modifyPostContent(dto);
+
+        CommunityDetailDTO updated = service.getDetail(updatedId);
+        Assertions.assertThat(updated.getTitle()).isEqualTo(dto.getTitle());
+        Assertions.assertThat(updated.getContent()).isEqualTo(dto.getContent());
+        Assertions.assertThat(updated.getTag()).isEqualTo(dto.getTag());
     }
 }

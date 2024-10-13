@@ -1,5 +1,6 @@
 package com.kb.community.service;
 
+import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
@@ -60,5 +61,15 @@ public class CommunityServiceI implements CommunityService {
         try {
             communityMapper.updateIsDeletedByCommunityId(id);
         } catch (Exception e) { log.error("게시글 삭제 처리 실패 {}", e); }
+    }
+
+    //커뮤니티 수정
+    @Override @Transactional
+    public Long modifyPostContent(CommunityModifyDTO dto) {
+       try {
+           communityMapper.update(dto.toVO());
+       } catch (Exception e) { log.error("게시글 삭제 처리 실패 {}", e); }
+
+       return dto.getCommunityId();
     }
 }
