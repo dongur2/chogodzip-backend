@@ -2,10 +2,13 @@ package com.kb.community.service;
 
 import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
+import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
+import com.kb.community.mapper.CommunityCmtMapper;
 import com.kb.community.mapper.CommunityMapper;
 import com.kb.community.vo.Community;
+import com.kb.community.vo.CommunityCmt;
 import com.kb.member.mapper.MemberMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -23,6 +26,7 @@ import java.util.List;
 public class CommunityServiceI implements CommunityService {
     @Autowired private CommunityMapper communityMapper;
     @Autowired private MemberMapper memberMapper;
+    @Autowired private CommunityCmtMapper cmtMapper;
 
     //커뮤니티 모든 글 조회
     @Override
@@ -36,6 +40,10 @@ public class CommunityServiceI implements CommunityService {
         CommunityDetailDTO dto = null;
         try {
             dto = CommunityDetailDTO.from(communityMapper.findById(id));
+
+            //댓글
+            List<CommunityCmt> cmts = cmtMapper.getAllByCommunityId(id);
+            if(cmts != null) dto.setComments(cmts.stream().map(CommentDetailDTO::from).toList());
 
             //조회하면서 조회수 카운트
             Integer hits = getHits(id, dto.getViews());

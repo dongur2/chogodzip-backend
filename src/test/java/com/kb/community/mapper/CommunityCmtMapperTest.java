@@ -30,11 +30,11 @@ class CommunityCmtMapperTest {
         CommunityCmt vo = CommunityCmt.builder()
                 .communityId(13L)
                 .mNo(1L)
-                .content("[매퍼 테스트] 댓글")
+                .content("[매퍼 테스트] 댓글 써볼게요 4")
                 .build();
 
         mapper.saveCmt(vo);
-        Assertions.assertThat(mapper.getOneByCmtId(vo.getCmtId()).getContent()).isEqualTo("[매퍼 테스트] 댓글");
+        Assertions.assertThat(mapper.getOneByCmtId(vo.getCmtId()).getContent()).isEqualTo("[매퍼 테스트] 댓글 써볼게요 4");
     }
 
     @Test
@@ -52,8 +52,8 @@ class CommunityCmtMapperTest {
     @Test
     @DisplayName("댓글 수정")
     void updateCmt() {
-        mapper.updateCmt(2L, "[매퍼 테스트] 댓글 수정해볼께요");
-        Assertions.assertThat(mapper.getOneByCmtId(2L).getContent()).isEqualTo("[매퍼 테스트] 댓글 수정해볼께요");
+        mapper.updateCmt(2L, "[매퍼 테스트] 댓글 수정해볼께요 2");
+        Assertions.assertThat(mapper.getOneByCmtId(2L).getContent()).isEqualTo("[매퍼 테스트] 댓글 수정해볼께요 2");
     }
 
     @Test
