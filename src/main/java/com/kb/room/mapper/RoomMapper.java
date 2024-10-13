@@ -5,6 +5,8 @@ import com.kb.room.dto.UserReview;
 import com.kb.room.dto.RoomParam;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.GosiwonStatus;
+import com.kb.room.vo.Jachi;
+import com.kb.room.vo.ShareHouse;
 import java.util.List;
 
 import com.kb.room.vo.Room;
@@ -35,4 +37,8 @@ public interface RoomMapper {
     GosiwonStatus calGosiwonStatus(String location);
 
     int insertReply(@Param("userId")Long userId, @Param("roomId")Long roomId, @Param("reply") String reply);
+
+    List<Jachi> findJachiByLocation(RoomParam roomParam);
+
+    List<ShareHouse> findShareHouseByLocation(RoomParam roomParam);
 }
