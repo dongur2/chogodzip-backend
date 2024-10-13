@@ -15,4 +15,5 @@ public interface CommunityService {
     Long add(CommunityPostDTO dto);
     void delete(Long id);
     Long modifyPostContent(CommunityModifyDTO dto);
+    Integer getHits(Long id, Integer views);
 }

@@ -11,4 +11,5 @@ public interface CommunityMapper {
     Long save(Community community);
     Long updateIsDeletedByCommunityId(@Param("communityId") Long communityId);
     Long update(Community community);
+    Integer updateViews(@Param("communityId") Long communityId, @Param("views") Integer views);
 }

@@ -76,4 +76,11 @@
         WHERE COMMUNITY_ID = #{communityId}
     </update>
 
+    <!--  커뮤니티 조회수 업데이트  -->
+    <update id="updateViews">
+        UPDATE COMMUNITY
+        SET VIEWS = #{views}
+        WHERE COMMUNITY_ID = #{communityId}
+    </update>
+
 </mapper>
