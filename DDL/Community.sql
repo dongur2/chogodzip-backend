@@ -11,9 +11,9 @@ CREATE TABLE COMMUNITY
     COMMUNITY_ID    BIGINT PRIMARY KEY AUTO_INCREMENT,
     M_NO            BIGINT,
     TITLE           VARCHAR(100),
-    CONTENT         TEXT,
+    CONTENT         LONGTEXT,
     TAG             VARCHAR(50), -- REPI(정책,투자)/REHT(핫이슈)/RERV(후기)/CTRV(계약,입주후기)/ITRV(인테리어)/LNQS(대출)/LTQS(분양,청약)
-    PICS            VARCHAR(255), -- 작성글에 포함된 이미지 이름.확장자 "|"로 구분
+    PICS            TEXT, -- 작성글에 포함된 이미지 이름.확장자 "|"로 구분
     VIEWS           INT default 0,
     IS_DELETED      TINYINT(1), -- 0:존재 1:삭제
     UPDATED_AT      DATETIME default now(),
