@@ -4,6 +4,7 @@ import com.kb.community.vo.Community;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
@@ -17,6 +18,8 @@ public class CommunityDetailDTO {
     private String tag;
     private Date createdAt;
     private int views;
+
+    private List<CommentDetailDTO> comments;
 
     //VO => DTO
     public static CommunityDetailDTO from(Community community) {
