@@ -1,5 +1,6 @@
 package com.kb.community.controller;
 
+import com.kb.community.dto.request.CommentPostDTO;
 import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
 import com.kb.community.dto.response.CommentDetailDTO;
@@ -50,6 +51,12 @@ public class CommunityController {
     public HttpStatus delete(@PathVariable("id") Long id) {
         service.delete(id);
         return HttpStatus.OK;
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentDetailDTO> postComment(@RequestBody CommentPostDTO dto) {
+        CommentDetailDTO cmt = service.postCmt(dto);
+        return ResponseEntity.ok(cmt);
     }
 
     @DeleteMapping("/{id}/comments")

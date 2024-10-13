@@ -1,14 +1,13 @@
 package com.kb.community.service;
 
+import com.kb.community.dto.request.CommentPostDTO;
 import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
 import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
-import com.kb.community.mapper.CommunityCmtMapper;
 import com.kb.community.mapper.CommunityMapper;
 import com.kb.community.vo.Community;
-import com.kb.community.vo.CommunityCmt;
 import com.kb.member.mapper.MemberMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -95,6 +94,16 @@ public class CommunityServiceI implements CommunityService {
         } catch (Exception e) { log.error("게시글 조회수 카운트 실패 {}", e); }
 
         return views+1;
+    }
+
+    //댓글 작성
+    @Override @Transactional
+    public CommentDetailDTO postCmt(CommentPostDTO dto) {
+        CommentDetailDTO saved = null;
+        try {
+           saved  = cmtService.save(dto);
+        } catch (Exception e) { log.error("댓글 작성에 실패했습니다 : {}", e); }
+        return saved;
     }
 
     //커뮤니티 댓글 삭제
