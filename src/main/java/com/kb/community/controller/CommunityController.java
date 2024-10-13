@@ -41,7 +41,8 @@ public class CommunityController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Long> update(@RequestBody CommunityModifyDTO dto) {
+    public ResponseEntity<Long> update(@PathVariable("id") Long id, @RequestBody CommunityModifyDTO dto) {
+        dto.setCommunityId(id);
         return ResponseEntity.ok(service.modifyPostContent(dto));
     }
 
