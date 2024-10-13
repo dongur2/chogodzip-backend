@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j
 @Service
@@ -31,6 +32,7 @@ public class InterestService {
        return 0;
     }
 
+    @Transactional
     public int deleteInterestRoom(Long userId, Long roomId) {
 
         int result = interestMapper.deleteInterestRoom(userId,roomId);
@@ -39,4 +41,14 @@ public class InterestService {
         }
         return 0;
     }
+
+    public int isFavoriteRoom(Long userId, Long roomId) {
+        InterestRoom result = interestMapper.isFavoriteRoom(userId, roomId);
+        if(result != null) {
+            return 1;
+        }
+        return 0;
+    }
+
+
 }

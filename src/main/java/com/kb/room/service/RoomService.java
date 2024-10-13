@@ -6,8 +6,9 @@ import com.kb.room.dto.RoomParam;
 import com.kb.room.mapper.RoomMapper;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.GosiwonStatus;
+import com.kb.room.vo.Jachi;
+import com.kb.room.vo.ShareHouse;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -23,15 +24,10 @@ public class RoomService {
     private final RoomMapper roomMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public UserReview registReply(UserReview review) {
-        int result = roomMapper.insertReply(review);
+    public int registReply(Long userId, Long roomId, String reply) {
 
-        // Check if the insertion was successful
-        if(result != 1) {
-            throw new NoSuchElementException("Failed to insert review");
-        }
-
-        return review; // Return the review object after successful insertion
+        int result = roomMapper.insertReply(userId, roomId, reply);
+        return result;
     }
 
 
@@ -58,5 +54,14 @@ public class RoomService {
 
     public GosiwonStatus calStatus(String location) {
         return roomMapper.calGosiwonStatus(location);
+    }
+
+    public List<Jachi> getAllJachis(RoomParam roomParam) {
+        return roomMapper.findJachiByLocation(roomParam);
+    }
+
+    public List<ShareHouse> getAllShareHouse(RoomParam roomParam) {
+
+        return roomMapper.findShareHouseByLocation(roomParam);
     }
 }

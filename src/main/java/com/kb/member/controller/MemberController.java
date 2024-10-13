@@ -29,6 +29,7 @@ import java.util.Map;
 @RequestMapping("/api/member")
 @Api(value = "MemberController", tags = "멤버 정보")
 @PropertySource({"classpath:/application.properties"})
+@CrossOrigin(origins = "http://localhost:5173")
 public class MemberController {
 
     @Value("#{'${os_type}' == 'win' ? '${file_save_location_win}':'${file_save_location_other}'}")
@@ -114,4 +115,6 @@ public class MemberController {
     public ResponseEntity<Member> delete(@PathVariable String id) {
         return ResponseEntity.ok(service.delete(id));
     }
+
+
 }
