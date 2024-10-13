@@ -1,6 +1,5 @@
 package com.kb._config;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +25,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { RootConfig.class, SecurityConfig.class };
+        return new Class[] { RootConfig.class, SecurityConfig.class, S3Config.class };
     }
 
     @Override

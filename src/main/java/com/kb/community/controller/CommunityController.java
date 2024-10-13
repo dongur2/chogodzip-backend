@@ -1,6 +1,10 @@
 package com.kb.community.controller;
 
+import com.kb.community.dto.request.CommentModifyDTO;
+import com.kb.community.dto.request.CommentPostDTO;
+import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
+import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.service.CommunityService;
@@ -25,16 +29,46 @@ public class CommunityController {
 
     @GetMapping("/list")
     public ResponseEntity<List<CommunityListDTO>> selectList() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+        return ResponseEntity.ok(service.getAll());
     }
 
     @PostMapping
     public ResponseEntity<Long> post(@RequestBody CommunityPostDTO data) {
-        return new ResponseEntity<>(service.add(data), HttpStatus.OK);
+        return ResponseEntity.ok(service.add(data));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommunityDetailDTO> selectOne(@PathVariable("id") Long communityId) {
-        return new ResponseEntity<>(service.getDetail(communityId), HttpStatus.OK);
+        return ResponseEntity.ok(service.getDetail(communityId));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Long> update(@PathVariable("id") Long id, @RequestBody CommunityModifyDTO dto) {
+        dto.setCommunityId(id);
+        return ResponseEntity.ok(service.modifyPostContent(dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus delete(@PathVariable("id") Long id) {
+        service.delete(id);
+        return HttpStatus.OK;
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentDetailDTO> postComment(@RequestBody CommentPostDTO dto) {
+        CommentDetailDTO cmt = service.postCmt(dto);
+        return ResponseEntity.ok(cmt);
+    }
+
+    @PatchMapping("/{id}/comments")
+    public ResponseEntity<CommentDetailDTO> updateComment(@RequestBody CommentModifyDTO dto) {
+        CommentDetailDTO cmt = service.editCmt(dto);
+        return ResponseEntity.ok(cmt);
+    }
+
+    @DeleteMapping("/{id}/comments")
+    public HttpStatus deleteComment(@PathVariable("id") Long communityId, @RequestParam("cmtId") Long cmtId) {
+        service.deleteCmt(communityId, cmtId);
+        return HttpStatus.OK;
     }
 }

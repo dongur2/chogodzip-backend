@@ -9,4 +9,6 @@ import java.util.Map;
 public interface ChatRoomMapper {
     ChatRoom findChatRoom(Map<String, Object> map);
     void insertChatRoom(ChatRoom chatRoom);
+    void deleteChatRoom(@Param("chatRoomId") Long chatRoomId);
 }
+

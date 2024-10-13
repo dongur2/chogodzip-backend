@@ -14,9 +14,13 @@
           AND receiver_id = #{receiverId}
     </select>
 
-    <insert id="insertChatRoom" parameterType="com.kb.chat.dto.ChatRoom">
+    <insert id="insertChatRoom" parameterType="com.kb.chat.dto.ChatRoom" useGeneratedKeys="true" keyProperty="chatroomId">
         INSERT INTO CHAT_ROOM (room_id, sender_id, receiver_id, created_at, updated_at)
         VALUES (#{roomId}, #{senderId}, #{receiverId}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
     </insert>
 
+    <delete id="deleteChatRoom" parameterType="long">
+        DELETE FROM CHAT_ROOM
+        WHERE chatroom_id = #{chatRoomId}
+    </delete>
 </mapper>
