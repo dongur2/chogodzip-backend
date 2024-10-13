@@ -21,7 +21,6 @@ public class CommunityCmtServiceI implements CommunityCmtService{
     @Autowired private CommunityCmtMapper mapper;
     @Autowired private MemberMapper memberMapper;
 
-
     //커뮤니티 글에 대한 모든 댓글 조회
     @Override
     public List<CommentDetailDTO> getAll(Long communityId) {
@@ -38,7 +37,7 @@ public class CommunityCmtServiceI implements CommunityCmtService{
         vo.setMNo(mno);
 
         mapper.saveCmt(vo);
-        return CommentDetailDTO.from(vo);
+        return CommentDetailDTO.from(mapper.findOneByCmtId(vo.getCmtId()));
     }
 
     //댓글 삭제
