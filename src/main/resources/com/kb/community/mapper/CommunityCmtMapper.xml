@@ -32,14 +32,14 @@
     </insert>
 
     <!--  댓글 조회  -->
-    <select id="getOneByCmtId" resultMap="communityCmtRM" parameterType="long">
+    <select id="findOneByCmtId" resultMap="communityCmtRM" parameterType="long">
         SELECT c.CMT_ID, m.MNO as mNo, m.id as memberId, m.name as memberName, c.CONTENT, c.CREATED_AT, c.UPDATED_AT
         FROM COMMUNITY_CMT c, member m
         WHERE c.CMT_ID = #{cmtId} AND m.mno = c.M_NO
     </select>
 
     <!--  커뮤니티 글의 모든 댓글을 오래된 순으로 조회 :: 삭제되지 않은 댓글 제한  -->
-    <select id="getAllByCommunityId" resultMap="communityCmtRM" parameterType="long">
+    <select id="findAllByCommunityId" resultMap="communityCmtRM" parameterType="long">
         SELECT c.CMT_ID, m.mno as mNo, m.id as memberId, m.name as memberName, c.CONTENT, c.CREATED_AT
         FROM COMMUNITY_CMT c, member m
         WHERE c.COMMUNITY_ID = #{communityId} AND c.IS_DELETED = false AND m.mno = c.M_NO

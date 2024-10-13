@@ -2,13 +2,13 @@ package com.kb.community.controller;
 
 import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
+import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.service.CommunityService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +49,12 @@ public class CommunityController {
     @DeleteMapping("/{id}")
     public HttpStatus delete(@PathVariable("id") Long id) {
         service.delete(id);
+        return HttpStatus.OK;
+    }
+
+    @DeleteMapping("/{id}/comments")
+    public HttpStatus deleteComment(@PathVariable("id") Long communityId, @RequestParam("cmtId") Long cmtId) {
+        service.deleteCmt(communityId, cmtId);
         return HttpStatus.OK;
     }
 }

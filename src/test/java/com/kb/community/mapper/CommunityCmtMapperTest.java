@@ -34,13 +34,13 @@ class CommunityCmtMapperTest {
                 .build();
 
         mapper.saveCmt(vo);
-        Assertions.assertThat(mapper.getOneByCmtId(vo.getCmtId()).getContent()).isEqualTo("[매퍼 테스트] 댓글 써볼게요 4");
+        Assertions.assertThat(mapper.findOneByCmtId(vo.getCmtId()).getContent()).isEqualTo("[매퍼 테스트] 댓글 써볼게요 4");
     }
 
     @Test
     @DisplayName("댓글 조회")
     void getAllByCommunityId() {
-        List<CommunityCmt> voList = mapper.getAllByCommunityId(13L);
+        List<CommunityCmt> voList = mapper.findAllByCommunityId(13L);
         Assertions.assertThat(voList.size()).isEqualTo(2);
 
         voList.forEach(c -> {
@@ -53,13 +53,13 @@ class CommunityCmtMapperTest {
     @DisplayName("댓글 수정")
     void updateCmt() {
         mapper.updateCmt(2L, "[매퍼 테스트] 댓글 수정해볼께요 2");
-        Assertions.assertThat(mapper.getOneByCmtId(2L).getContent()).isEqualTo("[매퍼 테스트] 댓글 수정해볼께요 2");
+        Assertions.assertThat(mapper.findOneByCmtId(2L).getContent()).isEqualTo("[매퍼 테스트] 댓글 수정해볼께요 2");
     }
 
     @Test
     @DisplayName("댓글 삭제")
     void deleteCmt() {
         mapper.deleteCmtByCmtId(1L);
-        Assertions.assertThat(mapper.getAllByCommunityId(13L).size()).isEqualTo(1);
+        Assertions.assertThat(mapper.findAllByCommunityId(13L).size()).isEqualTo(1);
     }
 }

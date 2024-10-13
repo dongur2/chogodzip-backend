@@ -16,4 +16,5 @@ public interface CommunityService {
     void delete(Long id);
     Long modifyPostContent(CommunityModifyDTO dto);
     Integer getHits(Long id, Integer views);
+    void deleteCmt(Long communityId, Long cmtId);
 }

@@ -26,7 +26,8 @@ import java.util.List;
 public class CommunityServiceI implements CommunityService {
     @Autowired private CommunityMapper communityMapper;
     @Autowired private MemberMapper memberMapper;
-    @Autowired private CommunityCmtMapper cmtMapper;
+
+    @Autowired private CommunityCmtService cmtService;
 
     //커뮤니티 모든 글 조회
     @Override
@@ -41,9 +42,9 @@ public class CommunityServiceI implements CommunityService {
         try {
             dto = CommunityDetailDTO.from(communityMapper.findById(id));
 
-            //댓글
-            List<CommunityCmt> cmts = cmtMapper.getAllByCommunityId(id);
-            if(cmts != null) dto.setComments(cmts.stream().map(CommentDetailDTO::from).toList());
+            //댓글 조회
+            List<CommentDetailDTO> cmts = cmtService.getAll(id);
+            if(cmts != null) dto.setComments(cmts);
 
             //조회하면서 조회수 카운트
             Integer hits = getHits(id, dto.getViews());
@@ -94,5 +95,13 @@ public class CommunityServiceI implements CommunityService {
         } catch (Exception e) { log.error("게시글 조회수 카운트 실패 {}", e); }
 
         return views+1;
+    }
+
+    //커뮤니티 댓글 삭제
+    @Override @Transactional
+    public void deleteCmt(Long communityId, Long cmtId) {
+        try {
+            cmtService.delete(cmtId); //댓글 삭제
+        } catch (Exception e) { log.error("댓글 삭제 실패 {}", e); }
     }
 }
