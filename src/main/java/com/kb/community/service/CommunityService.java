@@ -12,4 +12,5 @@ public interface CommunityService {
     List<CommunityListDTO> getAll();
     CommunityDetailDTO getDetail(Long id);
     Long add(CommunityPostDTO dto);
+    void delete(Long id);
 }

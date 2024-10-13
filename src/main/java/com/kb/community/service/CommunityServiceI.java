@@ -53,4 +53,12 @@ public class CommunityServiceI implements CommunityService {
         }
         return vo.getCommunityId();
     }
+
+    //커뮤니티 삭제처리
+    @Override @Transactional
+    public void delete(Long id) {
+        try {
+            communityMapper.updateIsDeletedByCommunityId(id);
+        } catch (Exception e) { log.error("게시글 삭제 처리 실패 {}", e); }
+    }
 }

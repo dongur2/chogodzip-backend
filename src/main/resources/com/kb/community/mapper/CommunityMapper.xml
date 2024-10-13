@@ -63,4 +63,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <!--  커뮤니티 글 삭제 : DB에서 실제 삭제하는 것이 아니라 삭제 처리  -->
+    <update id="updateIsDeletedByCommunityId" parameterType="long">
+        UPDATE COMMUNITY SET IS_DELETED = 1 WHERE COMMUNITY_ID = #{communityId}
+    </update>
+
 </mapper>

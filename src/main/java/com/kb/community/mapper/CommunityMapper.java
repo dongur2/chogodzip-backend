@@ -9,4 +9,5 @@ public interface CommunityMapper {
     List<Community> findAll();
     Community findById(@Param("communityId") Long communityId);
     Long save(Community community);
+    Long updateIsDeletedByCommunityId(@Param("communityId") Long communityId);
 }

@@ -25,16 +25,22 @@ public class CommunityController {
 
     @GetMapping("/list")
     public ResponseEntity<List<CommunityListDTO>> selectList() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+        return ResponseEntity.ok(service.getAll());
     }
 
     @PostMapping
     public ResponseEntity<Long> post(@RequestBody CommunityPostDTO data) {
-        return new ResponseEntity<>(service.add(data), HttpStatus.OK);
+        return ResponseEntity.ok(service.add(data));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommunityDetailDTO> selectOne(@PathVariable("id") Long communityId) {
-        return new ResponseEntity<>(service.getDetail(communityId), HttpStatus.OK);
+        return ResponseEntity.ok(service.getDetail(communityId));
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus update(@PathVariable("id") Long id) {
+        service.delete(id);
+        return HttpStatus.OK;
     }
 }

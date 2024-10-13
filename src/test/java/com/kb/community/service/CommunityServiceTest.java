@@ -31,28 +31,34 @@ class CommunityServiceTest {
     @DisplayName("커뮤니티 글 작성")
     void add() {
         CommunityPostDTO dto = CommunityPostDTO.builder()
-                .memberId("test1234")
-                .title("[SERVICE TEST] 커뮤니티 제목 2")
-                .content("[SERVICE TEST] 커뮤니티 본문 2")
+                .memberId("test")
+                .title("[SERVICE TEST] 커뮤니티 제목")
+                .content("[SERVICE TEST] 커뮤니티 본문")
                 .tag("CTRV")
                 .build();
 
         Long added = service.add(dto);
-        Assertions.assertThat(added).isEqualTo(9L);
+        Assertions.assertThat(added).isEqualTo(4L);
     }
 
     @Test
     @DisplayName("커뮤니티 상세 글 조회")
     void getDetail() {
-        CommunityDetailDTO dto = service.getDetail(8L);
-        Assertions.assertThat(dto.getTitle()).isEqualTo("[SERVICE TEST] 커뮤니티 제목 2");
-        Assertions.assertThat(dto.getNickname()).isEqualTo("hyeonseokcute");
+        CommunityDetailDTO dto = service.getDetail(4L);
+        Assertions.assertThat(dto.getTitle()).isEqualTo("[SERVICE TEST] 커뮤니티 제목");
     }
 
     @Test
-    @DisplayName("커뮤니티 전체 글 조회")
+    @DisplayName("커뮤니티 전체 글 조회 :: 삭제처리가 되지 않은 글만 조회")
     void getAll() {
         List<CommunityListDTO> all = service.getAll();
-        Assertions.assertThat(all.size()).isEqualTo(8);
+        Assertions.assertThat(all.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("커뮤니티 삭제 처리")
+    void remove() {
+        service.delete(4L);
+        Assertions.assertThat(service.getAll().size()).isEqualTo(1);
     }
 }
