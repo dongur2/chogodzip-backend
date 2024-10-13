@@ -1,5 +1,6 @@
 package com.kb.community.controller;
 
+import com.kb.community.dto.request.CommentModifyDTO;
 import com.kb.community.dto.request.CommentPostDTO;
 import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
@@ -56,6 +57,12 @@ public class CommunityController {
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDetailDTO> postComment(@RequestBody CommentPostDTO dto) {
         CommentDetailDTO cmt = service.postCmt(dto);
+        return ResponseEntity.ok(cmt);
+    }
+
+    @PatchMapping("/{id}/comments")
+    public ResponseEntity<CommentDetailDTO> updateComment(@RequestBody CommentModifyDTO dto) {
+        CommentDetailDTO cmt = service.editCmt(dto);
         return ResponseEntity.ok(cmt);
     }
 

@@ -1,5 +1,6 @@
 package com.kb.community.service;
 
+import com.kb.community.dto.request.CommentModifyDTO;
 import com.kb.community.dto.request.CommentPostDTO;
 import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
@@ -104,6 +105,16 @@ public class CommunityServiceI implements CommunityService {
            saved  = cmtService.save(dto);
         } catch (Exception e) { log.error("댓글 작성에 실패했습니다 : {}", e); }
         return saved;
+    }
+
+    //댓글 수정
+    @Override @Transactional
+    public CommentDetailDTO editCmt(CommentModifyDTO dto) {
+        CommentDetailDTO edited = null;
+        try {
+            edited  = cmtService.modify(dto);
+        } catch (Exception e) { log.error("댓글 수정에 실패했습니다 : {}", e); }
+        return edited;
     }
 
     //커뮤니티 댓글 삭제

@@ -1,5 +1,6 @@
 package com.kb.community.service;
 
+import com.kb.community.dto.request.CommentModifyDTO;
 import com.kb.community.dto.request.CommentPostDTO;
 import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.mapper.CommunityCmtMapper;
@@ -38,6 +39,13 @@ public class CommunityCmtServiceI implements CommunityCmtService{
 
         mapper.saveCmt(vo);
         return CommentDetailDTO.from(mapper.findOneByCmtId(vo.getCmtId()));
+    }
+
+    //댓글 수정
+    @Override
+    public CommentDetailDTO modify(CommentModifyDTO dto) {
+        mapper.updateCmt(dto.getCmtId(), dto.getContent());
+        return CommentDetailDTO.from(mapper.findOneByCmtId(dto.getCmtId()));
     }
 
     //댓글 삭제
