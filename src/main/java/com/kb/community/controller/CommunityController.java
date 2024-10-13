@@ -1,5 +1,6 @@
 package com.kb.community.controller;
 
+import com.kb.community.dto.request.CommunityModifyDTO;
 import com.kb.community.dto.request.CommunityPostDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
@@ -7,6 +8,7 @@ import com.kb.community.service.CommunityService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +27,27 @@ public class CommunityController {
 
     @GetMapping("/list")
     public ResponseEntity<List<CommunityListDTO>> selectList() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+        return ResponseEntity.ok(service.getAll());
     }
 
     @PostMapping
     public ResponseEntity<Long> post(@RequestBody CommunityPostDTO data) {
-        return new ResponseEntity<>(service.add(data), HttpStatus.OK);
+        return ResponseEntity.ok(service.add(data));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommunityDetailDTO> selectOne(@PathVariable("id") Long communityId) {
-        return new ResponseEntity<>(service.getDetail(communityId), HttpStatus.OK);
+        return ResponseEntity.ok(service.getDetail(communityId));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Long> update(@RequestBody CommunityModifyDTO dto) {
+        return ResponseEntity.ok(service.modifyPostContent(dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus delete(@PathVariable("id") Long id) {
+        service.delete(id);
+        return HttpStatus.OK;
     }
 }

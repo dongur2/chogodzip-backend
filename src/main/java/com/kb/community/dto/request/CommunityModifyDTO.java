@@ -5,19 +5,17 @@ import lombok.*;
 
 @Getter @Setter @Builder @ToString
 @NoArgsConstructor @AllArgsConstructor
-public class CommunityPostDTO {
-    private Long mNo;
-    private String memberId;
+public class CommunityModifyDTO {
+    private Long communityId;
     private String title;
     private String content;
     private String tag;
     private String pics;
 
-
     //DTO => VO
     public Community toVO() {
         return Community.builder()
-                .mNo(mNo)
+                .communityId(communityId)
                 .title(title)
                 .content(content)
                 .tag(tag)
