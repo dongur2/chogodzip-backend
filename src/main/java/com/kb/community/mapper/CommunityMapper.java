@@ -1,6 +1,7 @@
 package com.kb.community.mapper;
 
 import com.kb.community.vo.Community;
+import com.kb.community.vo.CommunityCmt;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
