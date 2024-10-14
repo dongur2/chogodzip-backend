@@ -17,7 +17,7 @@ public class Room {
     private String address; //전체주소
     private String houseTypeCd; //HOUTP00001 (고시원), HOUTP00003 (원룸텔)
     private String houseTypeNm; //고시원, 원룸텔
-    private String dongLiNm; //크롤링데이터만 포함
+    private String dongliNm; //크롤링데이터만 포함
     private Boolean canLoan;
     private Date createdAt;
     private Date updatedAt;
