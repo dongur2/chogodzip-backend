@@ -8,10 +8,8 @@
         <id property="gswId" column="GSW_ID" />
 
         <!-- BASIC INFO -->
-        <result property="category" column="CATEGORY" />
         <result property="title" column="TITLE" />
         <result property="postcode" column="POSTCODE" />
-        <result property="detailAddress" column="DETAIL_ADDRESS" />
         <result property="priceMin" column="PRICE_MIN" />
         <result property="priceMax" column="PRICE_MAX" />
         <result property="depositMin" column="DEPOSIT_MIN" />
@@ -21,8 +19,7 @@
         <result property="services" column="SERVICES" />
         <result property="languages" column="LANGUAGES" />
         <result property="etc" column="ETC" />
-        <result property="desc" column="DESCRIPTION" />
-        <result property="pics" column="PICS" />
+        <result property="description" column="DESCRIPTION" />
         <result property="genderLimit" column="GENDER_LIMIT" />
         <result property="type" column="TYPE" />
         <result property="contractMin" column="CONTRACT_MIN" />
@@ -271,12 +268,10 @@
 
     <!--  부동산 작성  -->
     <insert id="saveRoom" parameterType="com.kb.room.vo.Room" useGeneratedKeys="true" keyProperty="roomId">
-        <![CDATA[
-            INSERT INTO ROOM (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, CAN_LOAN, UPDATED_AT, CREATED_AT)
-            VALUES (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{canLoan}, NOW(), NOW())
-        ]]>
+        INSERT INTO ROOM (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, PICS, CAN_LOAN, ADDRESS, HOUSE_TYPE_CD, HOUST_TYPE_NM, UPDATED_AT, CREATED_AT)
+        VALUES (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{pics}, #{canLoan}, #{address}, #{houseTypeCd}, #{houseTypeNm}, NOW(), NOW())
 
-        <selectKey keyProperty="roomId" resultType="long" order="AFTER">
+        <selectKey keyProperty="roomId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>

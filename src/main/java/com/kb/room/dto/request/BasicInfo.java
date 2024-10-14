@@ -17,7 +17,7 @@ public class BasicInfo {
     private Map<String, Object> services;
     private Map<String, Object> languages;
     private Map<String, Object> etc;
-    private String desc;
+    private Integer contractMin;
+    private String description;
     private String pics;
-
 }

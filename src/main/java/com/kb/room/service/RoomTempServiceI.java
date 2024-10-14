@@ -1,5 +1,6 @@
 package com.kb.room.service;
 
+import com.kb.member.mapper.MemberMapper;
 import com.kb.room.dto.request.GosiwonPostDTO;
 import com.kb.room.dto.response.RoomTempDTO;
 import com.kb.room.mapper.RoomMapper;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomTempServiceI implements RoomTempService{
     private final RoomMapper mapper;
+    private final MemberMapper memberMapper;
 
     @Override
     public List<RoomTempDTO> fetchAllRooms() {
@@ -31,11 +33,13 @@ public class RoomTempServiceI implements RoomTempService{
 
     @Override @Transactional
     public Long addRoom(GosiwonPostDTO dto) {
-        //부동산 + 고시원 작성
-        Room roomVO = dto.toRoomVO(1L); //임시 유저아이디 고정
+        //부동산 작성
+        Room roomVO = dto.toRoomVO(memberMapper.selectById(dto.getWriterId()).getMno());
+        mapper.saveRoom(roomVO);
+        
+        //고시원 작성
         Gosiwon gosiwonVO = dto.toGosiwonVO(roomVO);
 
-        mapper.saveRoom(roomVO);
         mapper.saveGosiwon(gosiwonVO);
 
         //대출 가능한 경우 부동산 & 대출 연결
@@ -43,13 +47,13 @@ public class RoomTempServiceI implements RoomTempService{
             String[] loans = dto.getLoanInfo().getLoans().get("res").toString().split("\\|");
             for(String loan : loans) {
                 mapper.saveRoomWithLoan(RoomWithLoan.builder()
-                                .roomId(roomVO.getRoomId())
                                 .loanId(Long.parseLong(loan))
                                 .build());
             }
         }
-      
-        return roomVO.getRoomId();
+
+//        return roomVO.getRoomId();
+        return 1L;
     }
 
 
