@@ -143,4 +143,7 @@ public class MemberService{
     }
 
 
+    public Member getIdMem(Long userId) {
+        return memberMapper.oneMeme(userId);
+    }
 }
