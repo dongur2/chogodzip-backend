@@ -6,7 +6,6 @@ import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.Room;
-import com.kb.room.vo.RoomWithLoan;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +28,7 @@ class RoomMapperTest {
     @Test
     @DisplayName("ROOM_ID로 고시원 조회")
     void findOneByRoomId() {
-        Gosiwon gosiwon = mapper.findOneByRoomId(17L);
+        Gosiwon gosiwon = mapper.findOneByRoomId(10000L);
         assertThat(gosiwon.getTitle()).isEqualTo("고시원 제목2 - 대출 가능");
     }
 
@@ -41,10 +40,11 @@ class RoomMapperTest {
                 .roomLat(new BigDecimal("37.0996527684079"))
                 .roomLong(new BigDecimal("126.839982282494"))
                 .thumbnail("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
-                .canLoan(false)
+                .pics("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
                 .address("서울 광진구 능동로 195-1")
                 .houseTypeCd("HOUTP00001")
                 .houseTypeNm("고시원")
+                .canLoan(false)
                 .build();
 
         mapper.saveRoom(room);

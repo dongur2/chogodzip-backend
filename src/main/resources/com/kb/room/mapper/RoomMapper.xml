@@ -47,7 +47,11 @@
             <result property="roomLat" column="ROOM_LAT" />
             <result property="roomLong" column="ROOM_LONG" />
             <result property="thumbnail" column="THUMBNAIL" />
+            <result property="pics" column="PICS" />
             <result property="address" column="ADDRESS" />
+            <result property="houseTypeCd" column="HOUSE_TYPE_CD" />
+            <result property="houseTypeNm" column="HOUSE_TYPE_NM" />
+            <result property="dongliNm" column="DONGLI_NM" />
             <result property="canLoan" column="CAN_LOAN" />
             <result property="createdAt" column="CREATED_AT" />
             <result property="updatedAt" column="UPDATED_AT" />
@@ -96,7 +100,7 @@
             <result property="address" column="ADDRESS"/>
             <result property="houseTypeCd" column="HOUSE_TYPE_CD"/>
             <result property="houseTypeNm" column="HOUSE_TYPE_NM"/>
-            <result property="dongLiNm" column="DONG_LI_NM"/>
+            <result property="dongliNm" column="DONG_LI_NM"/>
             <result property="canLoan" column="CAN_LOAN"/>
             <result property="createdAt" column="CREATED_AT"/>
             <result property="updatedAt" column="UPDATED_AT"/>
@@ -152,7 +156,7 @@
             <result property="address" column="ADDRESS"/>
             <result property="houseTypeCd" column="HOUSE_TYPE_CD"/>
             <result property="houseTypeNm" column="HOUSE_TYPE_NM"/>
-            <result property="dongLiNm" column="DONG_LI_NM"/>
+            <result property="dongliNm" column="DONG_LI_NM"/>
             <result property="canLoan" column="CAN_LOAN"/>
             <result property="createdAt" column="CREATED_AT"/>
             <result property="updatedAt" column="UPDATED_AT"/>
@@ -254,22 +258,20 @@
 
     <!--  부동산 데이터 조회  -->
     <select id="findOneByRoomId" resultType="com.kb.room.vo.Gosiwon" parameterType="long">
-        <![CDATA[
-            SELECT * FROM GOSIWON WHERE ROOM_ID = #{roomId}
-        ]]>
+        SELECT * FROM GOSIWON WHERE ROOM_ID = #{roomId}
     </select>
 
     <!--  모든 부동산 데이터 조회  -->
     <select id="findAll" resultType="com.kb.room.vo.Room">
-       <![CDATA[
-            SELECT * FROM ROOM
-        ]]>
+        SELECT * FROM ROOM
     </select>
 
-    <!--  부동산 작성  -->
+    <!--  부동산 작성 [ROOM]  -->
     <insert id="saveRoom" parameterType="com.kb.room.vo.Room" useGeneratedKeys="true" keyProperty="roomId">
-        INSERT INTO ROOM (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, PICS, CAN_LOAN, ADDRESS, HOUSE_TYPE_CD, HOUST_TYPE_NM, UPDATED_AT, CREATED_AT)
-        VALUES (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{pics}, #{canLoan}, #{address}, #{houseTypeCd}, #{houseTypeNm}, NOW(), NOW())
+        INSERT INTO ROOM
+            (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, PICS, ADDRESS, HOUSE_TYPE_CD, HOUSE_TYPE_NM, CAN_LOAN, UPDATED_AT, CREATED_AT)
+        VALUES
+            (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{pics}, #{address}, #{houseTypeCd}, #{houseTypeNm}, #{canLoan}, NOW(), NOW())
 
         <selectKey keyProperty="roomId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
