@@ -17,6 +17,7 @@ public class RoomHomeDTO {
     private Integer depositMin;
     private Integer depositMax;
     private Integer maintenanceFee;
+    private String genderLimit;
 
     private Boolean isSoldOut;
 
@@ -33,6 +34,7 @@ public class RoomHomeDTO {
                 .depositMin(vo.getDepositMin())
                 .depositMax(vo.getDepositMax())
                 .maintenanceFee(vo.getMaintenanceFee())
+                .genderLimit(vo.getGenderLimit())
                 .isSoldOut(vo.getIsSoldOut())
                 .build();
     }
