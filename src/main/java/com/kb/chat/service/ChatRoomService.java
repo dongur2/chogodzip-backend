@@ -4,6 +4,7 @@ import com.kb.chat.dto.ChatRoom;
 import com.kb.chat.mapper.ChatRoomMapper;
 import com.kb.member.dto.Member;
 import com.kb.member.mapper.MemberMapper;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,13 @@ public class ChatRoomService {
 
     public void deleteChatRoom(Long chatRoomId) {
         chatRoomMapper.deleteChatRoom(chatRoomId);
+    }
+
+    public List<ChatRoom> getChatRooms(Long userId) {
+        return chatRoomMapper.getAllChatRoom(userId);
+    }
+
+    public int getNum(Long roomId, Long userId) {
+        return chatRoomMapper.getNum(roomId,userId);
     }
 }
