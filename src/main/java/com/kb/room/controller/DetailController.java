@@ -6,6 +6,8 @@ import com.kb.room.dto.UserReview;
 import com.kb.room.service.RoomService;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.GosiwonStatus;
+import com.kb.room.vo.Jachi;
+import com.kb.room.vo.ShareHouse;
 import io.swagger.annotations.Api;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +41,18 @@ public class DetailController {
         Gosiwon getRoom = roomService.getOneGosiwons(id);
         return ResponseEntity.ok(getRoom);
     }
+    @GetMapping("/room/{id}")
+    private ResponseEntity<Jachi> detailJachi(@PathVariable Long id){
+        Jachi getJachi = roomService.getOneJachis(id);
+        return ResponseEntity.ok(getJachi);
+    }
+
+
+    @GetMapping("/sharehouse/{id}")
+    public ResponseEntity<ShareHouse> detailShare(@PathVariable Long id){
+        ShareHouse getShare = roomService.getOneShare(id);
+        return ResponseEntity.ok(getShare);
+    }
 
     @PostMapping("/regist")
     public ResponseEntity<Integer> detailRegist(String userName, Long roomId, String reply) {
@@ -59,6 +74,18 @@ public class DetailController {
 
         GosiwonStatus result  = roomService.calStatus(location);
         System.out.println(location+" dfadfasdfasdf " + result);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/roomStatus")
+    private ResponseEntity<GosiwonStatus> getRoomStatus(String location){
+        GosiwonStatus result =roomService.calRoomStatus(location);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/shareStatus")
+    private ResponseEntity<GosiwonStatus> getShareStatus(String location){
+        GosiwonStatus result = roomService.calShareStauts(location);
         return ResponseEntity.ok(result);
     }
 
