@@ -32,26 +32,26 @@ CREATE TABLE GOSIWON
 (
     GSW_ID                  BIGINT PRIMARY KEY AUTO_INCREMENT,
     ROOM_ID                 BIGINT,
-    TITLE                   VARCHAR(255) NOT NULL,
-    POSTCODE                CHAR(5) NOT NULL,
-    ADDRESS                 VARCHAR(255) NOT NULL,
-    DETAIL_ADDRESS          VARCHAR(255) NOT NULL,
-    PRICE_MIN               INT NOT NULL,
-    PRICE_MAX               INT NOT NULL,
-    DEPOSIT_MIN             INT,
-    DEPOSIT_MAX             INT,
-    MAINTENANCE_FEE         INT,
-    PRIVATE_FACILITIES      VARCHAR(255), -- |기준으로 split
-    SERVICES                VARCHAR(255), -- |기준으로 split
-    LANGUAGES               VARCHAR(255), -- |기준으로 split
-    ETC                     VARCHAR(255), -- |기준으로 split
-    DESCRIPTION             TEXT,
+    TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
+    POSTCODE                CHAR(5) NOT NULL, -- NULL로 변경
+    ADDRESS                 VARCHAR(255) NOT NULL, -- 빠짐
+    DETAIL_ADDRESS          VARCHAR(255) NOT NULL, -- 빠짐
+    PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
+    PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
+    DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
+    DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
+    MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
+    PRIVATE_FACILITIES      VARCHAR(255), -- |기준으로 split 목업
+    SERVICES                VARCHAR(255), -- |기준으로 split 목업
+    LANGUAGES               VARCHAR(255), -- |기준으로 split 목업
+    ETC                     VARCHAR(255), -- |기준으로 split 목업
+    DESCRIPTION             TEXT, -- 목업
 
-    GENDER_LIMIT            TINYINT(1) NOT NULL, -- 0:구분없음 1:분리 2:여성 3:남성
-    TYPE                    TINYINT(1) NOT NULL, -- 0:고시원 1:원룸텔
-    CONTRACT_MIN            TINYINT(1) NOT NULL, -- 1/2/3/4
-    AGE_MAX                 INT, -- 0 or NULL 이면 없음
-    AGE_MIN                 INT, -- 0 or NULL 이면 없음
+    GENDER_LIMIT            TINYINT(1) NOT NULL, -- 0:구분없음 1:분리 2:여성 3:남성 --"GENDER_TYPE_CD" : GENDER0000...보고 해
+    TYPE                    TINYINT(1) NOT NULL, -- 0:고시원 1:원룸텔 --"HOUSE_TYPE_CD" 보고 해!
+    CONTRACT_MIN            TINYINT(1) NOT NULL, -- 1/2/3/4 //고시원만 RADIO로 선택, 목업데이터
+    AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
+    AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
 
     FACILITY_HEATING        VARCHAR(255),
     FACILITY_COOLING        VARCHAR(255),
@@ -62,7 +62,7 @@ CREATE TABLE GOSIWON
     CAN_PARKING             TINYINT(1), -- 0:불가 1:가능
     HAS_ELEVATOR            TINYINT(1), -- 0:없음 1:있음
 
-    IS_SOLD_OUT             TINYINT(1), -- 0:판매중 1:판매완료
+    IS_SOLD_OUT             TINYINT(1), -- 0:판매중 1:판매완료 -- 탈락
 
     CONSTRAINT FK_GOSIWON_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE
 );
@@ -70,3 +70,34 @@ CREATE TABLE GOSIWON
 DROP TABLE IF EXISTS GOSIWON;
 DROP TABLE IF EXISTS ROOM_LOAN;
 DROP TABLE IF EXISTS ROOM;
+
+-- 241011태희가 고시원  테이블 변경함
+ALTER TABLE GOSIWON DROP COLUMN ADDRESS;
+ALTER TABLE GOSIWON DROP COLUMN DETAIL_ADDRESS;
+
+-- ROOM테이블에 ADDRESS 추가
+ALTER TABLE ROOM
+    ADD COLUMN ROOM_ADDR_FL VARCHAR(255),
+    ADD COLUMN HOUSE_TYPE_CD VARCHAR(255),
+    ADD COLUMN HOUSE_TYPE_NM VARCHAR(255),
+    ADD COLUMN DONGLI_NM VARCHAR(22);
+
+ALTER TABLE ROOM
+    CHANGE COLUMN ROOM_ADDR_FL ADDRESS VARCHAR(255);
+
+ALTER TABLE GOSIWON DROP COLUMN IS_SOLD_OUT;
+ALTER TABLE GOSIWON ADD COLUMN IS_SOLD_OUT TINYINT(1);
+
+-- CONTRACT_MIN, POSTCODE NULL로 수정(왜냐면 ㅡ크롤링으로 못가져옴)
+ALTER TABLE GOSIWON
+    MODIFY COLUMN CONTRACT_MIN TINYINT(1) NULL,
+    MODIFY COLUMN POSTCODE CHAR(5) NULL;
+
+ALTER TABLE GOSIWON
+    MODIFY COLUMN TYPE VARCHAR(22);
+ALTER TABLE GOSIWON
+    MODIFY COLUMN GENDER_LIMIT VARCHAR(22);
+
+-- 241012 ROOM_ID AUTO인거 우리가 크롤링한 ID로 넣게 변경
+DESCRIBE
+
