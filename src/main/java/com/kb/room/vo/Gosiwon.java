@@ -39,5 +39,5 @@ public class Gosiwon {
     private Boolean canParking;
     private Boolean hasElevator;
 
-    private String isSoldOut;
+    private Boolean isSoldOut;
 }

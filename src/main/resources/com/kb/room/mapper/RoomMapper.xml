@@ -271,7 +271,12 @@
     </select>
 
     <!--  부동산 데이터 조회  -->
-    <select id="findOneByRoomId" resultType="com.kb.room.vo.Gosiwon" parameterType="long">
+    <select id="findRoomByRoomId" resultType="com.kb.room.vo.Room" parameterType="int">
+        SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <!--  고시원 데이터 조회  -->
+    <select id="findOneByRoomId" resultMap="gosiwonResultMap" parameterType="int">
         SELECT * FROM GOSIWON WHERE ROOM_ID = #{roomId}
     </select>
 
@@ -296,7 +301,7 @@
     <insert id="saveGosiwon" parameterType="com.kb.room.vo.Gosiwon" useGeneratedKeys="true" keyProperty="gswId">
         <![CDATA[
             INSERT INTO GOSIWON (
-                ROOM_ID, TITLE, POSTCODE, ADDRESS, DETAIL_ADDRESS,
+                ROOM_ID, TITLE, POSTCODE,
                 PRICE_MIN, PRICE_MAX, DEPOSIT_MIN, DEPOSIT_MAX, MAINTENANCE_FEE,
                 PRIVATE_FACILITIES, SERVICES, LANGUAGES, ETC, DESCRIPTION, GENDER_LIMIT,
                 TYPE, CONTRACT_MIN, AGE_MAX, AGE_MIN,
@@ -305,9 +310,9 @@
                 IS_SOLD_OUT
             )
             VALUES (
-                #{room.roomId}, #{title}, #{postcode}, #{address}, #{detailAddress},
+                #{room.roomId}, #{title}, #{postcode},
                 #{priceMin}, #{priceMax}, #{depositMin}, #{depositMax}, #{maintenanceFee},
-                #{privateFacilities}, #{services}, #{languages}, #{etc}, #{desc}, #{genderLimit},
+                #{privateFacilities}, #{services}, #{languages}, #{etc}, #{description}, #{genderLimit},
                 #{type}, #{contractMin}, #{ageMax}, #{ageMin},
                 #{facilityHeating}, #{facilityCooling}, #{facilityLife}, #{facilitySecurity},
                 #{buildingType}, #{canParking}, #{hasElevator},
@@ -315,7 +320,7 @@
              )
         ]]>
 
-        <selectKey keyProperty="gswId" resultType="long" order="AFTER">
+        <selectKey keyProperty="gswId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>

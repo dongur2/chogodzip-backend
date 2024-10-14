@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RoomTempService {
     List<RoomTempDTO> fetchAllRooms();
-    Long addRoom(GosiwonPostDTO dto); //고시원 작성
+    Integer addRoom(GosiwonPostDTO dto); //고시원 작성
 }
