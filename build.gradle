@@ -69,8 +69,8 @@ dependencies {
 
   // log4JDBC
   implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
-  implementation 'org.apache.logging.log4j:log4j-api:2.0.1'
-  implementation 'org.apache.logging.log4j:log4j-core:2.0.1'
+//  implementation 'org.apache.logging.log4j:log4j-api:2.0.1'
+//  implementation 'org.apache.logging.log4j:log4j-core:2.0.1'
 
   // 보안
   implementation("org.springframework.security:spring-security-web:${springSecurityVersion}")
