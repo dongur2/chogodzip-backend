@@ -1,14 +1,15 @@
 package com.kb.room.dto.request;
 
-import com.kb.member.dto.Member;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.Room;
 import lombok.*;
+import lombok.extern.log4j.Log4j;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
-
+@Log4j
 @Setter @Getter @Builder @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class GosiwonPostDTO {
@@ -18,16 +19,18 @@ public class GosiwonPostDTO {
     private FacilitiesInfo facilitiesInfo;
     private BuildingInfo buildingInfo;
     private String writerId; //member.id
-  
+
 
     //DTO => RoomVO
-    public Room toRoomVO(Long userId) {
+    public Room toRoomVO(Long userId, List<String> pics) {
+        log.info("이미지 url: " + String.join("|", pics));
+
         return Room.builder()
                 .userId(userId)
                 .roomLat(new BigDecimal(basicInfo.getAddr().get("roomLat").toString()))
                 .roomLong(new BigDecimal(basicInfo.getAddr().get("roomLong").toString()))
-                .thumbnail("https://image.neoflat.net/XE4sQE1a8q3_f-wusCuxHFfpbFk=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/7095/768d02bd-f00e-45c1-b7a7-936b2f403736.jpg")
-                .pics("https://image.neoflat.net/XE4sQE1a8q3_f-wusCuxHFfpbFk=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/7095/768d02bd-f00e-45c1-b7a7-936b2f403736.jpg")
+                .thumbnail(pics.get(0)) //추가된 사진 첫번째 사진을 자동 썸네일로 고정
+                .pics(String.join("|", pics))
                 .address(basicInfo.getAddr().get("address").toString())
                 .houseTypeCd(basicInfo.getGosiwon().get("type").toString().equals("gosiwon") ? "HOUTP00001" : "HOUTP00003")
                 .houseTypeNm(basicInfo.getGosiwon().get("type").toString().equals("gosiwon") ? "고시원" : "원룸텔")

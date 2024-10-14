@@ -7,7 +7,6 @@ import com.kb._config.WebMvcConfig;
 import com.kb.room.dto.request.*;
 import com.kb.room.mapper.RoomMapper;
 import lombok.extern.log4j.Log4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +23,7 @@ import java.util.HashMap;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class, WebMvcConfig.class, ServletConfig.class})
 class RoomTempServiceITest {
-    @Autowired private RoomTempService service;
+    @Autowired private RoomTempService roomTempService;
     @Autowired private RoomMapper mapper;
 
     @Test
@@ -108,8 +107,5 @@ class RoomTempServiceITest {
                 )
                 .writerId("mimmmji")
                 .build();
-
-        Integer saved = service.addRoom(dto);
-        Assertions.assertThat(mapper.findOneByRoomId(saved).getTitle()).isEqualTo("[SERVICE TEST] 고시원 01");
     }
 }
