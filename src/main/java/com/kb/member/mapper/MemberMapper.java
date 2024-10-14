@@ -20,4 +20,6 @@ public interface MemberMapper {
     int deleteAuth(Auth auth);
 
     Long searchOneMember(@Param("userName") String userName);
+
+    Member oneMeme(Long userId);
 }

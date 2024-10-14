@@ -36,6 +36,14 @@
         WHERE id = #{userName}
     </select>
 
+    <select id="oneMeme" resultType="com.kb.member.dto.Member">
+        SELECT
+            *
+        FROM
+            member
+        WHERE mno = #{userId}
+    </select>
+
 
     <select id="selectMemberAll" resultMap="memberResultMap">
         SELECT

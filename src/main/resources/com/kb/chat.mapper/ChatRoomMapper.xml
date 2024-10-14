@@ -23,4 +23,15 @@
         DELETE FROM CHAT_ROOM
         WHERE chatroom_id = #{chatRoomId}
     </delete>
+
+    <select id="getAllChatRoom" resultType="com.kb.chat.dto.ChatRoom">
+        SELECT *
+        FROM CHAT_ROOM
+        WHERE sender_id = #{userId} or receiver_id = #{userId}
+    </select>
+    <select id="getNum" resultType="integer">
+        SELECT chatroom_id
+        FROM CHAT_ROOM
+        WHERE sender_id = #{userId} and room_id = #{roomId}
+    </select>
 </mapper>

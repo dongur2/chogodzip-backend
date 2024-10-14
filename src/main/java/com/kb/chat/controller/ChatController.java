@@ -5,6 +5,8 @@ import com.kb.chat.dto.Message;
 import com.kb.chat.dto.MessageDto;
 import com.kb.chat.service.ChatRoomService;
 import com.kb.chat.service.MessageService;
+import com.kb.member.dto.Member;
+import com.kb.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +16,16 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping(value = "/api/chat", produces = "application/json")
+@RequiredArgsConstructor
 public class ChatController {
     private final ChatRoomService chatRoomService;
     private final MessageService messageService;
+    private final MemberService memberService;
 
-    public ChatController(ChatRoomService chatRoomService, MessageService messageService) {
-        this.chatRoomService = chatRoomService;
-        this.messageService = messageService;
+    @GetMapping("/owner")
+    public ResponseEntity<Member> getOwnerInfo(Long userId){
+        Member mem = memberService.getIdMem(userId);
+        return ResponseEntity.ok(mem);
     }
 
     // 특정 매물에 대해 채팅방이 있는지 조회하고, 없으면 새로 생성
@@ -28,6 +33,20 @@ public class ChatController {
     public ResponseEntity<ChatRoom> getOrCreateChatRoom(@RequestParam Long roomId, @RequestParam Long senderId, @RequestParam Long receiverId) {
         ChatRoom chatRoom = chatRoomService.findOrCreateChatRoom(roomId, senderId, receiverId);
         return ResponseEntity.ok(chatRoom);
+    }
+
+    @GetMapping("/findchatRoomNum")
+    public ResponseEntity<Integer> getChatRoomNum(@RequestParam Long roomId, @RequestParam String userName){
+        Long userId  = memberService.searchOneMember(userName);
+        int result = chatRoomService.getNum(roomId, userId);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/chatList")
+    public ResponseEntity<List<ChatRoom>> getAllChatRoom(String userName){
+        Long userId = memberService.searchOneMember(userName);
+        List<ChatRoom> getChatRoom = chatRoomService.getChatRooms(userId);
+        return ResponseEntity.ok(getChatRoom);
     }
 
     // 메시지 조회
@@ -61,5 +80,7 @@ public class ChatController {
     public int countUnreadMessages(@RequestParam Long chatroomId, @RequestParam Long senderId) {
         return messageService.getUnreadMessageCount(chatroomId, senderId);
     }
+
+
 }
 

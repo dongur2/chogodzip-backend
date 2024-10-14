@@ -41,4 +41,12 @@ public interface RoomMapper {
     List<Jachi> findJachiByLocation(RoomParam roomParam);
 
     List<ShareHouse> findShareHouseByLocation(RoomParam roomParam);
+
+    Jachi findOneJachi(@Param("id") Long id);
+
+    GosiwonStatus calRoomStatus(String location);
+
+    ShareHouse findOneShare(Long id);
+
+    GosiwonStatus calShareStauts(String location);
 }

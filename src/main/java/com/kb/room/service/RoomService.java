@@ -64,4 +64,21 @@ public class RoomService {
 
         return roomMapper.findShareHouseByLocation(roomParam);
     }
+
+    public Jachi getOneJachis(Long id) {
+        return roomMapper.findOneJachi(id);
+    }
+
+    public GosiwonStatus calRoomStatus(String location) {
+        return roomMapper.calRoomStatus(location);
+    }
+
+    public ShareHouse getOneShare(Long id) {
+        return roomMapper.findOneShare(id);
+    }
+
+    public GosiwonStatus calShareStauts(String location) {
+
+        return roomMapper.calShareStauts(location);
+    }
 }
