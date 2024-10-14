@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.community.mapper.ArticleMapper">
+    <insert id="insert" parameterType="com.kb.community.vo.Article">
+        INSERT INTO ARTICLE(TITLE, CONTENT, THUMBNAIL) VALUES(#{title}, #{content}, #{thumbnail})
+
+        <selectKey keyProperty="articleId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findAll" resultType="com.kb.community.vo.Article">
+        SELECT * FROM ARTICLE
+    </select>
+
+    <select id="findOneById" resultType="com.kb.community.vo.Article">
+        SELECT * FROM ARTICLE WHERE ARTICLE_ID = #{id}
+    </select>
+</mapper>
