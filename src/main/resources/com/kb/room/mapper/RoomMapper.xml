@@ -376,4 +376,12 @@
 
     </select>
 
+    <!--  메인: 관심 지역 최신 4개 고시원 조회  -->
+    <select id="findLatestFourAtInterestArea" resultMap="gosiwonResultMap">
+        SELECT * FROM GOSIWON g
+        JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE r.ADDRESS LIKE CONCAT('%', #{address}, '%') AND g.IS_SOLD_OUT = "0"
+        ORDER BY r.CREATED_AT DESC LIMIT 4
+    </select>
+
 </mapper>
