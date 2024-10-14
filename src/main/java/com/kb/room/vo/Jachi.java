@@ -2,11 +2,12 @@ package com.kb.room.vo;
 
 import lombok.*;
 
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class Jachi {
-    private Room roomId; //FK
-    private String CATEGORY;
+    private Room room; //FK
 
-    private Integer JACHI_ID;              // JACHI_ID
+    private Integer jachiId;              // JACHI_ID
 
     //BASIC INFO ----
     private Integer priceMin;           // PRICE_MIN

@@ -10,7 +10,7 @@ import lombok.*;
 public class ShareHouse {
 
     private Integer shareHouseId;       // SHAREHOUSE_ID
-    private Integer roomId;             // ROOM_ID
+    private Room room;             // ROOM_ID
 
     // Price and deposit information
     private Integer priceMin;        // PRICE_MIN

@@ -5,9 +5,6 @@ import lombok.*;
 @Getter
 //@Setter
 //@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-
 public enum RentType {
     JEONSE,    // 전세
     BANJEONSE, // 반전세
