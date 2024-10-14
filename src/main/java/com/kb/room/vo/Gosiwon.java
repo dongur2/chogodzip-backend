@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 public class Gosiwon {
     private Integer gswId;
-    private Integer roomId; //FK
+    private Room room; //FK
 
     //BASIC INFO ----
     private String title;
