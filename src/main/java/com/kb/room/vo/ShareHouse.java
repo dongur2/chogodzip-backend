@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ShareHouse {
 
-    private Long shareHouseId;       // SHAREHOUSE_ID
+    private Integer shareHouseId;       // SHAREHOUSE_ID
     private Room room;             // ROOM_ID
 
     // Price and deposit information

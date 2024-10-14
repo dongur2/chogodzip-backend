@@ -238,6 +238,20 @@
         WHERE g.ROOM_ID = #{id}
     </select>
 
+    <select id="findOneJachi" resultMap="JachiResultMap">
+        SELECT *
+        FROM JACHI g
+                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE g.ROOM_ID = #{id}
+    </select>
+
+    <select id="findOneShare" resultMap="ShareHouseResultMap">
+        SELECT *
+        FROM SHAREHOUSE g
+                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE g.ROOM_ID = #{id}
+    </select>
+
 
     <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">
         INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)
@@ -322,6 +336,34 @@
             MIN(g.PRICE_MAX) AS minPrice
         FROM
             GOSIWON g
+                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE
+            r.ADDRESS IS NOT NULL
+          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');
+
+    </select>
+
+    <select id="calRoomStatus" parameterType="string" resultMap="GosiwonStatusResultMap">
+        SELECT
+            MAX(g.PRICE_MAX) AS maxPrice,
+            AVG(g.PRICE_MAX) AS avgPrice,
+            MIN(g.PRICE_MAX) AS minPrice
+        FROM
+            SHAREHOUSE g
+                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE
+            r.ADDRESS IS NOT NULL
+          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');
+
+    </select>
+
+    <select id="calShareStauts" parameterType="string" resultMap="GosiwonStatusResultMap">
+        SELECT
+            MAX(g.PRICE_MAX) AS maxPrice,
+            AVG(g.PRICE_MAX) AS avgPrice,
+            MIN(g.PRICE_MAX) AS minPrice
+        FROM
+            JACHI g
                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
         WHERE
             r.ADDRESS IS NOT NULL

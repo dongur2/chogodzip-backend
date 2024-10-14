@@ -15,6 +15,7 @@ public class RoomTempDTO {
     //VO => DTO
     public static RoomTempDTO from(Room vo) {
         return RoomTempDTO.builder()
+//                .roomId(vo.getRoomId())
                 .userId(vo.getUserId())
                 .build();
     }
