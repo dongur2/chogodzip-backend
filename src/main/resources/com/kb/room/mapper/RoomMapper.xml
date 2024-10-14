@@ -8,10 +8,8 @@
         <id property="gswId" column="GSW_ID" />
 
         <!-- BASIC INFO -->
-        <result property="category" column="CATEGORY" />
         <result property="title" column="TITLE" />
         <result property="postcode" column="POSTCODE" />
-        <result property="detailAddress" column="DETAIL_ADDRESS" />
         <result property="priceMin" column="PRICE_MIN" />
         <result property="priceMax" column="PRICE_MAX" />
         <result property="depositMin" column="DEPOSIT_MIN" />
@@ -21,8 +19,7 @@
         <result property="services" column="SERVICES" />
         <result property="languages" column="LANGUAGES" />
         <result property="etc" column="ETC" />
-        <result property="desc" column="DESCRIPTION" />
-        <result property="pics" column="PICS" />
+        <result property="description" column="DESCRIPTION" />
         <result property="genderLimit" column="GENDER_LIMIT" />
         <result property="type" column="TYPE" />
         <result property="contractMin" column="CONTRACT_MIN" />
@@ -237,6 +234,20 @@
         WHERE g.ROOM_ID = #{id}
     </select>
 
+    <select id="findOneJachi" resultMap="JachiResultMap">
+        SELECT *
+        FROM JACHI g
+                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE g.ROOM_ID = #{id}
+    </select>
+
+    <select id="findOneShare" resultMap="ShareHouseResultMap">
+        SELECT *
+        FROM SHAREHOUSE g
+                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE g.ROOM_ID = #{id}
+    </select>
+
 
     <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">
         INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)
@@ -325,6 +336,34 @@
             MIN(g.PRICE_MAX) AS minPrice
         FROM
             GOSIWON g
+                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE
+            r.ADDRESS IS NOT NULL
+          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');
+
+    </select>
+
+    <select id="calRoomStatus" parameterType="string" resultMap="GosiwonStatusResultMap">
+        SELECT
+            MAX(g.PRICE_MAX) AS maxPrice,
+            AVG(g.PRICE_MAX) AS avgPrice,
+            MIN(g.PRICE_MAX) AS minPrice
+        FROM
+            SHAREHOUSE g
+                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE
+            r.ADDRESS IS NOT NULL
+          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');
+
+    </select>
+
+    <select id="calShareStauts" parameterType="string" resultMap="GosiwonStatusResultMap">
+        SELECT
+            MAX(g.PRICE_MAX) AS maxPrice,
+            AVG(g.PRICE_MAX) AS avgPrice,
+            MIN(g.PRICE_MAX) AS minPrice
+        FROM
+            JACHI g
                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
         WHERE
             r.ADDRESS IS NOT NULL
