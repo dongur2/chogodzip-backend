@@ -156,7 +156,7 @@ public class MemberService{
         return memberMapper.getOneInfo(userId);
     }
 
-    public Member updateUserProfile(String userId, UserProfileUpdateRequest updatedData) {
+    public int updateUserProfile(String userId, UserProfileUpdateRequest updatedData) {
 
         Member member = memberMapper.getOneInfo(userId);
 
@@ -170,12 +170,10 @@ public class MemberService{
             member.setProfileImg(updatedData.getProfileImg());
 
             // MyBatis로 업데이트 쿼리 실행
-            memberMapper.updateMemberInfo(member);
-
-            return memberMapper.selectById(userId);
+            return memberMapper.updateMemberInfo(member);
         } else {
             // 사용자 정보가 없으면 0 반환 (업데이트 실패)
-            return null;
+            return 0;
         }
     }
 }

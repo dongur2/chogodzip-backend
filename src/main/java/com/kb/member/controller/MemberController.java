@@ -101,20 +101,20 @@ public class MemberController {
     }
 
     @PutMapping("/change/{userId}")
-    public ResponseEntity<Member> changeProfile(
+    public ResponseEntity<Integer> changeProfile(
             @PathVariable String userId,
             @RequestBody UserProfileUpdateRequest updatedData) {
 
         // 서비스 계층에서 userName을 사용해 해당 사용자 정보를 찾아 프로필 업데이트
-        Member result = service.updateUserProfile(userId, updatedData);
+        int result = service.updateUserProfile(userId, updatedData);
 
-        if (result == null) {
+        if (result != 0) {
             // 업데이트 성공
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.ok(result);
 
         } else {
             // 업데이트 실패
-            return ResponseEntity.ok(result);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
         }
     }
 
@@ -126,9 +126,7 @@ public class MemberController {
 
     @GetMapping("/join")
     public ResponseEntity<Member> joinMember(String userId){
-        log.info("넘어온 userId:"+userId);
         Member result = service.getMemberInfo(userId);
-        log.info("넘어온 userId로 찾은 멤버:", result.toString());
         return ResponseEntity.ok(result);
     }
 }
