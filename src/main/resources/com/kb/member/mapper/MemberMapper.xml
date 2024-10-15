@@ -82,6 +82,11 @@
         WHERE m.status = 'y' and m.kakao_id = #{id}
     </select>
 
+    <!-- 프로필 사진만 조회  -->
+    <select id="findPicOfMember" resultType="java.lang.String">
+        SELECT profile_img FROM member WHERE mno = #{userId}
+    </select>
+
     <insert id="insertMember" parameterType="com.kb.member.dto.Member">
         INSERT INTO member(mno, id, password, name, email, status, kakao_id, address, interest_area)
         VALUES(default, #{id}, #{password}, #{name}, #{email}, default, #{kakaoId}, #{address}, #{interestArea})
