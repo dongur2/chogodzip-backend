@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -157,6 +158,17 @@ class RoomMapperTest {
                     .build();
 
             mapper.saveRoomWithLoan(rwl);
+        }
+    }
+
+    @Test
+    @DisplayName("관심 지역 매물 검색")
+    void fetchRoomsAtInterestArea() {
+        String area = "서울 광진구";
+
+        List<Gosiwon> latestFourAtInterestArea = mapper.findLatestFourAtInterestArea(area);
+        for(Gosiwon gosiwon : latestFourAtInterestArea) {
+            log.info(gosiwon.getTitle());
         }
     }
 }
