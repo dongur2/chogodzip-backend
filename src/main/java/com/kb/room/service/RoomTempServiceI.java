@@ -2,7 +2,10 @@ package com.kb.room.service;
 
 import com.kb.common.util.S3Uploader;
 import com.kb.member.mapper.MemberMapper;
+import com.kb.room.dto.RoomParam;
 import com.kb.room.dto.request.GosiwonPostDTO;
+import com.kb.room.dto.response.RoomHomeDTO;
+import com.kb.room.dto.response.RoomHomeMapDTO;
 import com.kb.room.dto.response.RoomTempDTO;
 import com.kb.room.mapper.RoomMapper;
 import com.kb.room.vo.Gosiwon;
@@ -64,4 +67,16 @@ public class RoomTempServiceI implements RoomTempService{
         return roomVO.getRoomId();
     }
 
+    //메인: 관심 지역 매물 조회
+    @Override
+    public List<RoomHomeDTO> fetchRoomsAtInterestArea(String interestArea) {
+        List<Gosiwon> rooms = roomMapper.findLatestFourAtInterestArea(interestArea);
+        return rooms.stream().map(RoomHomeDTO::from).toList();
+    }
+
+    @Override
+    public List<RoomHomeMapDTO> fetchRoomsAtInterestAreaMap(RoomParam param) {
+        List<Room> rooms = roomMapper.findRoomByLocation(param);
+        return rooms.stream().map(RoomHomeMapDTO::from).toList();
+    }
 }
