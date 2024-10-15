@@ -44,6 +44,13 @@
             member
         WHERE mno = #{userId}
     </select>
+    <select id="getOneInfo" resultType="com.kb.member.dto.Member">
+        SELECT
+            *
+        FROM
+            member
+        WHERE id = #{userName}
+    </select>
 
 
     <select id="selectMemberAll" resultMap="memberResultMap">
@@ -88,8 +95,8 @@
     </select>
 
     <insert id="insertMember" parameterType="com.kb.member.dto.Member">
-        INSERT INTO member(mno, id, password, name, email, status, kakao_id, address, interest_area)
-        VALUES(default, #{id}, #{password}, #{name}, #{email}, default, #{kakaoId}, #{address}, #{interestArea})
+        INSERT INTO member(mno, id, password, name, email, status, kakao_id, address, interest_area, profile_img)
+        VALUES(default, #{id}, #{password}, #{name}, #{email}, default, #{kakaoId}, #{address}, #{interestArea}, #{profileImg})
     </insert>
 
 
@@ -133,4 +140,12 @@
         DELETE FROM  member_auth
         WHERE id = #{id} AND authority = #{auth}
     </delete>
+
+    <update id="updateMemberInfo" parameterType="com.kb.member.dto.Member">
+        UPDATE member
+        SET
+            address = #{address},
+            interest_area = #{interestArea}
+        WHERE id = #{id}
+    </update>
 </mapper>

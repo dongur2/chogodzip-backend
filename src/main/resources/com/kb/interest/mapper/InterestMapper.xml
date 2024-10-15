@@ -26,4 +26,10 @@
         from INTEREST_ROOM
         where user_Id = #{userId} And room_id = #{roomId}
     </select>
+
+    <select id="myfavoiteRoom" resultType="com.kb.room.vo.Room">
+        select *
+        from INTEREST_ROOM i inner join ROOM r on i.room_id = r.room_id
+        where i.user_id = #{userId}
+    </select>
 </mapper>

@@ -52,4 +52,6 @@ public interface RoomMapper {
     ShareHouse findOneShare(Long id);
 
     GosiwonStatus calShareStauts(String location);
+
+    List<Room> myRoomList(Long userId);
 }

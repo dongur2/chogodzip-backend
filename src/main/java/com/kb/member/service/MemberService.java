@@ -2,6 +2,7 @@ package com.kb.member.service;
 
 import com.kb.member.dto.Auth;
 import com.kb.member.dto.ChangePasswordDTO;
+import com.kb.member.dto.UserProfileUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.kb.member.dto.Member;
@@ -78,7 +79,7 @@ public class MemberService{
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Member join(Member member, MultipartFile avatar) throws IllegalAccessException {
+    public Member join(Member member) throws IllegalAccessException {
         if(member.checkRequiredValue()){
             throw new IllegalAccessException();
         }
@@ -92,7 +93,6 @@ public class MemberService{
         if(result != 1){
             throw new IllegalAccessException();
         }
-        saveAvatar(avatar, member.getUsername());
         return mapper.selectById(member.getId());
     }
 
@@ -151,4 +151,30 @@ public class MemberService{
     public Member getIdMem(Long userId) {
         return memberMapper.oneMeme(userId);
     }
+
+    public Member getMemberInfo(String userName) {
+
+
+        return memberMapper.getOneInfo(userName);
+    }
+
+    public int updateUserProfile(String userName, UserProfileUpdateRequest updatedData) {
+
+        Member member = memberMapper.getOneInfo(userName);
+
+        if (member != null) {
+            // 사용자 정보를 업데이트
+
+            member.setAddress(updatedData.getAddress());
+            member.setInterestArea(updatedData.getInterestArea());
+
+            // MyBatis로 업데이트 쿼리 실행
+            return memberMapper.updateMemberInfo(member);
+        } else {
+            // 사용자 정보가 없으면 0 반환 (업데이트 실패)
+            return 0;
+        }
+
+    }
+
 }
