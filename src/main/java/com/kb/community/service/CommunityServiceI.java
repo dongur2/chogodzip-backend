@@ -10,6 +10,7 @@ import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.mapper.CommunityMapper;
 import com.kb.community.vo.Community;
 import com.kb.member.mapper.MemberMapper;
+import com.kb.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -28,6 +29,8 @@ public class CommunityServiceI implements CommunityService {
     @Autowired private MemberMapper memberMapper;
 
     @Autowired private CommunityCmtService cmtService;
+    @Autowired
+    private MemberService memberService;
 
     //커뮤니티 모든 글 조회
     @Override
@@ -41,10 +44,14 @@ public class CommunityServiceI implements CommunityService {
         CommunityDetailDTO dto = null;
         try {
             dto = CommunityDetailDTO.from(communityMapper.findById(id));
+            dto.setMemberPic(memberService.getPicOfMember(dto.getMNo())); //프사
 
             //댓글 조회
             List<CommentDetailDTO> cmts = cmtService.getAll(id);
-            if(cmts != null) dto.setComments(cmts);
+            if(cmts != null) {
+                cmts.forEach(c -> c.setMemberPic(memberService.getPicOfMember(c.getMNo())));
+                dto.setComments(cmts);
+            }
 
             //조회하면서 조회수 카운트
             Integer hits = getHits(id, dto.getViews());
