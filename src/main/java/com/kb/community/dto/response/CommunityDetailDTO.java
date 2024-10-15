@@ -13,6 +13,7 @@ public class CommunityDetailDTO {
     private Long mNo; //member
     private String memberId; //member
     private String nickname; //member
+    private String memberPic; //member
     private String title;
     private String content;
     private String tag;

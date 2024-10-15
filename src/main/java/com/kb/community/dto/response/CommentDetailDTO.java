@@ -12,6 +12,7 @@ public class CommentDetailDTO {
     private Long mNo;
     private String memberId;
     private String memberName;
+    private String memberPic;
     private String content;
     private Date createdAt;
 

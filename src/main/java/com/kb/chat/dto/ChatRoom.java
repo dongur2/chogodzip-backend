@@ -13,5 +13,6 @@ public class ChatRoom {
     private Long chatroomId;
     private Long roomId;
     private Long senderId;
+    private String receiverPic;
     private Long receiverId;
 }
