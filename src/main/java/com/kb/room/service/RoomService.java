@@ -7,6 +7,7 @@ import com.kb.room.mapper.RoomMapper;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.GosiwonStatus;
 import com.kb.room.vo.Jachi;
+import com.kb.room.vo.Room;
 import com.kb.room.vo.ShareHouse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -80,5 +81,9 @@ public class RoomService {
     public GosiwonStatus calShareStauts(String location) {
 
         return roomMapper.calShareStauts(location);
+    }
+
+    public List<Room> myRoomList(Long userId) {
+        return roomMapper.myRoomList(userId);
     }
 }

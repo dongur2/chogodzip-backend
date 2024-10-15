@@ -22,4 +22,8 @@ public interface MemberMapper {
     Long searchOneMember(@Param("userName") String userName);
 
     Member oneMeme(Long userId);
+
+    Member getOneInfo(String userName);
+
+    int updateMemberInfo(Member member);
 }

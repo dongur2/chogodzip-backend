@@ -3,6 +3,7 @@ package com.kb.interest.controller;
 import com.kb.interest.dto.InterestRoom;
 import com.kb.interest.service.InterestService;
 import com.kb.member.service.MemberService;
+import com.kb.room.vo.Room;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.Map;
@@ -67,5 +68,13 @@ public class InterestController {
         int deleteInterest = interestService.deleteInterestRoom(userId, Long.parseLong(""+params.get("roomId")));
         return ResponseEntity.ok(deleteInterest);
     }
+
+    @GetMapping("/myInterest")
+    public ResponseEntity<List<Room>> getAllMyInterest(String userName){
+        Long userId = memberService.searchOneMember(userName);
+        List<Room> rooms = interestService.myInterestRoom(userId);
+        return ResponseEntity.ok(rooms);
+    }
+
 
 }

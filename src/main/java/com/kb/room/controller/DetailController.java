@@ -7,6 +7,7 @@ import com.kb.room.service.RoomService;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.GosiwonStatus;
 import com.kb.room.vo.Jachi;
+import com.kb.room.vo.Room;
 import com.kb.room.vo.ShareHouse;
 import io.swagger.annotations.Api;
 import java.util.Date;
@@ -87,6 +88,14 @@ public class DetailController {
     private ResponseEntity<GosiwonStatus> getShareStatus(String location){
         GosiwonStatus result = roomService.calShareStauts(location);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/myRegist")
+    private ResponseEntity<List<Room>> getMyRegist(String userName) {
+        Long userId = memberService.searchOneMember(userName);
+        List<Room> result = roomService.myRoomList(userId);
+        return ResponseEntity.ok(result);
+
     }
 
 
