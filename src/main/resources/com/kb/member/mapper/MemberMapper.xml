@@ -16,6 +16,7 @@
         <result property="modifyDate"	column="modify_date" />
         <result property="address"	column="address" />
         <result property="interestArea"	column="interest_area" />
+        <result property="profileImg"	column="profile_img" />
         <collection property="authorities"
                     javaType="arraylist"
                     ofType="org.springframework.security.core.authority.SimpleGrantedAuthority"
@@ -54,7 +55,7 @@
 
     <select id="selectMemberAll" resultMap="memberResultMap">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
             LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -63,7 +64,7 @@
 
     <select id="selectByNo" resultMap="memberResultMap" parameterType="long">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
                 LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -72,7 +73,7 @@
 
     <select id="selectById" resultMap="memberResultMap" parameterType="string">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
             LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -81,11 +82,16 @@
 
     <select id="selectBykakaoId" resultMap="memberResultMap" parameterType="string">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
                 LEFT OUTER JOIN member_auth a ON m.id = a.id
         WHERE m.status = 'y' and m.kakao_id = #{id}
+    </select>
+
+    <!-- 프로필 사진만 조회  -->
+    <select id="findPicOfMember" resultType="java.lang.String">
+        SELECT profile_img FROM member WHERE mno = #{userId}
     </select>
 
     <insert id="insertMember" parameterType="com.kb.member.dto.Member">

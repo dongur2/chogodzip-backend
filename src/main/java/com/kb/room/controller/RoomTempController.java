@@ -53,4 +53,5 @@ public class RoomTempController {
         Integer roomId = roomTempService.addRoom(dto, pics);
         return new ResponseEntity<>(roomId, HttpStatus.OK);
     }
+
 }

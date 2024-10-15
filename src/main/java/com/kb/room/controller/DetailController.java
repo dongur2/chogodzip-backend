@@ -65,9 +65,7 @@ public class DetailController {
     @GetMapping("/review/{roomId}")
     private ResponseEntity<List<UserReview>> getReview(@PathVariable Long roomId) {
         List<UserReview> list = roomService.getAllReview(roomId);
-
         return ResponseEntity.ok(list);
-
     }
 
     @GetMapping("/status")

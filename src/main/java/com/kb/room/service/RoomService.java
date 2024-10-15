@@ -1,5 +1,6 @@
 package com.kb.room.service;
 
+import com.kb.member.mapper.MemberMapper;
 import com.kb.room.dto.GosiwonRoomDTO;
 import com.kb.room.dto.UserReview;
 import com.kb.room.dto.RoomParam;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomService {
 
     private final RoomMapper roomMapper;
+    private final MemberMapper memberMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public int registReply(Long userId, Long roomId, String reply) {
@@ -49,8 +51,12 @@ public class RoomService {
     }
 
     public List<UserReview> getAllReview(Long roomId) {
-
-        return roomMapper.findAllReview(roomId);
+        List<UserReview> reviewList = roomMapper.findAllReview(roomId);
+        reviewList.forEach(review -> {
+            review.setUserPic(memberMapper.findPicOfMember(review.getUserId()));
+            review.setUserName(memberMapper.selectByNo(review.getUserId()).getName());
+        });
+        return reviewList;
     }
 
     public GosiwonStatus calStatus(String location) {

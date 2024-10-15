@@ -143,6 +143,11 @@ public class MemberService{
         return memberMapper.searchOneMember(userName);
     }
 
+    // 프로필 사진만 조회
+    public String getPicOfMember(Long userId) {
+        return memberMapper.findPicOfMember(userId);
+    }
+
 
     public Member getIdMem(Long userId) {
         return memberMapper.oneMeme(userId);

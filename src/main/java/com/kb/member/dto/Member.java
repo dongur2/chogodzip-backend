@@ -27,6 +27,7 @@ public class Member implements UserDetails {
     private Date modifyDate;    // 수정일
     private String address; // 실거주지 주소
     private String interestArea; // 관심 지역
+    private String profileImg; // 프사
 
     private String token; // JWT 토큰값, DB로는 저장하지 않음
 
