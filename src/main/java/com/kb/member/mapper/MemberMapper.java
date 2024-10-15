@@ -23,4 +23,8 @@ public interface MemberMapper {
     String findPicOfMember(@Param("userId") Long userId);
 
     Member oneMeme(Long userId);
+
+    Member getOneInfo(String userName);
+
+    int updateMemberInfo(Member member);
 }

@@ -5,6 +5,7 @@ import com.kb.kakao.KaKaoLoginService;
 import com.kb.member.dto.ChangePasswordDTO;
 import com.kb.member.dto.Member;
 import com.kb.member.dto.MemberDTO;
+import com.kb.member.dto.UserProfileUpdateRequest;
 import com.kb.member.service.MemberService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -101,19 +103,33 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/change/{userName}")
+    public ResponseEntity<Integer> changeProfile(
+            @PathVariable String userName,
+            @RequestBody UserProfileUpdateRequest updatedData) {
 
+        // 서비스 계층에서 userName을 사용해 해당 사용자 정보를 찾아 프로필 업데이트
+        int result = service.updateUserProfile(userName, updatedData);
 
-
-    @PutMapping("/kakaoInfo/{code}")
-    public ResponseEntity<Member> changeProfile(MemberDTO memberDTO,
-                                                @RequestParam(name = "avatar", required = false) MultipartFile avatar) throws IllegalAccessException {
-        Member member = memberDTO.toMember();
-        return ResponseEntity.ok(service.update(member, avatar));
+        if (result > 0) {
+            // 업데이트 성공
+            return ResponseEntity.ok(result);
+        } else {
+            // 업데이트 실패
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Member> delete(@PathVariable String id) {
         return ResponseEntity.ok(service.delete(id));
+    }
+
+    @GetMapping("/join")
+    public ResponseEntity<Member> joinMember(String userName){
+        Member result = service.getMemberInfo(userName);
+        return ResponseEntity.ok(result);
     }
 
 
