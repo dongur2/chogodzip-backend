@@ -47,7 +47,7 @@
 
     <select id="selectMemberAll" resultMap="memberResultMap">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area
         FROM
             member m
             LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -56,7 +56,7 @@
 
     <select id="selectByNo" resultMap="memberResultMap" parameterType="long">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area
         FROM
             member m
                 LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -65,7 +65,7 @@
 
     <select id="selectById" resultMap="memberResultMap" parameterType="string">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area
         FROM
             member m
             LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -74,7 +74,7 @@
 
     <select id="selectBykakaoId" resultMap="memberResultMap" parameterType="string">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority
+            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area
         FROM
             member m
                 LEFT OUTER JOIN member_auth a ON m.id = a.id
