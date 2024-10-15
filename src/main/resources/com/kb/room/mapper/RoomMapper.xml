@@ -285,6 +285,10 @@
         SELECT * FROM ROOM
     </select>
 
+    <select id="myRoomList" resultType="com.kb.room.vo.Room">
+        SELECT * FROM ROOM where user_id = #{userId}
+    </select>
+
     <!--  부동산 작성 [ROOM]  -->
     <insert id="saveRoom" parameterType="com.kb.room.vo.Room" useGeneratedKeys="true" keyProperty="roomId">
         INSERT INTO ROOM

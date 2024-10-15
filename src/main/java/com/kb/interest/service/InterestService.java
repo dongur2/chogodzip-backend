@@ -2,6 +2,7 @@ package com.kb.interest.service;
 
 import com.kb.interest.dto.InterestRoom;
 import com.kb.interest.mapper.InterestMapper;
+import com.kb.room.vo.Room;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -51,4 +52,9 @@ public class InterestService {
     }
 
 
+    public List<Room> myInterestRoom(Long userId) {
+
+        List<Room> result = interestMapper.myfavoiteRoom(userId);
+        return result;
+    }
 }
