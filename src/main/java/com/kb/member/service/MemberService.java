@@ -78,7 +78,7 @@ public class MemberService{
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Member join(Member member, MultipartFile avatar) throws IllegalAccessException {
+    public Member join(Member member) throws IllegalAccessException {
         if(member.checkRequiredValue()){
             throw new IllegalAccessException();
         }
@@ -92,7 +92,6 @@ public class MemberService{
         if(result != 1){
             throw new IllegalAccessException();
         }
-        saveAvatar(avatar, member.getUsername());
         return mapper.selectById(member.getId());
     }
 

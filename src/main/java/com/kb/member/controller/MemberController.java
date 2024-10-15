@@ -86,12 +86,9 @@ public class MemberController {
 
 
     @PostMapping("")
-    public ResponseEntity<Member> join(MemberDTO memberDTO,
-                                       @RequestParam(name = "avatar", required = false)
-                                       MultipartFile avatar) throws IllegalAccessException {
+    public ResponseEntity<Member> join(MemberDTO memberDTO) throws IllegalAccessException {
         Member member = memberDTO.toMember();
-        System.out.println("@@@" + member);
-        return ResponseEntity.ok(service.join(member, avatar));
+        return ResponseEntity.ok(service.join(member));
     }
 
 
