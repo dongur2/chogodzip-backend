@@ -48,15 +48,16 @@ public class S3Uploader {
         return savedName;
     }
 
-    //복수 파일 저장
+    //복수 파일 저장 :: 전체 url 리턴
     public List<String> uploadList(MultipartFile[] files) throws IOException {
-        List<String> savedNameList = new ArrayList<>();
+        List<String> savedUrlList = new ArrayList<>();
 
         for(MultipartFile file : files) {
-            savedNameList.add(upload(file));
+            String savedName = upload(file);
+            savedUrlList.add(amazonS3.getUrl(bucket, savedName).toString());
         }
 
-        return savedNameList;
+        return savedUrlList;
     }
 
     private String createNameRandomly(MultipartFile file) {

@@ -26,8 +26,9 @@ public interface RoomMapper {
     int findFavoriteCnt(int roomId);
 
     List<UserReview> findAllReview(Long roomId);
-  
-    Gosiwon findOneByRoomId(@Param("roomId") Long roomId); //roomId로 부동산 단일 조회
+
+    Room findRoomByRoomId(@Param("roomId") Integer roomId); //roomId로 부동산 단일 조회
+    Gosiwon findOneByRoomId(@Param("roomId") Integer roomId); //roomId로 고시원 단일 조회
     List<Room> findAll(); //부동산 모두 조회
 
     Long saveRoom(Room room); //매물 작성

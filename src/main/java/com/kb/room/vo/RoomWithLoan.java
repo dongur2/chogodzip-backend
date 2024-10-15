@@ -6,6 +6,6 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 public class RoomWithLoan {
     private Long roomLoanId;
-    private Long roomId;
+    private Integer roomId;
     private Long loanId;
 }
