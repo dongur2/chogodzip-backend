@@ -15,7 +15,9 @@ public class UserReview {
 
     private Long reviewId;
     private Long roomId;
-    private Long userId;
+    private Long userId; //mno
+    private String userName; //name
+    private String userPic;
     private String reviewContent;
     private Date createdAt;
     private String isDeleted;

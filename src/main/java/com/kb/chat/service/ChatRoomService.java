@@ -39,6 +39,7 @@ public class ChatRoomService {
         map.put("roomId", roomId);
         map.put("senderId", senderMno);
         map.put("receiverId", receiverMno);
+        map.put("receiverPic", memberMapper.findPicOfMember(receiverMno));
 
         ChatRoom chatRoom = chatRoomMapper.findChatRoom(map);
         if (chatRoom == null) {
@@ -46,6 +47,7 @@ public class ChatRoomService {
             chatRoom.setRoomId(roomId);
             chatRoom.setSenderId(senderMno);
             chatRoom.setReceiverId(receiverMno);
+            chatRoom.setReceiverPic(memberMapper.findPicOfMember(receiverMno));
             chatRoomMapper.insertChatRoom(chatRoom);
         }
         return chatRoom;
@@ -57,7 +59,9 @@ public class ChatRoomService {
     }
 
     public List<ChatRoom> getChatRooms(Long userId) {
-        return chatRoomMapper.getAllChatRoom(userId);
+        List<ChatRoom> chatRoomList = chatRoomMapper.getAllChatRoom(userId);
+        chatRoomList.forEach(chat -> chat.setReceiverPic(memberMapper.findPicOfMember(chat.getReceiverId())));
+        return chatRoomList;
     }
 
     public int getNum(Long roomId, Long userId) {

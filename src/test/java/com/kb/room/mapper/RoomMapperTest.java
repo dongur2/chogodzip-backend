@@ -6,7 +6,8 @@ import com.kb._config.WebConfig;
 import com.kb._config.WebMvcConfig;
 import com.kb.room.vo.Gosiwon;
 import com.kb.room.vo.Room;
-import lombok.extern.slf4j.Slf4j;
+import com.kb.room.vo.RoomWithLoan;
+import lombok.extern.log4j.Log4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Slf4j
+@Log4j
 @WebAppConfiguration
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class, WebMvcConfig.class, ServletConfig.class})
@@ -26,10 +28,10 @@ class RoomMapperTest {
     @Autowired private RoomMapper mapper;
 
     @Test
-    @DisplayName("ROOM_ID로 고시원 조회")
+    @DisplayName("ROOM_ID로 부동산(ROOM) 조회")
     void findOneByRoomId() {
-        Gosiwon gosiwon = mapper.findOneByRoomId(10000L);
-        assertThat(gosiwon.getTitle()).isEqualTo("고시원 제목2 - 대출 가능");
+        Room room = mapper.findRoomByRoomId(100000);
+        assertThat(room.getUserId()).isEqualTo(2L);
     }
 
     @Test
@@ -51,112 +53,122 @@ class RoomMapperTest {
         log.info("저장한 부동산 ID: " + room.getRoomId());
     }
 
-//    @Test
-//    @DisplayName("[대출 없음] 고시원 작성")
-//    void saveGosiwon() {
-//        Room room = Room.builder()
-//                .userId(1L)
-//                .roomLat(new BigDecimal("37.0996527684079"))
-//                .roomLong(new BigDecimal("126.839982282494"))
-//                .thumbnail("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
-//                .canLoan(false)
-//                .build();
-//
-//        mapper.saveRoom(room);
-//
-//        Gosiwon gosiwon = Gosiwon.builder()
-//                .room(room)
-//                .title("고시원 제목1")
-//                .postcode("06903")
-//                .priceMin(40)
-//                .priceMax(65)
-//                .depositMin(10)
-//                .depositMax(15)
-//                .maintenanceFee(0)
-//                .privateFacilities("개인화장실|개인샤워실")
-//                .services("creditCard|freeMeal")
-//                .languages("eng")
-//                .genderLimit("0")
-//                .type("0")
-//                .contractMin(1)
-//                .ageMin(0)
-//                .ageMax(0)
-//                .facilityHeating("center")
-//                .facilityCooling("center")
-//                .facilityLife("desk|chair")
-//                .facilitySecurity("CCTV")
-//                .buildingType(0)
-//                .canParking(0)
-//                .hasElevator(0)
-//                .isSoldOut(false)
-//                .build();
-//
-//        mapper.saveGosiwon(gosiwon);
-//        assertThat(gosiwon.getGswId()).isEqualTo(4L);
-//    }
+    @Test
+    @DisplayName("[대출 없음] 고시원 작성")
+    void saveGosiwon() {
+        Room room = Room.builder()
+                .userId(24L)
+                .roomLat(new BigDecimal("37.0996527684079"))
+                .roomLong(new BigDecimal("126.839982282494"))
+                .thumbnail("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
+                .pics("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
+                .address("서울 광진구 능동로 195-2")
+                .houseTypeCd("HOUTP00001")
+                .houseTypeNm("고시원")
+                .canLoan(Boolean.FALSE)
+                .build();
 
-//    @Test
-//    @DisplayName("[대출 가능] 고시원 작성")
-//    void saveGosiwonWithLoan() {
-//        //부동산
-//        Room room = Room.builder()
-//                .userId(1L)
-//                .roomLat(new BigDecimal("37.0996527684079"))
-//                .roomLong(new BigDecimal("126.839982282494"))
-//                .thumbnail("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
-//                .canLoan(true)
-//                .build();
-//
-//        mapper.saveRoom(room);
-//        assertThat(room.getRoomId()).isEqualTo(20L);
-//
-//        //고시원
-//        Gosiwon gosiwon = Gosiwon.builder()
-//                .room(room)
-//                .category("gosiwon")
-//                .title("[테스트] 고시원 제목3 - 대출 가능")
-//                .postcode("06903")
-//                .address("서울특별시 관악구 서림 7길")
-//                .detailAddress("99 4층")
-//                .priceMin(40)
-//                .priceMax(65)
-//                .depositMin(10)
-//                .depositMax(15)
-//                .maintenanceFee(0)
-//                .privateFacilities("개인화장실|개인샤워실")
-//                .services("creditCard|freeMeal")
-//                .languages("eng")
-//                .desc("상세 설명....")
-//                .genderLimit(0)
-//                .type(0)
-//                .contractMin(1)
-//                .ageMin(0)
-//                .ageMax(0)
-//                .facilityHeating("center")
-//                .facilityCooling("center")
-//                .facilityLife("desk|chair")
-//                .facilitySecurity("CCTV")
-//                .buildingType(0)
-//                .canParking(0)
-//                .hasElevator(0)
-//                .isSoldOut(false)
-//                .build();
-//
-//        mapper.saveGosiwon(gosiwon);
-//        assertThat(gosiwon.getGswId()).isEqualTo(7L);
-//
-//        //대출
-//        if(room.getCanLoan()) {
-//            RoomWithLoan rwl = RoomWithLoan.builder()
-//                    .roomId(room.getRoomId())
-//                    .loanId(1L) //버팀목
-//                    .build();
-//
-//            mapper.saveRoomWithLoan(rwl);
-//
-//            assertThat(rwl.getRoomLoanId()).isEqualTo(4L);
-//        }
-//
-//        assertThat(mapper.findOneByRoomId(room.getRoomId()).getTitle()).isEqualTo("[테스트] 고시원 제목3 - 대출 가능");
-//    }
+        mapper.saveRoom(room);
+
+        Gosiwon gosiwon = Gosiwon.builder()
+                .room(room)
+                .title("[MAPPER TEST] 고시원 제목 1")
+                .postcode("06903")
+                .priceMin(40)
+                .priceMax(65)
+                .depositMin(10)
+                .depositMax(15)
+                .maintenanceFee(10)
+                .privateFacilities("개인화장실|개인샤워실")
+                .services("신용카드|식사제공")
+                .languages("영어")
+                .genderLimit("0")
+                .type("0")
+                .contractMin(31)
+                .ageMin(0)
+                .ageMax(0)
+                .facilityHeating("중앙난방|개인난방")
+                .facilityCooling("개인냉방")
+                .facilityLife("책상|의자|식탁|TV")
+                .facilitySecurity("CCTV|디지털 도어락")
+                .buildingType(0)
+                .canParking(Boolean.TRUE)
+                .hasElevator(Boolean.TRUE)
+                .isSoldOut(Boolean.FALSE)
+                .build();
+
+        mapper.saveGosiwon(gosiwon);
+
+        assertThat(gosiwon.getRoom().getRoomId()).isEqualTo(room.getRoomId());
+        assertThat(gosiwon.getTitle()).isEqualTo("[MAPPER TEST] 고시원 제목 1");
+    }
+
+    @Test
+    @DisplayName("[대출 가능] 고시원 작성")
+    void saveGosiwonWithLoan() {
+        Room room = Room.builder()
+                .userId(24L)
+                .roomLat(new BigDecimal("37.0996527684079"))
+                .roomLong(new BigDecimal("126.839982282494"))
+                .thumbnail("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
+                .pics("https://image.neoflat.net/vgTmOpt30n25GpYp_-4_SqXjBDE=/240x288/filters:no_upscale():watermark(/resource/gobang.png,center,center,0,20,none)/house/2760/abf4686a-658e-4324-82a0-ff62863003a6.jpg")
+                .address("서울 광진구 능동로 195-2")
+                .houseTypeCd("HOUTP00001")
+                .houseTypeNm("고시원")
+                .canLoan(Boolean.TRUE)
+                .build();
+
+        mapper.saveRoom(room);
+
+        Gosiwon gosiwon = Gosiwon.builder()
+                .room(room)
+                .title("[MAPPER TEST] 고시원 제목 2 :: 대출 가능")
+                .postcode("06903")
+                .priceMin(40)
+                .priceMax(65)
+                .depositMin(10)
+                .depositMax(15)
+                .maintenanceFee(10)
+                .privateFacilities("개인화장실|개인샤워실")
+                .services("신용카드|식사제공")
+                .languages("영어")
+                .genderLimit("0")
+                .type("0")
+                .contractMin(31)
+                .ageMin(0)
+                .ageMax(0)
+                .facilityHeating("중앙난방|개인난방")
+                .facilityCooling("개인냉방")
+                .facilityLife("책상|의자|식탁|TV")
+                .facilitySecurity("CCTV|디지털 도어락")
+                .buildingType(0)
+                .canParking(Boolean.TRUE)
+                .hasElevator(Boolean.TRUE)
+                .isSoldOut(Boolean.FALSE)
+                .build();
+
+        mapper.saveGosiwon(gosiwon);
+
+        //대출
+        if(room.getCanLoan()) {
+            log.info("대출 가능");
+            RoomWithLoan rwl = RoomWithLoan.builder()
+                    .roomId(room.getRoomId())
+                    .loanId(1L) //버팀목
+                    .build();
+
+            mapper.saveRoomWithLoan(rwl);
+        }
+    }
+
+    @Test
+    @DisplayName("관심 지역 매물 검색")
+    void fetchRoomsAtInterestArea() {
+        String area = "서울 광진구";
+
+        List<Gosiwon> latestFourAtInterestArea = mapper.findLatestFourAtInterestArea(area);
+        for(Gosiwon gosiwon : latestFourAtInterestArea) {
+            log.info(gosiwon.getTitle());
+        }
+    }
 }
