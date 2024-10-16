@@ -110,6 +110,7 @@ public class CommunityServiceI implements CommunityService {
         CommentDetailDTO saved = null;
         try {
            saved  = cmtService.save(dto);
+           saved.setMemberPic(memberService.getMember(dto.getMemberId()).getProfileImg());
         } catch (Exception e) { log.error("댓글 작성에 실패했습니다 : {}", e); }
         return saved;
     }
