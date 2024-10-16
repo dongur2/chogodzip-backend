@@ -152,21 +152,22 @@ public class MemberService{
         return memberMapper.oneMeme(userId);
     }
 
-    public Member getMemberInfo(String userName) {
-
-
-        return memberMapper.getOneInfo(userName);
+    public Member getMemberInfo(String userId) {
+        return memberMapper.getOneInfo(userId);
     }
 
-    public int updateUserProfile(String userName, UserProfileUpdateRequest updatedData) {
+    public int updateUserProfile(String userId, UserProfileUpdateRequest updatedData) {
 
-        Member member = memberMapper.getOneInfo(userName);
+        Member member = memberMapper.getOneInfo(userId);
 
         if (member != null) {
             // 사용자 정보를 업데이트
 
+            member.setId(userId);
+            member.setName(updatedData.getName());
             member.setAddress(updatedData.getAddress());
             member.setInterestArea(updatedData.getInterestArea());
+            member.setProfileImg(updatedData.getProfileImg());
 
             // MyBatis로 업데이트 쿼리 실행
             return memberMapper.updateMemberInfo(member);
@@ -174,7 +175,5 @@ public class MemberService{
             // 사용자 정보가 없으면 0 반환 (업데이트 실패)
             return 0;
         }
-
     }
-
 }

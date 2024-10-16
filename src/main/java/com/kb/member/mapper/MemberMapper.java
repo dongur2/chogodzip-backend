@@ -11,7 +11,7 @@ public interface MemberMapper {
     List<Member> selectMemberAll();
     Member selectByNo(Long no);
     Member selectById(String id);
-    Member selectBykakaoId(String kakaoId);
+    Member selectBykakaoId(String kakaoId); //로그인할 경우 호출
     int insertMember(Member member);
     int updateMember(Member member);
     int updatePassword(ChangePasswordDTO changePasswordDTO);
@@ -24,7 +24,7 @@ public interface MemberMapper {
 
     Member oneMeme(Long userId);
 
-    Member getOneInfo(String userName);
+    Member getOneInfo(String userId);
 
     int updateMemberInfo(Member member);
 }

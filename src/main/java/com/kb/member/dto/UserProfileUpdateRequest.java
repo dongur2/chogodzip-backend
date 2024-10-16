@@ -13,6 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserProfileUpdateRequest {
 
+    private String name;
     private String address;
     private String interestArea;
+    private String profileImg;
 }
