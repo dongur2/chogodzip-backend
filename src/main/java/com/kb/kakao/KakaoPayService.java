@@ -41,8 +41,7 @@ public class KakaoPayService {
 		params.put("quantity", param.getQuantity());
 		params.put("total_amount", param.getTotal_amount());
 		params.put("tax_free_amount", "500");
-		params.put("approval_url", "http://localhost:5173"
-				+ "");
+		params.put("approval_url", "http://localhost:5173/kakaopay/kakaoPaySuccess");
 		params.put("cancel_url", "http://localhost:5173/kakaopay/kakaoPayCancel");
 		params.put("fail_url", "http://localhost:5173/kakaopay/kakaoPayFail");
 		params.put("msg", "결제가 완료되었습니다.");

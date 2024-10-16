@@ -49,13 +49,13 @@
             *
         FROM
             member
-        WHERE id = #{userName}
+        WHERE id = #{userId}
     </select>
 
 
     <select id="selectMemberAll" resultMap="memberResultMap">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
+            mno, m.id, password, name, email, status, address, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
             LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -64,7 +64,7 @@
 
     <select id="selectByNo" resultMap="memberResultMap" parameterType="long">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
+            mno, m.id, password, name, email, status, address, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
                 LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -73,7 +73,7 @@
 
     <select id="selectById" resultMap="memberResultMap" parameterType="string">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
+            mno, m.id, password, name, email, status, address, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
             LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -82,7 +82,7 @@
 
     <select id="selectBykakaoId" resultMap="memberResultMap" parameterType="string">
         SELECT
-            mno, m.id, password, name, email, status, create_date, modify_date, a.authority, interest_area, profile_img
+            mno, m.id, password, name, email, status, address, create_date, modify_date, a.authority, interest_area, profile_img
         FROM
             member m
                 LEFT OUTER JOIN member_auth a ON m.id = a.id
@@ -105,7 +105,7 @@
         SET
             name = #{name},
             email = #{email},
-            modify_date = now()
+            modify_date = now(),
         WHERE mno = #{mno}
     </update>
 
@@ -144,8 +144,10 @@
     <update id="updateMemberInfo" parameterType="com.kb.member.dto.Member">
         UPDATE member
         SET
+            name = #{name},
             address = #{address},
-            interest_area = #{interestArea}
+            interest_area = #{interestArea},
+            profile_img = #{profileImg}
         WHERE id = #{id}
     </update>
 </mapper>
