@@ -1,6 +1,7 @@
 package com.kb.interest.mapper;
 
 import com.kb.interest.dto.InterestRoom;
+import com.kb.room.dto.IsSoldOut;
 import com.kb.room.vo.Room;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -16,4 +17,6 @@ public interface InterestMapper {
     InterestRoom isFavoriteRoom(@Param("userId") Long userId,  @Param("roomId")Long roomId);
 
     List<Room> myfavoiteRoom(Long userId);
+
+    List<IsSoldOut> isSoldOutInfo(Long userId);
 }

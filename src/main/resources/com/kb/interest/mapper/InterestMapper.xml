@@ -27,6 +27,20 @@
         where user_Id = #{userId} And room_id = #{roomId}
     </select>
 
+    <select id="isSoldOutInfo" resultType="com.kb.room.dto.IsSoldOut">
+        SELECT
+            r.ROOM_ID AS roomId,
+            COALESCE(j.IS_SOLD_OUT, s.IS_SOLD_OUT, g.IS_SOLD_OUT) AS isSoldOut
+        FROM
+            ROOM r
+                LEFT JOIN JACHI j ON r.ROOM_ID = j.ROOM_ID
+                LEFT JOIN SHAREHOUSE s ON r.ROOM_ID = s.ROOM_ID
+                LEFT JOIN GOSIWON g ON r.ROOM_ID = g.ROOM_ID
+        WHERE
+            r.USER_ID = #{userId}
+    </select>
+
+
     <select id="myfavoiteRoom" resultType="com.kb.room.vo.Room">
         select *
         from INTEREST_ROOM i inner join ROOM r on i.room_id = r.room_id
