@@ -100,17 +100,18 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/change/{userName}")
+    @PutMapping("/change/{userId}")
     public ResponseEntity<Integer> changeProfile(
-            @PathVariable String userName,
+            @PathVariable String userId,
             @RequestBody UserProfileUpdateRequest updatedData) {
 
         // 서비스 계층에서 userName을 사용해 해당 사용자 정보를 찾아 프로필 업데이트
-        int result = service.updateUserProfile(userName, updatedData);
+        int result = service.updateUserProfile(userId, updatedData);
 
-        if (result > 0) {
+        if (result != 0) {
             // 업데이트 성공
             return ResponseEntity.ok(result);
+
         } else {
             // 업데이트 실패
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
@@ -124,10 +125,8 @@ public class MemberController {
     }
 
     @GetMapping("/join")
-    public ResponseEntity<Member> joinMember(String userName){
-        Member result = service.getMemberInfo(userName);
+    public ResponseEntity<Member> joinMember(String userId){
+        Member result = service.getMemberInfo(userId);
         return ResponseEntity.ok(result);
     }
-
-
 }
