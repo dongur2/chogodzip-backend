@@ -3,6 +3,7 @@ package com.kb.interest.controller;
 import com.kb.interest.dto.InterestRoom;
 import com.kb.interest.service.InterestService;
 import com.kb.member.service.MemberService;
+import com.kb.room.dto.IsSoldOut;
 import com.kb.room.vo.Room;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -74,6 +75,13 @@ public class InterestController {
         Long userId = memberService.searchOneMember(userName);
         List<Room> rooms = interestService.myInterestRoom(userId);
         return ResponseEntity.ok(rooms);
+    }
+
+    @GetMapping("/isSoldOut")
+    public ResponseEntity<List<IsSoldOut>> getIsSoldOut(String userName) {
+        Long userId = memberService.searchOneMember(userName);
+        List<IsSoldOut> result = interestService.isSoldInfo(userId);
+        return ResponseEntity.ok(result);
     }
 
 
