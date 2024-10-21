@@ -2,6 +2,7 @@ package com.kb.interest.service;
 
 import com.kb.interest.dto.InterestRoom;
 import com.kb.interest.mapper.InterestMapper;
+import com.kb.room.dto.IsSoldOut;
 import com.kb.room.vo.Room;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,11 @@ public class InterestService {
 
         List<Room> result = interestMapper.myfavoiteRoom(userId);
         return result;
+    }
+
+    public List<IsSoldOut> isSoldInfo(Long userId) {
+
+        List<IsSoldOut> res = interestMapper.isSoldOutInfo(userId);
+        return res;
     }
 }
