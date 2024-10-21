@@ -16,5 +16,7 @@
     <mappers>
         <mapper resource="com/kb/chat.mapper/ChatRoomMapper.xml"/>
         <mapper resource="com/kb/chat.mapper/MessageMapper.xml"/>
+        <mapper resource="com/kb/review.mapper/ReviewMapper.xml"/>
     </mappers>
+
 </configuration>
