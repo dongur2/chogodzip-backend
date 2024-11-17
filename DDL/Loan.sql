@@ -1,0 +1,26 @@
+select * from LOAN_TYPE;
+select * from ROOM_LOAN;
+
+-- 대출 종류 테이블
+drop table if exists LOAN_TYPE;
+create table LOAN_TYPE(
+    LOAN_ID BIGINT PRIMARY KEY AUTO_INCREMENT,
+    LOAN    VARCHAR(50) NOT NULL
+);
+
+insert into LOAN_TYPE(LOAN) values('버팀목 전세자금대출');
+insert into LOAN_TYPE(LOAN) values('HUG 안심전세대출');
+insert into LOAN_TYPE(LOAN) values('중소기업 청년 전세대출 100%');
+insert into LOAN_TYPE(LOAN) values('중소기업 청년 전세대출 80%');
+
+-- 대출과 매물 연결 테이블
+DROP TABLE IF EXISTS ROOM_LOAN;
+CREATE TABLE ROOM_LOAN
+(
+    ROOM_LOAN_ID    BIGINT PRIMARY KEY AUTO_INCREMENT,
+    ROOM_ID         BIGINT,
+    LOAN_ID         BIGINT,
+
+    CONSTRAINT FK_ROOM_LOAN_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE,
+    CONSTRAINT FK_ROOM_LOAN_LOAN_TYPE FOREIGN KEY (LOAN_ID) REFERENCES LOAN_TYPE(LOAN_ID) ON DELETE CASCADE
+);
