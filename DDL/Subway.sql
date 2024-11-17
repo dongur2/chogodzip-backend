@@ -1,8 +1,9 @@
 -- 전철 테이블
+drop table if exists ROOM_SUBWAY;
 drop table if exists SUBWAY;
 
 CREATE TABLE SUBWAY (
-    CODE	BIGINT PRIMARY KEY NOT NULL,    -- 전철역코드
+    CODE    CHAR(5) PRIMARY KEY NOT NULL,    -- 전철역코드
     NAME	VARCHAR(50)	    NOT NULL,       -- 전철역명
     LINE	varchar(10)	    NOT NULL,       -- 호선
     EX_CODE	VARCHAR(255)	NOT NULL        -- 외부코드
@@ -11,7 +12,7 @@ CREATE TABLE SUBWAY (
 -- 매물과 가까운 전철역 테이블
 CREATE TABLE ROOM_SUBWAY (
    RS_ID	    BIGINT PRIMARY KEY AUTO_INCREMENT,
-   CODE	        BIGINT	        NOT NULL,   -- 전철역코드
+   CODE	        CHAR(5)	        NOT NULL,   -- 전철역코드
    ROOM_ID	    BIGINT          NOT NULL,
    DISTANCE	    BIGINT	        NOT NULL,   -- 전철역에서 집까지 거리
    WALK	        VARCHAR(255)	NOT NULL,	-- 전철역에서 집까지 도보거리
