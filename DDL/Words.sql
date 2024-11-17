@@ -1,0 +1,6 @@
+create table WORDS(
+    WORDS_ID    BIGINT PRIMARY KEY AUTO_INCREMENT,
+    TITLE       VARCHAR(50),
+    CONTENT     LONGTEXT,
+    IS_DELETED  TINYINT(1) default 0
+);
