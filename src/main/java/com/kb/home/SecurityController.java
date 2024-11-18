@@ -1,6 +1,6 @@
 package com.kb.home;
 
-import com.kb.member.dto.Member;
+import com.kb.user.dto.User;
 import lombok.extern.log4j.Log4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,7 +29,7 @@ public class SecurityController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<Member> doAdmin(@AuthenticationPrincipal Member member) {
+    public ResponseEntity<User> doAdmin(@AuthenticationPrincipal User member) {
         log.info("username = " + member);
         return ResponseEntity.ok(member);
     }

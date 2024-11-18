@@ -1,5 +1,6 @@
 package com.kb.security.util;
 
+import com.kb.user.dto.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -12,18 +13,33 @@ import java.util.Date;
 
 @Component
 public class JwtProcessor {
-    static private final long TOKEN_VALID_MILISECOND = 1000L * 60 * 60 * 2; // 5 분
+    static private final long TOKEN_VALID_MILISECOND_AT = 1000L * 60 * 5;; // 5 분
+    static private final long TOKEN_VALID_MILISECOND_RT = 1000L * 60 * 30; // 30 분
 
     private String secretKey = "충분히 긴 임의의(랜덤한) 비밀키 문자열 배정 ";
     private Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
     //    private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);  -- 운영시 사용
-    // JWT 생성
-    public String generateToken(String subject) {
+
+    public String generateAccessToken(User user) {
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("nickname", user.getNickname());
+        claims.put("roles", user.getAuthorities());
+
         return Jwts.builder()
-                .setSubject(subject)
+                .setSubject(user.getUsername())
+                .setClaims(claims)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND))
+                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND_AT))
+                .signWith(key)
+                .compact();
+    }
+
+    public String generateRefreshToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND_RT))
                 .signWith(key)
                 .compact();
     }
@@ -31,7 +47,7 @@ public class JwtProcessor {
     // JWT Subject(username) 추출 - 해석 불가인 경우 예외 발생
     // 예외 ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException,
     //      IllegalArgumentException
-    public String getUsername(String token) {
+    public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

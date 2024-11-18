@@ -1,5 +1,6 @@
 package com.kb._config;
 
+import com.kb.security.handler.SocialAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.mybatis.spring.annotation.MapperScan;
@@ -30,12 +31,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CorsFilter;
 
+@Log4j
 @Configuration
 @EnableWebSecurity
-@Log4j
+@RequiredArgsConstructor
 @MapperScan(basePackages = {"com.kb"})
 @ComponentScan(basePackages = {"com.kb.security"})
-@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -47,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+
+    private final SocialAuthenticationProvider socialAuthenticationProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
+                .authenticationProvider(socialAuthenticationProvider)
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
@@ -96,14 +100,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        http.authenticationProvider(new SocialAuthenticationProvider(userDetailsService));
+
         // 한글 인코딩 필터 설정
         http.addFilterBefore(encodingFilter(), CsrfFilter.class)
-                // 인증 에러 필터
-                .addFilterBefore(authenticationErrorFilter, UsernamePasswordAuthenticationFilter.class)
-                // Jwt 인증 필터
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                // 로그인 인증 필터
-                .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            // 로그인 인증 필터
+            .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            // Jwt 인증 필터
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            // 인증 에러 필터
+            .addFilterBefore(authenticationErrorFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 예외 처리 설정
         http

@@ -26,7 +26,8 @@ public class User implements UserDetails {
     private Date modifiedAt;
     private Boolean isDeleted;
 
-    private String token; // JWT 토큰값, DB로는 저장하지 않음
+    private String accessToken;     //JWT
+    private String refreshToken;    //JWT
 
     // 복수개의 권한을 관리
     // 문자열data("ROLE_USER", "ROLE_ADMIN")를 처리할 수 있는 GrantedAuthority의 하위클래스
@@ -44,14 +45,9 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
     @Override
     public String getPassword() {
-        return userId+username;
-    }
-
-    public String setUsername(String username) {
-        return this.username = username;
+        return null;
     }
     @Override
     public String getUsername() {
@@ -83,6 +79,5 @@ public class User implements UserDetails {
             return false;
         }
     }
-
 
 }

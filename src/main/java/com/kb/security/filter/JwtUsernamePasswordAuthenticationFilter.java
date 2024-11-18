@@ -1,10 +1,10 @@
 package com.kb.security.filter;
 
 
-import com.kb.kakao.KaKaoLoginService;
-import com.kb.member.dto.LoginDTO;
-import com.kb.member.dto.Member;
-import com.kb.member.service.MemberService;
+import com.kb.user.service.KakaoLoginService;
+import com.kb.user.dto.LoginDTO;
+import com.kb.user.dto.User;
+import com.kb.user.service.UserService;
 import com.kb.security.handler.LoginFailureHandler;
 import com.kb.security.handler.LoginSuccessHandler;
 import lombok.Setter;
@@ -27,10 +27,10 @@ import java.util.Map;
 @Component
 public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Setter(onMethod = @__({@Autowired}))
-    private MemberService service;
+    private UserService userService;
 
     @Setter(onMethod = @__({@Autowired}))
-    private KaKaoLoginService kaKaoLoginService;
+    private KakaoLoginService kakaoLoginService;
 
     @Setter(onMethod = @__({@Autowired}))
     private UserDetailsService userDetailsService;
@@ -55,27 +55,30 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 
         LoginDTO login = LoginDTO.of(request);
 
-        if (login.getCode() != null) {
-            String enrollUrl = "http://localhost:5173/auth/kakaologin";
-            String token = kaKaoLoginService.getToken(login.getCode(), enrollUrl);
-            Map<String, Object> map = kaKaoLoginService.getUserInfo(token);
-            String kakaoId = (String) map.get("id");
-            Member member = service.getMemberByKakaoId(kakaoId);
+        // 인증 토큰(UsernamePasswordAuthenticationToken) 구성
+        UsernamePasswordAuthenticationToken authenticationToken = null;
 
-            UserDetails princiapl = userDetailsService.loadUserByUsername(member.getId());
-            System.out.println("@@@ : " + princiapl);
+        try {
+            if(login.getCode() == null) throw new IllegalAccessException();
+            else {
+                //현재 토큰에 해당하는 카카오 회원 이메일과 일치하는 가입된 회원 조회
+                String enrollUrl = "http://localhost:5173/auth/kakaologin";
+                String token = kakaoLoginService.getToken(login.getCode(), enrollUrl);
+                Map<String, Object> map = kakaoLoginService.getUserInfo(token);
+                String kakaoId = (String) map.get("email");
+                User user = userService.getMemberByKakaoId(kakaoId);
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(princiapl, null, princiapl.getAuthorities());
-            // AuthenticationManager에게 인증 요청
-            return authenticationToken;
+                UserDetails principal = userDetailsService.loadUserByUsername(user.getUsername());
+
+                authenticationToken = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+            }
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            log.error("로그인을 위한 코드가 없습니다.");
         }
 
-        // 인증 토큰(UsernamePasswordAuthenticationToken) 구성
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(login.getId(), login.getPassword());
-
-        // AuthenticationManager에게 인증 요청
+        // 인증 요청
         return getAuthenticationManager().authenticate(authenticationToken);
-
     }
 }

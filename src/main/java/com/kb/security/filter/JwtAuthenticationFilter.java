@@ -1,5 +1,8 @@
 package com.kb.security.filter;
 
+import com.kb.user.dto.User;
+import com.kb.user.service.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.kb.security.util.JwtProcessor;
@@ -17,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -26,25 +29,71 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProcessor jwtProcessor;
     private final UserDetailsService userDetailsService;
-
-    private Authentication getAuthentication(String token) {
-        String username = jwtProcessor.getUsername(token);
-        UserDetails princiapl = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(princiapl, null, princiapl.getAuthorities());
-    }
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
-            String token = bearerToken.substring(BEARER_PREFIX.length());
+        String token = resolveToken(request);
 
-            // 토큰에서 사용자 정보 추출 및 Authentication 객체 구성 후 SecurityContext에 저장
-            Authentication authentication = getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            //토큰이 유효할 경우
+            if (token != null && validateToken(token)) {
+                Authentication auth = getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+
+        } catch (ExpiredJwtException e) {
+            String refreshToken = resolveRefreshToken(request);
+
+            if (refreshToken != null && validateToken(refreshToken)) {
+                // 리프레시 토큰이 유효하면 새로운 액세스 토큰 발급
+                String username = jwtProcessor.extractUsername(refreshToken);
+                User user = userService.getMemberByKakaoId(username);
+                String newAccessToken = jwtProcessor.generateAccessToken(user);
+
+                user.setAccessToken(newAccessToken);
+                response.setHeader(AUTHORIZATION_HEADER, BEARER_PREFIX + newAccessToken);
+
+                // 새 액세스 토큰으로 SecurityContext 갱신
+                Authentication auth = getAuthentication(newAccessToken);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+
+            } else {
+                // 리프레시 토큰도 유효하지 않다면 예외 처리
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("토큰이 모두 만료되었습니다. 다시 로그인해주세요.");
+                return;
+            }
         }
 
         super.doFilter(request, response, filterChain);
+    }
+
+    //헤더에서 액세스 토큰 추출
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    //헤더에서 리프레쉬 토큰 추출
+    private String resolveRefreshToken(HttpServletRequest request) {
+        String refreshToken = request.getHeader("refresh-token");
+        return (refreshToken != null && !refreshToken.isEmpty()) ? refreshToken : null;
+    }
+
+    //토큰 검증
+    private boolean validateToken(String token) {
+        return jwtProcessor.validateToken(token);
+    }
+
+    //토큰에서 회원 인증 정보 추출
+    private Authentication getAuthentication(String token) {
+        String username = jwtProcessor.extractUsername(token);
+        UserDetails principal = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
     }
 
 }

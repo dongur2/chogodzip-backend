@@ -7,10 +7,10 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Log4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     final private UserMapper mapper;

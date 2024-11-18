@@ -19,8 +19,6 @@ import java.util.Optional;
 public class UserService {
     private final UserMapper mapper;
 
-    final PasswordEncoder passwordEncoder;
-
     //회원 정보 조회
     public User getMemberByKakaoId(String kakaoId) {
         return Optional.ofNullable(mapper.selectByKakaoId(kakaoId))
@@ -70,18 +68,6 @@ public class UserService {
     private void isSuccessed(int result) throws IllegalAccessException {
         if(result != 1) throw new IllegalAccessException();
     }
-
-//    public User login(User member) {
-//        User saveMember = mapper.selectById(member.getUsername());
-//        if(passwordEncoder.matches(member.getPassword(), saveMember.getPassword())) {
-//            saveMember.setPassword("");
-//            saveMember.setMno(0);
-//            return saveMember;
-//        }else{
-//            return null;
-//        }
-//    }
-
 
 //    public User getMember(String id) {
 //        return Optional.ofNullable(mapper.selectById(id))

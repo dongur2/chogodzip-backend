@@ -22,6 +22,7 @@ public class KakaoLoginService {
     //토큰 발급
     public String getToken(String code, String redirectUrl) {
         String token = "";
+
         try {
             String host = "https://kauth.kakao.com/oauth/token";
             URL url = new URL(host);
@@ -51,11 +52,11 @@ public class KakaoLoginService {
             JSONParser parser = new JSONParser();
             JSONObject elem = (JSONObject) parser.parse(result.toString());
 
-            String access_token = elem.get("access_token").toString();
-            String refresh_token = elem.get("refresh_token").toString();
-            token = access_token;
+            token = elem.get("access_token").toString();
+
             br.close();
             bw.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -31,8 +31,9 @@ public class UserController {
     public ResponseEntity<Map<String,Object>> getKakaoInfo(@PathVariable String code) throws IOException {
         String enrollUrl = "http://localhost:5173/auth/kakaojoin";
         String token = kakaoService.getToken(code, enrollUrl);
-        Map<String, Object> map = kakaoService.getUserInfo(token);
-        return ResponseEntity.ok(map);
+
+        Map<String, Object> userInfo = kakaoService.getUserInfo(token);
+        return ResponseEntity.ok(userInfo);
     }
 
     //가입 여부 확인

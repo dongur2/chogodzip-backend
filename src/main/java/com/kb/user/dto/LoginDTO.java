@@ -1,4 +1,4 @@
-package com.kb.member.dto;
+package com.kb.user.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -8,15 +8,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedInputStream;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class LoginDTO {
-    private String id;
     private String code;
-    private String password;
 
     public static LoginDTO of(HttpServletRequest request) throws AuthenticationException {
         ObjectMapper om = new ObjectMapper();
@@ -24,7 +21,7 @@ public class LoginDTO {
             return om.readValue(request.getInputStream(), LoginDTO.class);
         }catch (Exception e) {
             e.printStackTrace();
-            throw new BadCredentialsException("username 또는 password가 없습니다.");
+            throw new BadCredentialsException("code가 없습니다.");
         }
     }
 }
