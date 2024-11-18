@@ -1,4 +1,4 @@
-package com.kb.member.dto;
+package com.kb.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Auth implements GrantedAuthority {
-    private String id;
+    private Long userId;
     private String authority;
 
     @Override

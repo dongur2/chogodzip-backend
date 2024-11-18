@@ -1,4 +1,4 @@
-package com.kb.member.dto;
+package com.kb.user.dto;
 
 
 import lombok.*;
@@ -12,22 +12,19 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Builder
-public class Member implements UserDetails {
-    private long mno;			// PK
-    private String id; 			// id=username
-    private String password;	// password
-    private String name;        // 사용자이름
-    private String email;       // 이메일
-    private String status; 		// 활성화 여부, Y, N
-    private String kakaoId;     // 카카오 아이디
-    private Date createDate;    // 생성일
-    private Date modifyDate;    // 수정일
-    private String address; // 실거주지 주소
-    private String interestArea; // 관심 지역
-    private String profileImg; // 프사
+@Getter @Setter @Builder
+public class User implements UserDetails {
+    private Long userId;
+    private String username;
+    private String nickname;
+    private String loginType;
+    private String pic;
+
+    private String interestGu;
+
+    private Date createdAt;
+    private Date modifiedAt;
+    private Boolean isDeleted;
 
     private String token; // JWT 토큰값, DB로는 저장하지 않음
 
@@ -48,12 +45,17 @@ public class Member implements UserDetails {
         return authorities;
     }
 
+    @Override
+    public String getPassword() {
+        return userId+username;
+    }
+
     public String setUsername(String username) {
-        return this.id = username;
+        return this.username = username;
     }
     @Override
     public String getUsername() {
-        return id;
+        return username;
     }
     @Override
     public boolean isAccountNonExpired() {
@@ -70,12 +72,13 @@ public class Member implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return status.equalsIgnoreCase("Y");
+        return !isDeleted;
     }
 
+    //가입 전 유효성 검사
     public boolean checkRequiredValue(){
         try {
-            return (id.isEmpty() || password.isEmpty() || name.isEmpty() || email.isEmpty());
+            return (username.isEmpty() || nickname.isEmpty());
         }catch (Exception e){
             return false;
         }

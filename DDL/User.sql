@@ -3,6 +3,10 @@
 # drop table if exists USER_AUTH;
 # drop table if exists USER;
 
+delete from USER_OPT_INFO where USER_ID = 7;
+delete from USER_AUTH where USER_ID = 7;
+delete from USER where USER_ID = 7;
+
 -- 사용자 정보 테이블
 create table USER
 (
@@ -40,7 +44,6 @@ create table USER_OPT_INFO(
     REAL_DETAIL     VARCHAR(255),
     INTEREST_SI     VARCHAR(50),
     INTEREST_GU     VARCHAR(50),
-    INTEREST_DONG   VARCHAR(50),
     CONSTRAINT FK_USER_OPT_INFO_USER FOREIGN KEY (USER_ID) REFERENCES USER(USER_ID) ON DELETE CASCADE -- 유저가 삭제되면 해당 추가정보도 삭제
 );
 

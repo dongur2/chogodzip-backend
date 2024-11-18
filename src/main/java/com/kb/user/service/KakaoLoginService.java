@@ -1,7 +1,8 @@
-package com.kb.kakao;
+package com.kb.user.service;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,13 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class KaKaoLoginService {
+public class KakaoLoginService {
+    @Value("${KAKAO_API_KEY}") String KAKAO_REST_API_KEY;
 
-    // kakao API 토큰 - REST API 키
-    String KAKAO_REST_API_KEY = "07df78249e73e0bcac8ddfe9af045b0a";
-
+    //토큰 발급
     public String getToken(String code, String redirectUrl) {
-        // 인가코드로 토큰받기
         String token = "";
         try {
             String host = "https://kauth.kakao.com/oauth/token";
@@ -36,12 +35,10 @@ public class KaKaoLoginService {
                     "&client_id=" + KAKAO_REST_API_KEY +
                     "&redirect_uri=" + redirectUrl +
                     "&code=" + code;
-            System.out.println(body);
             bw.write(body);
             bw.flush();
 
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode = " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
@@ -66,7 +63,7 @@ public class KaKaoLoginService {
         return token;
     }
 
-
+    //카카오 회원 정보 조회
     public Map<String, Object> getUserInfo(String access_token)  {
         String host = "https://kapi.kakao.com/v2/user/me";
         Map<String, Object> map = new HashMap<>();
@@ -78,7 +75,6 @@ public class KaKaoLoginService {
             urlConnection.setRequestMethod("GET");
 
             int responseCode = urlConnection.getResponseCode();
-            System.out.println("responseCode = " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8));
             String line = "";
@@ -88,17 +84,13 @@ public class KaKaoLoginService {
             }
             br.close();
 
-            System.out.println("res = " + sb.toString());
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(sb.toString());
             JSONObject properties = (JSONObject) obj.get("properties");
             JSONObject kakaoAccount = (JSONObject) obj.get("kakao_account");
 
-            String id = obj.get("id").toString();
             String nickname = properties.get("nickname").toString();
             String email = kakaoAccount.get("email").toString();
-
-            map.put("id", id);
             map.put("nickname", nickname);
             map.put("email", email);
 

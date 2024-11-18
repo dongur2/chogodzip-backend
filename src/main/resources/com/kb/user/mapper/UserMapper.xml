@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.user.mapper.UserMapper">
+    <resultMap id="userResultMap"  type="com.kb.user.dto.User">
+        <id property="userId" 				column="user_id" />
+        <result property="username"		    column="username" />
+        <result property="nickname" 		column="nickname" />
+        <result property="loginType" 		column="login_type" />
+        <result property="pic" 		        column="pic" />
+        <result property="createdAt"	    column="created_at" />
+        <result property="modifiedAt"	    column="modified_at" />
+        <result property="isDeleted"	    column="is_deleted" />
+        <result property="interestGu"	    column="interest_gu" />
+        <collection property="authorities"
+                    javaType="arraylist"
+                    ofType="org.springframework.security.core.authority.SimpleGrantedAuthority"
+                    resultMap="authoritiesMap"/>
+    </resultMap>
+
+    <resultMap type="org.springframework.security.core.authority.SimpleGrantedAuthority" id="authoritiesMap">
+        <constructor>
+            <arg column="authority" javaType="string"/>
+        </constructor>
+    </resultMap>
+
+    <!-- [카카오 이메일]로 회원 조회   -->
+    <select id="selectByKakaoId" resultMap="userResultMap" parameterType="String">
+        SELECT
+            u.USER_ID, USERNAME, NICKNAME, LOGIN_TYPE, PIC, INTEREST_GU, CREATED_AT, MODIFIED_AT, IS_DELETED,
+            o.INTEREST_GU, a.authority
+        FROM
+            USER u
+            LEFT OUTER JOIN USER_AUTH a ON u.USER_ID = a.USER_ID
+            LEFT OUTER JOIN USER_OPT_INFO o ON u.USER_ID = o.USER_ID
+        WHERE u.IS_DELETED = 0 and u.USERNAME = #{username}
+    </select>
+
+    <!--  [닉네임]으로 회원 조회: 닉네임 중복 확인  -->
+    <select id="selectByNickname" resultMap="userResultMap" parameterType="String">
+        SELECT
+            u.USER_ID, USERNAME, NICKNAME, LOGIN_TYPE, PIC, INTEREST_GU, CREATED_AT, MODIFIED_AT, IS_DELETED,
+            o.INTEREST_GU, a.authority
+        FROM
+            USER u
+            LEFT OUTER JOIN USER_AUTH a ON u.USER_ID = a.USER_ID
+            LEFT OUTER JOIN USER_OPT_INFO o ON u.USER_ID = o.USER_ID
+        WHERE u.IS_DELETED = 0 and u.USERNAME = #{nickname}
+    </select>
+
+    <!--  [USER_ID]로 회원 조회  -->
+    <select id="selectByUserId" resultMap="userResultMap" parameterType="Long">
+        SELECT
+            u.USER_ID, USERNAME, NICKNAME, LOGIN_TYPE, PIC, INTEREST_GU, CREATED_AT, MODIFIED_AT, IS_DELETED,
+            o.INTEREST_GU, a.authority
+        FROM
+            USER u
+                LEFT OUTER JOIN USER_AUTH a ON u.USER_ID = a.USER_ID
+                LEFT OUTER JOIN USER_OPT_INFO o ON u.USER_ID = o.USER_ID
+        WHERE u.IS_DELETED = 0 and u.USER_ID = #{userId}
+    </select>
+
+    <!--  회원 등록  -->
+    <insert id="insertUser" parameterType="com.kb.user.dto.User">
+        INSERT INTO USER(USER_ID, USERNAME, NICKNAME, LOGIN_TYPE, PIC, CREATED_AT, MODIFIED_AT, IS_DELETED)
+        VALUES(default, #{username}, #{nickname}, #{loginType}, #{pic}, default, default, 0)
+
+        <selectKey keyProperty="userId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <!--  회원 등록 - 추가 정보 등록  -->
+    <insert id="insertUserOptInfo"  parameterType="com.kb.user.dto.UserOptInfo">
+        INSERT INTO USER_OPT_INFO
+        VALUES(default, #{userId}, #{realRegion}, null, #{interestSi}, #{interestGu})
+    </insert>
+    <!--  회원 등록 - 권한 부여  -->
+    <insert id="insertAuth"  parameterType="com.kb.user.dto.Auth">
+        INSERT INTO USER_AUTH
+        VALUES(#{userId}, #{authority})
+    </insert>
+
+    <!--    <select id="searchOneMember" resultType="long">-->
+    <!--        SELECT-->
+    <!--            mno-->
+    <!--        FROM-->
+    <!--           member-->
+    <!--        WHERE id = #{userName}-->
+    <!--    </select>-->
+
+    <!--    <select id="oneMeme" resultType="com.kb.user.dto.User">-->
+    <!--        SELECT-->
+    <!--            *-->
+    <!--        FROM-->
+    <!--            member-->
+    <!--        WHERE mno = #{userId}-->
+    <!--    </select>-->
+    <!--    <select id="getOneInfo" resultType="com.kb.user.dto.User">-->
+    <!--        SELECT-->
+    <!--            *-->
+    <!--        FROM-->
+    <!--            member-->
+    <!--        WHERE id = #{userId}-->
+    <!--    </select>-->
+
+
+    <!--    <select id="selectMemberAll" resultMap="userResultMap">-->
+    <!--        SELECT-->
+    <!--            mno, m.id, password, name, email, status, address, create_date, modify_date, a.authority, interest_area, profile_img-->
+    <!--        FROM-->
+    <!--            member m-->
+    <!--            LEFT OUTER JOIN member_auth a ON m.id = a.id-->
+    <!--        WHERE m.status = 'y'-->
+    <!--    </select>-->
+
+
+
+
+
+
+    <!-- 프로필 사진만 조회  -->
+<!--    <select id="findPicOfMember" resultType="java.lang.String">-->
+<!--        SELECT profile_img FROM member WHERE mno = #{userId}-->
+<!--    </select>-->
+
+
+
+
+<!--    <update id="updateMember" parameterType="com.kb.user.dto.User">-->
+<!--        UPDATE member-->
+<!--        SET-->
+<!--            name = #{name},-->
+<!--            email = #{email},-->
+<!--            modify_date = now(),-->
+<!--        WHERE mno = #{mno}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteMember">-->
+<!--        DELETE FROM member-->
+<!--        WHERE mno = #{mno}-->
+<!--    </delete> -->
+
+<!--    <update id="deleteMember" parameterType="long">-->
+<!--        UPDATE member-->
+<!--        SET-->
+<!--            status = 'n',-->
+<!--            modify_date = now()-->
+<!--        WHERE mno = #{mno}-->
+<!--    </update>-->
+
+
+
+<!--    <delete id="deleteAuth"  parameterType="com.kb.user.dto.Auth">-->
+<!--        DELETE FROM  member_auth-->
+<!--        WHERE id = #{id} AND authority = #{auth}-->
+<!--    </delete>-->
+
+<!--    <update id="updateMemberInfo" parameterType="com.kb.user.dto.User">-->
+<!--        UPDATE member-->
+<!--        SET-->
+<!--            name = #{name},-->
+<!--            address = #{address},-->
+<!--            interest_area = #{interestArea},-->
+<!--            profile_img = #{profileImg}-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+</mapper>
