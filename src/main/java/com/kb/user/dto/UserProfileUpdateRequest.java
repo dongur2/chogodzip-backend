@@ -1,4 +1,4 @@
-package com.kb.member.dto;
+package com.kb.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

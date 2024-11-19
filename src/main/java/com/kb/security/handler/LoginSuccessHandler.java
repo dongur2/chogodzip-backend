@@ -1,6 +1,5 @@
 package com.kb.security.handler;
 
-import com.kb.user.dto.TokenDTO;
 import com.kb.user.dto.User;
 import com.kb.security.util.JsonResponse;
 import com.kb.security.util.JwtProcessor;
@@ -10,6 +9,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,8 +26,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         User user = (User) authentication.getPrincipal();
         String accessToken = jwtProcessor.generateAccessToken(user);
         String refreshToken = jwtProcessor.generateRefreshToken(user.getUsername());
-        TokenDTO token = TokenDTO.builder().accessToken(accessToken).refreshToken(refreshToken).build();
-        JsonResponse.send(response, token);
-    }
 
+        //refresh token은 cookie에 저장
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true); // js에서 접근 불가
+//        refreshTokenCookie.setSecure(true); // https에서만 요청 가능
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(30 * 60); // 쿠키 유효 기간 30분
+        response.addCookie(refreshTokenCookie);
+
+        JsonResponse.send(response, accessToken);
+    }
 }

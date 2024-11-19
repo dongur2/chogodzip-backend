@@ -16,16 +16,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String BEARER_PREFIX = "Bearer ";   // 끝에 공백 있음
+    public static final String BEARER_PREFIX = "Bearer ";
 
     private final JwtProcessor jwtProcessor;
     private final UserDetailsService userDetailsService;
@@ -36,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
 
         try {
-            //토큰이 유효할 경우
+            //액세스 토큰이 유효할 경우
             if (token != null && validateToken(token)) {
                 Authentication auth = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
@@ -78,10 +80,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    //헤더에서 리프레쉬 토큰 추출
+    //쿠키에서 리프레쉬 토큰 추출
     private String resolveRefreshToken(HttpServletRequest request) {
-        String refreshToken = request.getHeader("refresh-token");
-        return (refreshToken != null && !refreshToken.isEmpty()) ? refreshToken : null;
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> "refreshToken".equals(cookie.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
     }
 
     //토큰 검증
