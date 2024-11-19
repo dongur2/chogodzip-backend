@@ -2,7 +2,7 @@ package com.kb.security.filter;
 
 
 import com.kb.user.service.KakaoLoginService;
-import com.kb.user.dto.LoginDTO;
+import com.kb.user.dto.request.LoginDTO;
 import com.kb.user.dto.User;
 import com.kb.user.service.UserService;
 import com.kb.security.handler.LoginFailureHandler;

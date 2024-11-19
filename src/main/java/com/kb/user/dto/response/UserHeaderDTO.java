@@ -1,5 +1,6 @@
-package com.kb.user.dto;
+package com.kb.user.dto.response;
 
+import com.kb.user.dto.User;
 import lombok.*;
 
 @Getter @Setter @Builder

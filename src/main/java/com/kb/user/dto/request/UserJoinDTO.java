@@ -1,6 +1,8 @@
-package com.kb.user.dto;
+package com.kb.user.dto.request;
 
 
+import com.kb.user.dto.User;
+import com.kb.user.dto.UserOptInfo;
 import lombok.*;
 
 

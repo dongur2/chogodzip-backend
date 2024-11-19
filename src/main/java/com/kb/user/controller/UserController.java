@@ -1,7 +1,7 @@
 package com.kb.user.controller;
 
-import com.kb.user.dto.UserHeaderDTO;
-import com.kb.user.dto.UserJoinDTO;
+import com.kb.user.dto.response.UserHeaderDTO;
+import com.kb.user.dto.request.UserJoinDTO;
 import com.kb.user.dto.UserProfileDTO;
 import com.kb.user.service.KakaoLoginService;
 import com.kb.user.dto.User;
@@ -79,7 +79,7 @@ public class UserController {
     //프로필 수정(마이페이지)
     @PostMapping("/profile")
     public HttpStatus updateUser(@AuthenticationPrincipal User user,
-                                 @RequestBody Map<String, Object> userInfo) throws IllegalAccessException {
+                                 @RequestBody UserProfileDTO userInfo) throws IllegalAccessException {
         service.updateUserProfile(user.getUserId(), userInfo);
         return HttpStatus.OK;
     }

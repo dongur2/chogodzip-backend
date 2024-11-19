@@ -1,6 +1,8 @@
 package com.kb.user.service;
 
 import com.kb.user.dto.*;
+import com.kb.user.dto.request.UserJoinDTO;
+import com.kb.user.dto.UserProfileDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.kb.user.mapper.UserMapper;
@@ -8,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -71,13 +72,13 @@ public class UserService {
     }
 
     //회원 정보 수정
-    public void updateUserProfile(Long userId, Map<String, Object> info) throws IllegalAccessException {
-        int result = mapper.updateUser(userId, info.get("nickname").toString(), info.get("pic").toString());
+    public void updateUserProfile(Long userId, UserProfileDTO info) throws IllegalAccessException {
+        int result = mapper.updateUser(userId, info.getNickname(), info.getPic());
         isSuccessed(result);
 
         String realRegion = null;
-        if(info.get("realRegion") != null) realRegion = info.get("realRegion").toString();
-        result = mapper.updateUserOptInfo(userId, realRegion, info.get("interestGu").toString());
+        if(info.getRealRegion() != null) realRegion = info.getRealRegion();
+        result = mapper.updateUserOptInfo(userId, realRegion, info.getInterestGu());
         isSuccessed(result);
     }
 

@@ -1,4 +1,4 @@
-package com.kb.user.dto;
+package com.kb.user.dto.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
