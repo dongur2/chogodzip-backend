@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.kb.user.mapper.UserMapper;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -23,6 +23,12 @@ public class UserService {
     public User getMemberByKakaoId(String kakaoId) {
         return Optional.ofNullable(mapper.selectByKakaoId(kakaoId))
                 .orElseThrow(NoSuchElementException::new);
+    }
+
+    //마이페이지 회원 실거주지 조회
+    public UserProfileDTO getRealRegionWithUser(User user) {
+        String realRegion = mapper.selectRealRegionByUserId(user.getUserId());
+        return UserProfileDTO.from(user, realRegion);
     }
 
     //가입 이메일 여부 확인
@@ -64,6 +70,17 @@ public class UserService {
         return mapper.selectByUserId(user.getUserId());
     }
 
+    //회원 정보 수정
+    public void updateUserProfile(Long userId, Map<String, Object> info) throws IllegalAccessException {
+        int result = mapper.updateUser(userId, info.get("nickname").toString(), info.get("pic").toString());
+        isSuccessed(result);
+
+        String realRegion = null;
+        if(info.get("realRegion") != null) realRegion = info.get("realRegion").toString();
+        result = mapper.updateUserOptInfo(userId, realRegion, info.get("interestGu").toString());
+        isSuccessed(result);
+    }
+
     //* 쿼리가 정상적으로 수행되었는지 확인
     private void isSuccessed(int result) throws IllegalAccessException {
         if(result != 1) throw new IllegalAccessException();
@@ -72,20 +89,6 @@ public class UserService {
 //    public User getMember(String id) {
 //        return Optional.ofNullable(mapper.selectById(id))
 //                        .orElseThrow(NoSuchElementException::new);
-
-//    }
-
-//    public User update(User updateMember, MultipartFile avatar) throws IllegalAccessException {
-//        User oldMember = mapper.selectById(updateMember.getUsername());
-//        if(!passwordEncoder.matches(updateMember.getPassword(),oldMember.getPassword())) {
-//            throw new PasswordMissmatchException();
-//        }
-////        updateMember.setMno(oldMember.getMno());
-//        mapper.updateMember(updateMember);
-//        if(avatar != null && !avatar.isEmpty()) {
-//            saveAvatar(avatar, oldMember.getUsername());
-//        }
-//        return mapper.selectById(updateMember.getUsername());
 //    }
 
 //    public User delete(String id) {
@@ -94,8 +97,6 @@ public class UserService {
 //        return member;
 //    }
 //
-//
-
 //
 //    public Long searchOneMember(String userName) {
 //        return mapper.searchOneMember(userName);
@@ -115,24 +116,4 @@ public class UserService {
 //        return mapper.getOneInfo(userId);
 //    }
 //
-//    public int updateUserProfile(String userId, UserProfileUpdateRequest updatedData) {
-//
-//        User user = mapper.getOneInfo(userId);
-//
-//        if (user != null) {
-//            // 사용자 정보를 업데이트
-//
-//            user.setUsername(userId);
-//            user.setNickname(updatedData.getName());
-////            user.setAddress(updatedData.getAddress());
-////            user.setInterestArea(updatedData.getInterestArea());
-////            user.setProfileImg(updatedData.getProfileImg());
-//
-//            // MyBatis로 업데이트 쿼리 실행
-//            return mapper.updateMemberInfo(user);
-//        } else {
-//            // 사용자 정보가 없으면 0 반환 (업데이트 실패)
-//            return 0;
-//        }
-//    }
 }

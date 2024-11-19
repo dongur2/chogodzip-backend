@@ -5,6 +5,7 @@ import com.kb.user.dto.User;
 
 
 import com.kb.user.dto.UserOptInfo;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
     //조회
@@ -12,13 +13,20 @@ public interface UserMapper {
     User selectByNickname(String nickname);
     User selectByUserId(Long userId);
 
+    //마이페이지 - 실거주지 조회
+    String selectRealRegionByUserId(Long userId);
+
     //회원가입
     int insertUser(User user);
     int insertUserOptInfo(UserOptInfo userOptInfo);
     int insertAuth(Auth auth);
 
-//    List<User> selectMemberAll();
-//    int updateMember(User member);
+    //회원정보 수정
+    int updateUser(@Param("userId") Long userId, @Param("nickname") String nickname, @Param("pic") String pic);
+    int updateUserOptInfo(@Param("userId") Long userId, @Param("realRegion") String realRegion, @Param("interestGu") String interestGu);
+
+
+    //    List<User> selectMemberAll();
 //    int deleteMember(long mno);
 //    int deleteAuth(Auth auth);
 //
@@ -28,6 +36,4 @@ public interface UserMapper {
 //    User oneMeme(Long userId);
 //
 //    User getOneInfo(String userId);
-//
-//    int updateMemberInfo(User member);
 }

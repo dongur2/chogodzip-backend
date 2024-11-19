@@ -1,8 +1,8 @@
 package com.kb.user.controller;
 
-import com.kb.security.util.JwtProcessor;
 import com.kb.user.dto.UserHeaderDTO;
 import com.kb.user.dto.UserJoinDTO;
+import com.kb.user.dto.UserProfileDTO;
 import com.kb.user.service.KakaoLoginService;
 import com.kb.user.dto.User;
 import com.kb.user.service.UserService;
@@ -10,11 +10,11 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
@@ -27,11 +27,10 @@ import java.util.Map;
 public class UserController {
     private final UserService service;
     private final KakaoLoginService kakaoService;
-    private final JwtProcessor jwtProcessor;
 
     //카카오 회원 정보 조회
     @GetMapping("/kakaoInfo/{code}")
-    public ResponseEntity<Map<String,Object>> getKakaoInfo(@PathVariable String code) throws IOException {
+    public ResponseEntity<Map<String,Object>> getKakaoInfo(@PathVariable String code) {
         String enrollUrl = "http://localhost:5173/auth/kakaojoin";
         String token = kakaoService.getToken(code, enrollUrl);
 
@@ -67,34 +66,28 @@ public class UserController {
 
     //토큰으로 회원 정보 조회(헤더)
     @GetMapping
-    public ResponseEntity<UserHeaderDTO> getUserWithInfo(@AuthenticationPrincipal User user) {
+    public ResponseEntity<UserHeaderDTO> getUserOnHeader(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(UserHeaderDTO.from(user));
     }
 
+    //토큰으로 프로필 조회(마이페이지)
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDTO> getUser(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.getRealRegionWithUser(user));
+    }
+
+    //프로필 수정(마이페이지)
+    @PostMapping("/profile")
+    public HttpStatus updateUser(@AuthenticationPrincipal User user,
+                                 @RequestBody Map<String, Object> userInfo) throws IllegalAccessException {
+        service.updateUserProfile(user.getUserId(), userInfo);
+        return HttpStatus.OK;
+    }
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<User> get(@PathVariable String id) {
 //        return ResponseEntity.ok(service.getMember(id));
 //    }
-
-//    @PutMapping("/change/{userId}")
-//    public ResponseEntity<Integer> changeProfile(
-//            @PathVariable String userId,
-//            @RequestBody UserProfileUpdateRequest updatedData) {
-//
-//        // 서비스 계층에서 userName을 사용해 해당 사용자 정보를 찾아 프로필 업데이트
-//        int result = service.updateUserProfile(userId, updatedData);
-//
-//        if (result != 0) {
-//            // 업데이트 성공
-//            return ResponseEntity.ok(result);
-//
-//        } else {
-//            // 업데이트 실패
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
-//        }
-//    }
-//
 //
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<User> delete(@PathVariable String id) {

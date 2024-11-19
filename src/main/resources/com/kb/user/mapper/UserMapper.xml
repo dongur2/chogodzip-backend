@@ -62,6 +62,14 @@
         WHERE u.IS_DELETED = 0 and u.USER_ID = #{userId}
     </select>
 
+    <!--  실거주지 조회  -->
+    <select id="selectRealRegionByUserId" resultType="java.lang.String" parameterType="Long">
+        SELECT REAL_REGION
+        FROM USER_OPT_INFO o
+        LEFT JOIN USER u ON o.USER_ID = u.USER_ID
+        WHERE o.USER_ID = #{userId}
+    </select>
+
     <!--  회원 등록  -->
     <insert id="insertUser" parameterType="com.kb.user.dto.User">
         INSERT INTO USER(USER_ID, USERNAME, NICKNAME, LOGIN_TYPE, PIC, CREATED_AT, MODIFIED_AT, IS_DELETED)
@@ -81,6 +89,20 @@
         INSERT INTO USER_AUTH
         VALUES(#{userId}, #{authority})
     </insert>
+
+    <!--  회원정보 수정  -->
+    <update id="updateUser">
+        UPDATE USER SET
+                        PIC = #{pic},
+                        NICKNAME = #{nickname}
+        WHERE USER_ID = #{userId}
+    </update>
+    <update id="updateUserOptInfo">
+        UPDATE USER_OPT_INFO SET
+                                 REAL_REGION = #{realRegion},
+                                 INTEREST_GU = #{interestGu}
+        WHERE USER_ID = #{userId}
+    </update>
 
     <!--    <select id="searchOneMember" resultType="long">-->
     <!--        SELECT-->
@@ -105,7 +127,6 @@
     <!--        WHERE id = #{userId}-->
     <!--    </select>-->
 
-
     <!--    <select id="selectMemberAll" resultMap="userResultMap">-->
     <!--        SELECT-->
     <!--            mno, m.id, password, name, email, status, address, create_date, modify_date, a.authority, interest_area, profile_img-->
@@ -115,27 +136,11 @@
     <!--        WHERE m.status = 'y'-->
     <!--    </select>-->
 
-
-
-
-
-
     <!-- 프로필 사진만 조회  -->
 <!--    <select id="findPicOfMember" resultType="java.lang.String">-->
 <!--        SELECT profile_img FROM member WHERE mno = #{userId}-->
 <!--    </select>-->
 
-
-
-
-<!--    <update id="updateMember" parameterType="com.kb.user.dto.User">-->
-<!--        UPDATE member-->
-<!--        SET-->
-<!--            name = #{name},-->
-<!--            email = #{email},-->
-<!--            modify_date = now(),-->
-<!--        WHERE mno = #{mno}-->
-<!--    </update>-->
 
 <!--    <delete id="deleteMember">-->
 <!--        DELETE FROM member-->
@@ -157,13 +162,4 @@
 <!--        WHERE id = #{id} AND authority = #{auth}-->
 <!--    </delete>-->
 
-<!--    <update id="updateMemberInfo" parameterType="com.kb.user.dto.User">-->
-<!--        UPDATE member-->
-<!--        SET-->
-<!--            name = #{name},-->
-<!--            address = #{address},-->
-<!--            interest_area = #{interestArea},-->
-<!--            profile_img = #{profileImg}-->
-<!--        WHERE id = #{id}-->
-<!--    </update>-->
 </mapper>
