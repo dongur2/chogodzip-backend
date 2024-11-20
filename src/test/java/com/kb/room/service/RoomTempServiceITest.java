@@ -23,7 +23,7 @@ import java.util.HashMap;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class, WebMvcConfig.class, ServletConfig.class})
 class RoomTempServiceITest {
-    @Autowired private RoomTempService roomTempService;
+    @Autowired private RoomService roomTempService;
     @Autowired private RoomMapper mapper;
 
     @Test

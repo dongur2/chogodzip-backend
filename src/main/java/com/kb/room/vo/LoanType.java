@@ -4,8 +4,7 @@ import lombok.*;
 
 @Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class RoomWithLoan {
-    private Long roomLoanId;
-    private Long roomId;
+public class LoanType {
     private Long loanId;
+    private String loan;
 }
