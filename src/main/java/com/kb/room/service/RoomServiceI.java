@@ -1,9 +1,9 @@
 package com.kb.room.service;
 
-import com.kb.room.dto.response.OnetwoRoomMapDTO;
-import com.kb.room.dto.response.ShareHouseMapDTO;
+import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
+import com.kb.room.dto.response.map.ShareHouseMapDTO;
 import com.kb.user.mapper.UserMapper;
-import com.kb.room.dto.response.GosiwonMapDTO;
+import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.request.LocationDTO;
 import com.kb.room.mapper.RoomMapper;
 

@@ -1,7 +1,9 @@
 package com.kb.room.service;
 
 import com.kb.room.dto.request.LocationDTO;
-import com.kb.room.dto.response.*;
+import com.kb.room.dto.response.map.GosiwonMapDTO;
+import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
+import com.kb.room.dto.response.map.ShareHouseMapDTO;
 
 import java.util.List;
 

@@ -161,7 +161,7 @@
     </select>
 
     <!--  지도 기반 근처 고시원 조회  -->
-    <select id="selectGosiwonsByLocation" resultType="com.kb.room.dto.response.GosiwonMapDTO">
+    <select id="selectGosiwonsByLocation" resultType="com.kb.room.dto.response.map.GosiwonMapDTO">
         <![CDATA[
             SELECT g.*, r.*,
                    (6371 * acos(cos(radians(#{lat}))
@@ -177,7 +177,7 @@
     </select>
 
     <!--  지도 기반 근처 원투룸 조회  -->
-    <select id="selectOnetwoRoomsByLocation" resultType="com.kb.room.dto.response.OnetwoRoomMapDTO">
+    <select id="selectOnetwoRoomsByLocation" resultType="com.kb.room.dto.response.map.OnetwoRoomMapDTO">
         <![CDATA[
         SELECT o.*, r.*,
                (6371 * acos(cos(radians(#{lat}))
@@ -193,7 +193,7 @@
     </select>
 
     <!--  지도 기반 근처 공유주거 조회  -->
-    <select id="selectShareHousesByLocation" resultType="com.kb.room.dto.response.ShareHouseMapDTO">
+    <select id="selectShareHousesByLocation" resultType="com.kb.room.dto.response.map.ShareHouseMapDTO">
         <![CDATA[
         SELECT s.*, r.*,
                (6371 * acos(cos(radians(#{lat}))

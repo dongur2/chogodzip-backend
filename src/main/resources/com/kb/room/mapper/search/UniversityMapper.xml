@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.room.mapper.search.UniversityMapper">
+    <!--  SUBWAY VO  -->
+    <resultMap id="subway" type="com.kb.room.vo.search.Subway">
+        <id property="code" column="CODE" />
+        <result property="name" column="SUBWAY_NAME" />
+        <result property="line" column="LINE" />
+        <result property="sbwLat" column="SBW_LAT" />
+        <result property="sbwLong" column="SBW_LONG" />
+        <result property="exCode" column="EX_CODE" />
+    </resultMap>
+
+    <!--  UNIVERSITY VO  -->
+    <resultMap id="university" type="com.kb.room.vo.search.University">
+        <id property="uvsId" column="UVS_ID" />
+        <result property="name" column="UVS_NAME" />
+        <result property="uvsLat" column="UVS_LAT" />
+        <result property="uvsLong" column="UVS_LONG" />
+
+        <association property="subways" resultMap="subway" />
+    </resultMap>
+
+    <!--  모든 대학 데이터 조회: 인근 전철역 데이터 포함  -->
+    <select id="selectAllUniversities" resultMap="university">
+        SELECT u.UVS_ID, u.NAME AS UVS_NAME, u.UVS_LAT, u.UVS_LONG,
+               s.CODE, s.NAME AS SUBWAY_NAME, s.LINE, s.SBW_LAT, s.SBW_LONG, s.EX_CODE
+        FROM UNIVERSITY u
+        LEFT JOIN UNIV_SUBWAY us ON u.UVS_ID = us.UVS_ID
+            LEFT JOIN SUBWAY s ON us.SBW_CODE = s.CODE
+    </select>
+
+    <!--  대학 이름으로 좌표 검색  -->
+    <select id="selectCoordinatesByUniversityName" parameterType="String" resultType="com.kb.room.dto.response.search.CoordinateDTO">
+        SELECT UVS_LAT as lat, UVS_LONG as lng
+        FROM UNIVERSITY
+        WHERE NAME LIKE CONCAT('%', #{name}, '%') LIMIT 1;
+    </select>
+
+</mapper>

@@ -3,10 +3,12 @@ drop table if exists ROOM_SUBWAY;
 drop table if exists SUBWAY;
 
 CREATE TABLE SUBWAY (
-    CODE    CHAR(5) PRIMARY KEY NOT NULL,    -- 전철역코드
-    NAME	VARCHAR(50)	    NOT NULL,       -- 전철역명
-    LINE	varchar(10)	    NOT NULL,       -- 호선
-    EX_CODE	VARCHAR(255)	NOT NULL        -- 외부코드
+    CODE        CHAR(5) PRIMARY KEY NOT NULL,    -- 전철역코드
+    NAME	    VARCHAR(50)	    NOT NULL,       -- 전철역명
+    SBW_LAT     DECIMAL(10, 7)  NOT NULL,
+    SBW_LONG    DECIMAL(10, 7)  NOT NULL,
+    LINE	    varchar(10)	    NOT NULL,       -- 호선
+    EX_CODE	    VARCHAR(255)	NOT NULL        -- 외부코드
 );
 
 -- 매물과 가까운 전철역 테이블
