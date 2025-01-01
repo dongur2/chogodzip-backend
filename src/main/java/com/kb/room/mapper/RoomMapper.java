@@ -1,9 +1,12 @@
 package com.kb.room.mapper;
 
+import com.kb.room.dto.response.detail.GosiwonInfoDTO;
+import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
 import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.request.LocationDTO;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
 import com.kb.room.dto.response.map.ShareHouseMapDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,6 +17,18 @@ public interface RoomMapper {
     List<GosiwonMapDTO> selectGosiwonsByLocation(LocationDTO location);
     List<OnetwoRoomMapDTO> selectOnetwoRoomsByLocation(LocationDTO location);
     List<ShareHouseMapDTO> selectShareHousesByLocation(LocationDTO location);
+
+    //매물 상세 정보 조회
+    RoomDetailInfoDTO selectRoomByRoomId(Long roomId);
+    GosiwonInfoDTO selectGosiwonByRoomId(Long roomId);
+
+    //관심매물 개수 카운트
+    int getBookmarkCountByRoomId(Long roomId);
+    //관심매물 확인
+    boolean checkInterestedByRoomIdAndUserId(@Param("userId") Long userId, @Param("roomId") Long roomId);
+    //관심매물 등록, 삭제
+    void insertInterest(@Param("userId") Long userId, @Param("roomId") Long roomId);
+    void deleteInterest(@Param("userId") Long userId, @Param("roomId") Long roomId);
 //
 //    Gosiwon findOneGosiwon(@Param("id") Long id);
 //    List<Room> findRoomByLocation(LocationDTO roomParam); //관심 지역 맵 매물 조회

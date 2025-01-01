@@ -137,7 +137,7 @@
     </resultMap>
 
 
-<!--    <resultMap id="GosiwonStatusResultMap" type="com.kb.room.vo.GosiwonStatus">-->
+    <!--    <resultMap id="GosiwonStatusResultMap" type="com.kb.room.vo.GosiwonStatus">-->
 <!--        <result property="maxPrice" column="maxPrice" />-->
 <!--        <result property="avgPrice" column="avgPrice" />-->
 <!--        <result property="minPrice" column="minPrice" />-->
@@ -173,43 +173,74 @@
             WHERE 1 = 1
             HAVING distance < 2
             ORDER BY distance;
-            ]]>
+        ]]>
     </select>
 
     <!--  지도 기반 근처 원투룸 조회  -->
     <select id="selectOnetwoRoomsByLocation" resultType="com.kb.room.dto.response.map.OnetwoRoomMapDTO">
         <![CDATA[
-        SELECT o.*, r.*,
-               (6371 * acos(cos(radians(#{lat}))
-                                * cos(radians(r.room_lat))
-                                * cos(radians(r.room_long) - radians(#{lng}))
-                   + sin(radians(#{lat}))
-                                * sin(radians(r.room_lat)))) AS distance
-        FROM ONETWOROOM o JOIN ROOM r ON o.room_id = r.room_id
-        WHERE 1 = 1
-        HAVING distance < 1
-        ORDER BY distance;
+            SELECT o.*, r.*,
+                   (6371 * acos(cos(radians(#{lat}))
+                                    * cos(radians(r.room_lat))
+                                    * cos(radians(r.room_long) - radians(#{lng}))
+                       + sin(radians(#{lat}))
+                                    * sin(radians(r.room_lat)))) AS distance
+            FROM ONETWOROOM o JOIN ROOM r ON o.room_id = r.room_id
+            WHERE 1 = 1
+            HAVING distance < 1
+            ORDER BY distance;
         ]]>
     </select>
 
     <!--  지도 기반 근처 공유주거 조회  -->
     <select id="selectShareHousesByLocation" resultType="com.kb.room.dto.response.map.ShareHouseMapDTO">
         <![CDATA[
-        SELECT s.*, r.*,
-               (6371 * acos(cos(radians(#{lat}))
-                                * cos(radians(r.room_lat))
-                                * cos(radians(r.room_long) - radians(#{lng}))
-                   + sin(radians(#{lat}))
-                                * sin(radians(r.room_lat)))) AS distance
-        FROM SHAREHOUSE s JOIN ROOM r ON s.room_id = r.room_id
-        WHERE 1 = 1
-        HAVING distance < 2
-        ORDER BY distance;
+            SELECT s.*, r.*,
+                   (6371 * acos(cos(radians(#{lat}))
+                                    * cos(radians(r.room_lat))
+                                    * cos(radians(r.room_long) - radians(#{lng}))
+                       + sin(radians(#{lat}))
+                                    * sin(radians(r.room_lat)))) AS distance
+            FROM SHAREHOUSE s JOIN ROOM r ON s.room_id = r.room_id
+            WHERE 1 = 1
+            HAVING distance < 2
+            ORDER BY distance;
         ]]>
     </select>
 
+    <!--  매물 상세 정보 조회  -->
+    <select id="selectRoomByRoomId" resultType="com.kb.room.dto.response.detail.RoomDetailInfoDTO" parameterType="Long">
+        SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}
+    </select>
 
-<!--    <select id="findOneGosiwon" resultMap="gosiwonResultMap">-->
+    <select id="selectGosiwonByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
+        SELECT * FROM GOSIWON WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <!--  관심매물 개수 카운트  -->
+    <select id="getBookmarkCountByRoomId" resultType="java.lang.Integer">
+        SELECT count(*) FROM INTEREST_ROOM WHERE ROOM_ID = #{roomId}
+    </select>
+
+    <!--  로그인한 유저의 해당 매물에 대한 관심매물 확인  -->
+    <select id="checkInterestedByRoomIdAndUserId" resultType="java.lang.Boolean">
+        SELECT EXISTS(
+            SELECT 1 FROM INTEREST_ROOM WHERE USER_ID = #{userId} AND ROOM_ID = #{roomId}
+        )
+    </select>
+
+    <!--  관심매물 등록  -->
+    <insert id="insertInterest">
+        INSERT INTO INTEREST_ROOM VALUES(default, #{userId}, #{roomId}, default)
+    </insert>
+
+    <!--  관심매물 삭제  -->
+    <delete id="deleteInterest">
+        DELETE FROM INTEREST_ROOM WHERE USER_ID = #{userId} AND ROOM_ID = #{roomId}
+    </delete>
+
+
+    <!--    <select id="findOneGosiwon" resultMap="gosiwonResultMap">-->
 <!--        SELECT *-->
 <!--        FROM GOSIWON g-->
 <!--                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->

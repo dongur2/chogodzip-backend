@@ -1,8 +1,10 @@
 package com.kb.room.service;
 
+import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
+import com.kb.room.dto.response.map.RoomMapDTO;
 import com.kb.room.dto.response.map.ShareHouseMapDTO;
-import com.kb.user.mapper.UserMapper;
+import com.kb.user.dto.User;
 import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.request.LocationDTO;
 import com.kb.room.mapper.RoomMapper;
@@ -10,53 +12,74 @@ import com.kb.room.mapper.RoomMapper;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Log4j
-@Service
+@Slf4j
+@Service @Primary
 @RequiredArgsConstructor
 @PropertySource({"classpath:/application.properties"})
 public class RoomServiceI implements RoomService {
     private final RoomMapper roomMapper;
-    private final UserMapper memberMapper;
 
-    //지도 기반 근처 고시원 조회
-    public List<GosiwonMapDTO> findNearbyGosiwons(LocationDTO roomParam) {
-        List<GosiwonMapDTO> gosiwons = roomMapper.selectGosiwonsByLocation(roomParam);
-
-        //대출 가능한 매물일 경우 가능한 대출 목록 추가
-        for(GosiwonMapDTO gosiwon : gosiwons) {
-            if(gosiwon.getCanLoan() != null && gosiwon.getCanLoan()) {
-                gosiwon.setLoans(roomMapper.selectLoansByRoomId(gosiwon.getRoomId()));
-            }
-        }
+    @Override //지도 기반 근처 고시원 조회
+    public List<GosiwonMapDTO> findNearbyGosiwons(User user, LocationDTO location) {
+        List<GosiwonMapDTO> gosiwons = roomMapper.selectGosiwonsByLocation(location);
+        populateRoomDetails(user, gosiwons);
         return gosiwons;
     }
 
-    //지도 기반 근처 원투룸 조회
-    public List<OnetwoRoomMapDTO> findNearbyOnetwoRooms(LocationDTO roomParam) {
-        List<OnetwoRoomMapDTO> rooms = roomMapper.selectOnetwoRoomsByLocation(roomParam);
-
-        for(OnetwoRoomMapDTO room : rooms) {
-            if(room.getCanLoan() != null && room.getCanLoan()) {
-                room.setLoans(roomMapper.selectLoansByRoomId(room.getRoomId()));
-            }
-        }
+    @Override //지도 기반 근처 원투룸 조회
+    public List<OnetwoRoomMapDTO> findNearbyOnetwoRooms(User user, LocationDTO location) {
+        List<OnetwoRoomMapDTO> rooms = roomMapper.selectOnetwoRoomsByLocation(location);
+        populateRoomDetails(user, rooms);
         return rooms;
     }
 
-    //지도 기반 근처 공유주거 조회
-    public List<ShareHouseMapDTO> findNearbyShareHouses(LocationDTO roomParam) {
-        List<ShareHouseMapDTO> shares = roomMapper.selectShareHousesByLocation(roomParam);
-
-        for(ShareHouseMapDTO share : shares) {
-            if(share.getCanLoan() != null && share.getCanLoan()) {
-                share.setLoans(roomMapper.selectLoansByRoomId(share.getRoomId()));
-            }
-        }
+    @Override //지도 기반 근처 공유주거 조회
+    public List<ShareHouseMapDTO> findNearbyShareHouses(User user, LocationDTO location) {
+        List<ShareHouseMapDTO> shares = roomMapper.selectShareHousesByLocation(location);
+        populateRoomDetails(user, shares);
         return shares;
+    }
+
+    @Override // 매물 상세 정보 조회
+    public RoomDetailInfoDTO getRoomInfo(Long roomId) {
+        RoomDetailInfoDTO roomDTO = roomMapper.selectRoomByRoomId(roomId);
+
+        if(roomDTO.getHouseTypeCd().equals("HOUTP00001") || roomDTO.getHouseTypeCd().equals("HOUTP00003") || roomDTO.getHouseTypeCd().equals("HOUTP00006")) {
+            log.info("고시원 매물을 조회합니다.");
+            roomDTO.setGosiwon(roomMapper.selectGosiwonByRoomId(roomId));
+
+        } else if(roomDTO.getHouseTypeCd().equals("HOUTP00002") || roomDTO.getHouseTypeCd().equals("HOUTP00004") || roomDTO.getHouseTypeCd().equals("HOUTP00005")) {
+            log.info("쉐어하우스 매물을 조회합니다.");
+        } else log.info("원투룸 매물을 조회합니다.");
+
+        return roomDTO;
+    }
+
+    private <T extends RoomMapDTO> void populateRoomDetails(User user, List<T> rooms) {
+        for (T room : rooms) {
+            if (room.getCanLoan() != null && room.getCanLoan()) {
+                room.setLoans(roomMapper.selectLoansByRoomId(room.getRoomId()));
+            }
+
+            if (user != null) room.setIsInterested(roomMapper.checkInterestedByRoomIdAndUserId(user.getUserId(), room.getRoomId()));
+            else room.setIsInterested(false);
+        }
+    }
+
+    @Override @Transactional // 관심 매물 토글
+    public Boolean toggleInterest(Long userId, Long roomId) {
+        boolean isInterested = roomMapper.checkInterestedByRoomIdAndUserId(userId, roomId);
+
+        if(isInterested) roomMapper.deleteInterest(userId, roomId);
+        else roomMapper.insertInterest(userId, roomId);
+
+        return !isInterested;
     }
 
 //    @Transactional(rollbackFor = Exception.class)

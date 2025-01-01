@@ -1,29 +1,50 @@
 package com.kb.room.controller;
 
+import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
+import com.kb.room.service.RoomService;
+import com.kb.user.dto.User;
+import com.kb.user.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Log4j
+@Slf4j
 @RestController @Primary
 @RequiredArgsConstructor
 @RequestMapping("/api/rooms")
-@Api(value = "RoomTempController", tags = "매물 정보")
+@Api(value = "RoomController", tags = "매물 정보")
 @PropertySource({"classpath:/application.properties"})
 public class RoomController {
+    private final RoomService roomService;
+    private final UserService memberService;
 
-//    private final RoomTempService roomTempService;
-//
-//    //[TEST] 모든 부동산 목록 가져오기
-//    @GetMapping
-//    public ResponseEntity<List<RoomTempDTO>> getRooms() {
-//        List<RoomTempDTO> list = roomTempService.fetchAllRooms();
-//        return new ResponseEntity<>(list, HttpStatus.OK);
+    @GetMapping("/{roomId}")
+    public ResponseEntity<RoomDetailInfoDTO> getRoomDetails(@PathVariable("roomId") Long roomId) {
+        return ResponseEntity.ok(roomService.getRoomInfo(roomId));
+    }
+
+    @PostMapping("/{roomId}/interest")
+    public ResponseEntity<Boolean> toggleInterest(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId) {
+        if(user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        Boolean isInterested = roomService.toggleInterest(user.getUserId(), roomId);
+        return ResponseEntity.ok(isInterested);
+    }
+
+
+
+//    @GetMapping("/{roomId}/interest")
+//    public ResponseEntity<Integer> getAllFavoriteRooms(@PathVariable("roomId") Long roomId) {
+//        int result = roomService.getFavoriteCnt(roomId);
+//        return ResponseEntity.ok(result);
 //    }
-//
+
 //    //고시원 매물 등록
 //    @PostMapping
 //    public ResponseEntity<Integer> createRoom(@RequestPart(value = "dto") String dtoJson, @RequestPart(value = "pics") List<MultipartFile> pics) throws IOException {

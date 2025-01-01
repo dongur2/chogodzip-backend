@@ -6,6 +6,7 @@ import lombok.*;
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class UserHeaderDTO {
+    private Long userId;
     private String nickname;
     private String pic;
     private String interestSi;
@@ -13,6 +14,7 @@ public class UserHeaderDTO {
 
     public static UserHeaderDTO from(User user) {
         return UserHeaderDTO.builder()
+                .userId(user.getUserId())
                 .nickname(user.getNickname())
                 .pic(user.getPic())
                 .interestSi("서울시")
