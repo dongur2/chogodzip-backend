@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.room.mapper.search.SearchMapper">
+    <!--  모든 대학/전철 데이터 조회 -->
+    <select id="selectAllUnivAndSubwayWithNameAndCoordinate" resultType="com.kb.room.dto.response.search.ResourceWithCoordinateDTO">
+        SELECT 'sub' AS type, NAME, SBW_LAT AS lat, SBW_LONG AS lng, LINE
+        FROM SUBWAY
+        UNION ALL
+        SELECT 'univ' AS type, NAME, UVS_LAT AS lat, UVS_LONG AS lng, NULL AS LINE
+        FROM UNIVERSITY
+    </select>
+</mapper>
