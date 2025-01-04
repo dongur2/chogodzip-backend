@@ -45,6 +45,12 @@ CREATE TABLE ROOM
     DESCRIPTION             TEXT, -- 목업
     PICS                    TEXT, -- 방사진(최대 3장), |기준으로  split
 
+    PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
+    PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
+    DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
+    DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
+    MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
+
     CONTRACT_MIN            INT, -- 일수
 
     FACILITY_HEATING        VARCHAR(255),
@@ -73,11 +79,11 @@ CREATE TABLE GOSIWON
     -- 크롤링
     ROOM_ID                 BIGINT,
     TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
-    PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
-    PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
-    DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
-    DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
-    MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
+#     PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
+#     PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
+#     DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
+#     DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
+#     MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
     GENDER_LIMIT            VARCHAR(22), -- GENDR00001:구분없음, GENDR00002:남성, GENDR00003:여성, GENDR00004:분리
     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
@@ -94,11 +100,11 @@ CREATE TABLE SHAREHOUSE
     -- 크롤링
     ROOM_ID                 BIGINT,
     TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
-    PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
-    PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
-    DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
-    DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
-    MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
+#     PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
+#     PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
+#     DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
+#     DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
+#     MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
     GENDER_LIMIT            VARCHAR(22), -- GENDR00001:구분없음, GENDR00002:남성, GENDR00003:여성, GENDR00004:분리
     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
@@ -115,13 +121,13 @@ CREATE TABLE ONETWOROOM
 
     -- 크롤링
     ROOM_ID                 BIGINT,
-    PRICE_MIN               INT, -- "PRICE_MIN"
-    PRICE_MAX               INT, -- "PRICE_MAX"
-    DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
-    DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
-    MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
-    AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
-    AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
+#     PRICE_MIN               INT, -- "PRICE_MIN"
+#     PRICE_MAX               INT, -- "PRICE_MAX"
+#     DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
+#     DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
+#     MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
+#     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
+#     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
     DETAIL_NAME             VARCHAR(50), -- "NAME" // 해당 호수 또는 층
     ROOM_TYPE               VARCHAR(10), -- 원룸(오픈/분리/복층형)/투룸/쓰리룸 이상
 
