@@ -1,9 +1,7 @@
 package com.kb.room.controller;
 
-import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
 import com.kb.room.service.RoomService;
 import com.kb.user.dto.User;
-import com.kb.user.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +20,15 @@ import org.springframework.web.bind.annotation.*;
 @PropertySource({"classpath:/application.properties"})
 public class RoomController {
     private final RoomService roomService;
-    private final UserService memberService;
 
     @GetMapping("/{roomId}")
-    public ResponseEntity<RoomDetailInfoDTO> getRoomDetails(@PathVariable("roomId") Long roomId) {
-        return ResponseEntity.ok(roomService.getRoomInfo(roomId));
+    public ResponseEntity<?> getRoomDetails(@AuthenticationPrincipal User user, @PathVariable("roomId") String roomId) {
+        try {
+            return ResponseEntity.ok(roomService.getRoomInfo(user, Long.parseLong(roomId)));
+        } catch (IllegalArgumentException e) {
+            log.error("roomId : {} 에 해당하는 데이터가 없습니다. {}", roomId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/{roomId}/interest")

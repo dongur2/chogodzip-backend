@@ -208,17 +208,33 @@
         ]]>
     </select>
 
-    <!--  매물 상세 정보 조회  -->
-    <select id="selectRoomByRoomId" resultType="com.kb.room.dto.response.detail.RoomDetailInfoDTO" parameterType="Long">
-        SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}
+    <!--  매물 유형 확인  -->
+    <select id="selectRoomTypeByRoomId" resultType="java.lang.String" parameterType="Long">
+        SELECT HOUSE_TYPE_CD FROM ROOM WHERE ROOM_ID = #{roomId}
     </select>
 
+    <!--  매물 상세 정보 조회  -->
     <select id="selectGosiwonByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
-        SELECT * FROM GOSIWON WHERE ROOM_ID = #{roomId}
+        SELECT r.*, g.*
+        FROM ROOM r JOIN GOSIWON g
+        ON r.ROOM_ID = g.ROOM_ID
+        WHERE r.ROOM_ID = #{roomId}
+    </select>
+    <select id="selectShareHouseByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
+        SELECT r.*, s.*
+        FROM ROOM r JOIN SHAREHOUSE s
+                         ON r.ROOM_ID = s.ROOM_ID
+        WHERE r.ROOM_ID = #{roomId}
+    </select>
+    <select id="selectOnetwoRoomByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
+        SELECT r.*, o.*
+        FROM ROOM r JOIN ONETWOROOM o
+                         ON r.ROOM_ID = o.ROOM_ID
+        WHERE r.ROOM_ID = #{roomId}
     </select>
 
     <!--  관심매물 개수 카운트  -->
-    <select id="getBookmarkCountByRoomId" resultType="java.lang.Integer">
+    <select id="getInterestedCountByRoomId" resultType="java.lang.Integer">
         SELECT count(*) FROM INTEREST_ROOM WHERE ROOM_ID = #{roomId}
     </select>
 

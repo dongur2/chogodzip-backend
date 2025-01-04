@@ -10,6 +10,7 @@ import com.kb.room.dto.request.LocationDTO;
 import com.kb.room.mapper.RoomMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,29 +48,49 @@ public class RoomServiceI implements RoomService {
     }
 
     @Override // 매물 상세 정보 조회
-    public RoomDetailInfoDTO getRoomInfo(Long roomId) {
-        RoomDetailInfoDTO roomDTO = roomMapper.selectRoomByRoomId(roomId);
+    public RoomDetailInfoDTO getRoomInfo(User user, Long roomId) throws IllegalArgumentException {
+        String type = Optional.ofNullable(roomMapper.selectRoomTypeByRoomId(roomId))
+                .orElseThrow(IllegalArgumentException::new);
 
-        if(roomDTO.getHouseTypeCd().equals("HOUTP00001") || roomDTO.getHouseTypeCd().equals("HOUTP00003") || roomDTO.getHouseTypeCd().equals("HOUTP00006")) {
-            log.info("고시원 매물을 조회합니다.");
-            roomDTO.setGosiwon(roomMapper.selectGosiwonByRoomId(roomId));
+        RoomDetailInfoDTO room = switch (type) {
+            case "HOUTP00001", "HOUTP00003", "HOUTP00006" -> roomMapper.selectGosiwonByRoomId(roomId);
+            case "HOUTP00002", "HOUTP00004", "HOUTP00005" -> roomMapper.selectShareHouseByRoomId(roomId);
+            case "HOUTP00008", "HOUTP00009" -> roomMapper.selectOnetwoRoomByRoomId(roomId);
+            default -> throw new IllegalArgumentException();
+        };
 
-        } else if(roomDTO.getHouseTypeCd().equals("HOUTP00002") || roomDTO.getHouseTypeCd().equals("HOUTP00004") || roomDTO.getHouseTypeCd().equals("HOUTP00005")) {
-            log.info("쉐어하우스 매물을 조회합니다.");
-        } else log.info("원투룸 매물을 조회합니다.");
+        //대출
+        if (room.getCanLoan() != null && room.getCanLoan()) room.setLoans(selectLoans(room.getRoomId()));
 
-        return roomDTO;
+        //관심설정
+        if (user != null) room.setIsInterested(selectIsInterested(user.getUserId(), room.getRoomId()));
+        else room.setIsInterested(false);
+
+        //관심매물 전체 개수
+        populateInterestedCnt(room);
+
+        return room;
     }
 
     private <T extends RoomMapDTO> void populateRoomDetails(User user, List<T> rooms) {
         for (T room : rooms) {
-            if (room.getCanLoan() != null && room.getCanLoan()) {
-                room.setLoans(roomMapper.selectLoansByRoomId(room.getRoomId()));
-            }
+            if (room.getCanLoan() != null && room.getCanLoan()) room.setLoans(selectLoans(room.getRoomId()));
 
-            if (user != null) room.setIsInterested(roomMapper.checkInterestedByRoomIdAndUserId(user.getUserId(), room.getRoomId()));
+            if (user != null) room.setIsInterested(selectIsInterested(user.getUserId(), room.getRoomId()));
             else room.setIsInterested(false);
         }
+    }
+
+    private List<String> selectLoans(Long roomId) {
+        return roomMapper.selectLoansByRoomId(roomId);
+    }
+
+    private boolean selectIsInterested(Long userId, Long roomId) {
+        return roomMapper.checkInterestedByRoomIdAndUserId(userId, roomId);
+    }
+
+    private void populateInterestedCnt(RoomDetailInfoDTO room) {
+        room.setInterestCnt(roomMapper.getInterestedCountByRoomId(room.getRoomId()));
     }
 
     @Override @Transactional // 관심 매물 토글

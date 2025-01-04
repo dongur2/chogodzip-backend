@@ -13,7 +13,9 @@ public interface RoomService {
     List<GosiwonMapDTO> findNearbyGosiwons(User user, LocationDTO location);
     List<OnetwoRoomMapDTO> findNearbyOnetwoRooms(User user, LocationDTO location);
     List<ShareHouseMapDTO> findNearbyShareHouses(User user, LocationDTO location);
-    RoomDetailInfoDTO getRoomInfo(Long roomId);
+
+    //상세 정보 조회
+    RoomDetailInfoDTO getRoomInfo(User user, Long roomId);
 
     //관심매물 토글
     Boolean toggleInterest(Long userId, Long roomId);

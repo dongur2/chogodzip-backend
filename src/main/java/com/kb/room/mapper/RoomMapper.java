@@ -1,6 +1,5 @@
 package com.kb.room.mapper;
 
-import com.kb.room.dto.response.detail.GosiwonInfoDTO;
 import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
 import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.request.LocationDTO;
@@ -19,11 +18,13 @@ public interface RoomMapper {
     List<ShareHouseMapDTO> selectShareHousesByLocation(LocationDTO location);
 
     //매물 상세 정보 조회
-    RoomDetailInfoDTO selectRoomByRoomId(Long roomId);
-    GosiwonInfoDTO selectGosiwonByRoomId(Long roomId);
+    String selectRoomTypeByRoomId(Long roomId); //roomId로 매물 유형 구별 - HOUSE_TYPE_CD
+    RoomDetailInfoDTO selectGosiwonByRoomId(Long roomId);
+    RoomDetailInfoDTO selectShareHouseByRoomId(Long roomId);
+    RoomDetailInfoDTO selectOnetwoRoomByRoomId(Long roomId);
 
     //관심매물 개수 카운트
-    int getBookmarkCountByRoomId(Long roomId);
+    int getInterestedCountByRoomId(Long roomId);
     //관심매물 확인
     boolean checkInterestedByRoomIdAndUserId(@Param("userId") Long userId, @Param("roomId") Long roomId);
     //관심매물 등록, 삭제
