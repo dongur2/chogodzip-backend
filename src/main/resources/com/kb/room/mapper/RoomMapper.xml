@@ -73,6 +73,11 @@
         <result property="languages" column="LANGUAGES" />
         <result property="etc" column="ETC" />
 
+        <result property="priceMin" column="PRICE_MIN" />
+        <result property="priceMax" column="PRICE_MAX" />
+        <result property="depositMin" column="DEPOSIT_MIN" />
+        <result property="depositMax" column="DEPOSIT_MAX" />
+        <result property="maintenanceFee" column="MAINTENANCE_FEE" />
         <result property="contractMin" column="CONTRACT_MIN" />
 
         <!-- BUILDING INFO -->
@@ -90,11 +95,6 @@
     <resultMap id="gosiwonForMap" type="com.kb.room.vo.Gosiwon">
         <id property="gswId" column="GSW_ID" />
         <result property="title" column="TITLE" />
-        <result property="priceMin" column="PRICE_MIN" />
-        <result property="priceMax" column="PRICE_MAX" />
-        <result property="depositMin" column="DEPOSIT_MIN" />
-        <result property="depositMax" column="DEPOSIT_MAX" />
-        <result property="maintenanceFee" column="MAINTENANCE_FEE" />
         <result property="genderLimit" column="GENDER_LIMIT" />
         <result property="ageMax" column="AGE_MAX" />
         <result property="ageMin" column="AGE_MIN" />
@@ -107,11 +107,6 @@
     <resultMap id="shareHouseForMap" type="com.kb.room.vo.ShareHouse">
         <id property="shhId" column="SHH_ID" />
         <result property="title" column="TITLE" />
-        <result property="priceMin" column="PRICE_MIN" />
-        <result property="priceMax" column="PRICE_MAX" />
-        <result property="depositMin" column="DEPOSIT_MIN" />
-        <result property="depositMax" column="DEPOSIT_MAX" />
-        <result property="maintenanceFee" column="MAINTENANCE_FEE" />
         <result property="genderLimit" column="GENDER_LIMIT" />
         <result property="ageMax" column="AGE_MAX" />
         <result property="ageMin" column="AGE_MIN" />
@@ -124,11 +119,6 @@
     <!--  ONETWOROOM for MAP  -->
     <resultMap id="onetwoRoomForMap" type="com.kb.room.vo.OnetwoRoom">
         <id property="otrId" column="OTR_ID" />
-        <result property="priceMin" column="PRICE_MIN" />
-        <result property="priceMax" column="PRICE_MAX" />
-        <result property="depositMin" column="DEPOSIT_MIN" />
-        <result property="depositMax" column="DEPOSIT_MAX" />
-        <result property="maintenanceFee" column="MAINTENANCE_FEE" />
         <result property="detailName" column="DETAIL_NAME" />
         <result property="roomType" column="ROOM_TYPE" />
 
@@ -220,13 +210,13 @@
         ON r.ROOM_ID = g.ROOM_ID
         WHERE r.ROOM_ID = #{roomId}
     </select>
-    <select id="selectShareHouseByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
+    <select id="selectShareHouseByRoomId" resultType="com.kb.room.dto.response.detail.ShareHouseInfoDTO" parameterType="Long">
         SELECT r.*, s.*
         FROM ROOM r JOIN SHAREHOUSE s
                          ON r.ROOM_ID = s.ROOM_ID
         WHERE r.ROOM_ID = #{roomId}
     </select>
-    <select id="selectOnetwoRoomByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
+    <select id="selectOnetwoRoomByRoomId" resultType="com.kb.room.dto.response.detail.OnetwoRoomInfoDTO" parameterType="Long">
         SELECT r.*, o.*
         FROM ROOM r JOIN ONETWOROOM o
                          ON r.ROOM_ID = o.ROOM_ID
@@ -314,54 +304,58 @@
 <!--        SELECT * FROM ROOM where user_id = #{userId}-->
 <!--    </select>-->
 
-<!--    &lt;!&ndash;  부동산 작성 [ROOM]  &ndash;&gt;-->
-<!--    <insert id="saveRoom" parameterType="com.kb.room.vo.Room" useGeneratedKeys="true" keyProperty="roomId">-->
-<!--        INSERT INTO ROOM-->
-<!--            (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, PICS, ADDRESS, HOUSE_TYPE_CD, HOUSE_TYPE_NM, CAN_LOAN, UPDATED_AT, CREATED_AT)-->
-<!--        VALUES-->
-<!--            (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{pics}, #{address}, #{houseTypeCd}, #{houseTypeNm}, #{canLoan}, NOW(), NOW())-->
+    <!--  부동산 작성 [ROOM]  -->
+    <insert id="saveRoom" parameterType="com.kb.room.vo.Room" useGeneratedKeys="true" keyProperty="roomId">
+        INSERT INTO ROOM
+            (USER_ID, ROOM_LAT, ROOM_LONG, THUMBNAIL, ADDRESS, HOUSE_TYPE_CD, HOUSE_TYPE_NM, CAN_LOAN, POSTCODE,
+             PRIVATE_FACILITIES, SERVICES, LANGUAGES, ETC, DESCRIPTION, PICS,
+             PRICE_MIN, PRICE_MAX, DEPOSIT_MIN, DEPOSIT_MAX, MAINTENANCE_FEE, CONTRACT_MIN,
+             FACILITY_HEATING, FACILITY_COOLING, FACILITY_LIFE, FACILITY_SECURITY,
+             BUILDING_TYPE, CAN_PARKING, HAS_ELEVATOR,
+             IS_SOLD_OUT,
+             UPDATED_AT, CREATED_AT)
+        VALUES
+            (#{userId}, #{roomLat}, #{roomLong}, #{thumbnail}, #{address}, #{houseTypeCd}, #{houseTypeNm}, #{canLoan}, #{postcode},
+             #{privateFacilities}, #{services}, #{languages}, #{etc}, #{description}, #{pics},
+             #{priceMin}, #{priceMax}, #{depositMin}, #{depositMax}, #{maintenanceFee}, #{contractMin},
+             #{facilityHeating}, #{facilityCooling}, #{facilityLife}, #{facilitySecurity},
+             #{buildingType}, #{canParking}, #{hasElevator},
+             #{isSoldOut},
+             NOW(), NOW())
 
-<!--        <selectKey keyProperty="roomId" resultType="int" order="AFTER">-->
-<!--            SELECT LAST_INSERT_ID()-->
-<!--        </selectKey>-->
-<!--    </insert>-->
+        <selectKey keyProperty="roomId" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
 
-<!--    &lt;!&ndash;  고시원 작성  &ndash;&gt;-->
-<!--    <insert id="saveGosiwon" parameterType="com.kb.room.vo.Gosiwon" useGeneratedKeys="true" keyProperty="gswId">-->
-<!--        <![CDATA[-->
-<!--            INSERT INTO GOSIWON (-->
-<!--                ROOM_ID, TITLE, POSTCODE,-->
-<!--                PRICE_MIN, PRICE_MAX, DEPOSIT_MIN, DEPOSIT_MAX, MAINTENANCE_FEE,-->
-<!--                PRIVATE_FACILITIES, SERVICES, LANGUAGES, ETC, DESCRIPTION, GENDER_LIMIT,-->
-<!--                TYPE, CONTRACT_MIN, AGE_MAX, AGE_MIN,-->
-<!--                FACILITY_HEATING, FACILITY_COOLING, FACILITY_LIFE, FACILITY_SECURITY,-->
-<!--                BUILDING_TYPE, CAN_PARKING, HAS_ELEVATOR,-->
-<!--                IS_SOLD_OUT-->
-<!--            )-->
-<!--            VALUES (-->
-<!--                #{room.roomId}, #{title}, #{postcode},-->
-<!--                #{priceMin}, #{priceMax}, #{depositMin}, #{depositMax}, #{maintenanceFee},-->
-<!--                #{privateFacilities}, #{services}, #{languages}, #{etc}, #{description}, #{genderLimit},-->
-<!--                #{type}, #{contractMin}, #{ageMax}, #{ageMin},-->
-<!--                #{facilityHeating}, #{facilityCooling}, #{facilityLife}, #{facilitySecurity},-->
-<!--                #{buildingType}, #{canParking}, #{hasElevator},-->
-<!--                #{isSoldOut}-->
-<!--             )-->
-<!--        ]]>-->
+    <!--  고시원 작성  -->
+    <insert id="saveGosiwon" parameterType="com.kb.room.vo.Gosiwon" useGeneratedKeys="true" keyProperty="gswId">
+        <![CDATA[
+            INSERT INTO GOSIWON (ROOM_ID, TITLE, GENDER_LIMIT, AGE_MAX, AGE_MIN)
+            VALUES (#{room.roomId}, #{title}, #{genderLimit}, #{ageMax}, #{ageMin})
+        ]]>
+    </insert>
 
-<!--        <selectKey keyProperty="gswId" resultType="int" order="AFTER">-->
-<!--            SELECT LAST_INSERT_ID()-->
-<!--        </selectKey>-->
-<!--    </insert>-->
+    <!--  원/투룸 작성  -->
+    <insert id="saveOneTwoRoom" parameterType="com.kb.room.vo.OnetwoRoom" useGeneratedKeys="true" keyProperty="gswId">
+        <![CDATA[
+        INSERT INTO ONETWOROOM (ROOM_ID, DETAIL_NAME, ROOM_TYPE)
+        VALUES (#{room.roomId}, #{detailName}, #{roomType})
+        ]]>
+    </insert>
 
-<!--    &lt;!&ndash;  대출 가능할 경우 부동산과 대출 연결   &ndash;&gt;-->
-<!--    <insert id="saveRoomWithLoan" parameterType="com.kb.room.vo.RoomWithLoan" useGeneratedKeys="true" keyProperty="roomLoanId">-->
-<!--        INSERT INTO ROOM_LOAN (ROOM_ID, LOAN_ID) VALUES (#{roomId}, #{loanId})-->
+    <!--  쉐어하우스 작성  -->
+    <insert id="saveShareHouse" parameterType="com.kb.room.vo.ShareHouse" useGeneratedKeys="true" keyProperty="gswId">
+        <![CDATA[
+        INSERT INTO SHAREHOUSE (ROOM_ID, TITLE, GENDER_LIMIT, AGE_MAX, AGE_MIN, ACCOMO_CNT)
+        VALUES (#{room.roomId}, #{title}, #{genderLimit}, #{ageMax}, #{ageMin}, #{accomoCnt})
+        ]]>
+    </insert>
 
-<!--        <selectKey keyProperty="roomLoanId" resultType="long" order="AFTER">-->
-<!--            SELECT LAST_INSERT_ID()-->
-<!--        </selectKey>-->
-<!--    </insert>-->
+    <!--  대출 가능할 경우 부동산과 대출 연결   -->
+    <insert id="saveRoomWithLoan" parameterType="com.kb.room.vo.RoomWithLoan" useGeneratedKeys="true" keyProperty="roomLoanId">
+        INSERT INTO ROOM_LOAN (ROOM_ID, LOAN_ID) VALUES (#{roomId}, #{loanId})
+    </insert>
 
 <!--    <select id="calGosiwonStatus" parameterType="string" resultMap="GosiwonStatusResultMap">-->
 <!--        SELECT-->

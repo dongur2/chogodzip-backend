@@ -58,7 +58,7 @@ CREATE TABLE ROOM
     FACILITY_LIFE           VARCHAR(255),
     FACILITY_SECURITY       VARCHAR(255),
 
-    BUILDING_TYPE           TINYINT(1), -- 0:상가건물 1:단독 2:공동
+    BUILDING_TYPE           VARCHAR(10), -- 0:상가건물 1:단독 2:공동
     CAN_PARKING             TINYINT(1), -- 0:불가 1:가능
     HAS_ELEVATOR            TINYINT(1), -- 0:없음 1:있음
 
@@ -79,11 +79,6 @@ CREATE TABLE GOSIWON
     -- 크롤링
     ROOM_ID                 BIGINT,
     TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
-#     PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
-#     PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
-#     DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
-#     DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
-#     MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
     GENDER_LIMIT            VARCHAR(22), -- GENDR00001:구분없음, GENDR00002:남성, GENDR00003:여성, GENDR00004:분리
     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
@@ -100,11 +95,6 @@ CREATE TABLE SHAREHOUSE
     -- 크롤링
     ROOM_ID                 BIGINT,
     TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
-#     PRICE_MIN               INT NOT NULL, -- "PRICE_MIN"
-#     PRICE_MAX               INT NOT NULL, -- "PRICE_MAX"
-#     DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
-#     DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
-#     MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
     GENDER_LIMIT            VARCHAR(22), -- GENDR00001:구분없음, GENDR00002:남성, GENDR00003:여성, GENDR00004:분리
     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
@@ -121,19 +111,8 @@ CREATE TABLE ONETWOROOM
 
     -- 크롤링
     ROOM_ID                 BIGINT,
-#     PRICE_MIN               INT, -- "PRICE_MIN"
-#     PRICE_MAX               INT, -- "PRICE_MAX"
-#     DEPOSIT_MIN             INT, -- "DEPOSIT_MIN"
-#     DEPOSIT_MAX             INT, -- "DEPOSIT_MAX"
-#     MAINTENANCE_FEE         INT, -- "MAINTENANCE_FEE"
-#     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
-#     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
     DETAIL_NAME             VARCHAR(50), -- "NAME" // 해당 호수 또는 층
     ROOM_TYPE               VARCHAR(10), -- 원룸(오픈/분리/복층형)/투룸/쓰리룸 이상
 
     CONSTRAINT FK_ONETWOROOM_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE
 )  AUTO_INCREMENT = 4000001;
-
--- 241012 ROOM_ID AUTO인거 우리가 크롤링한 ID로 넣게 변경
-# DESCRIBE
-

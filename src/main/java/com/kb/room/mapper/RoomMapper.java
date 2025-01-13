@@ -5,6 +5,7 @@ import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.request.LocationDTO;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
 import com.kb.room.dto.response.map.ShareHouseMapDTO;
+import com.kb.room.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public interface RoomMapper {
     //관심매물 등록, 삭제
     void insertInterest(@Param("userId") Long userId, @Param("roomId") Long roomId);
     void deleteInterest(@Param("userId") Long userId, @Param("roomId") Long roomId);
-//
+
 //    Gosiwon findOneGosiwon(@Param("id") Long id);
 //    List<Room> findRoomByLocation(LocationDTO roomParam); //관심 지역 맵 매물 조회
 //
@@ -44,11 +45,13 @@ public interface RoomMapper {
 //    Gosiwon findOneByRoomId(@Param("roomId") Integer roomId); //roomId로 고시원 단일 조회
 //    List<Room> findAll(); //부동산 모두 조회
 //    List<Gosiwon> findLatestFourAtInterestArea(@Param("address") String address); //관심지역 최신 매물 4개 조회 //
-//
-//    Long saveRoom(Room room); //매물 작성
-//    Long saveGosiwon(Gosiwon gosiwon); //고시원 작성
-//    Long saveRoomWithLoan(RoomWithLoan roomWithLoan); //매물 & 대출 연결
-//
+
+    Long saveRoom(Room room); //매물 작성
+    Long saveGosiwon(Gosiwon gosiwon); //고시원 작성
+    Long saveOneTwoRoom(OnetwoRoom onetwoRoom); //원투룸 작성
+    Long saveShareHouse(ShareHouse shareHouse); //공유주거 작성
+    Long saveRoomWithLoan(RoomWithLoan roomWithLoan); //매물 & 대출 연결
+
 //    GosiwonStatus calGosiwonStatus(String location);
 //
 //    int insertReply(@Param("userId")Long userId, @Param("roomId")Long roomId, @Param("reply") String reply);

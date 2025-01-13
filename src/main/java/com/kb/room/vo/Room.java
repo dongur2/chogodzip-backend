@@ -17,7 +17,7 @@ public class Room {
     private String houseTypeCd; //HOUTP00001 (고시원), HOUTP00003 (원룸텔)
     private String houseTypeNm; //고시원, 원룸텔
     private String dongliNm; //크롤링데이터만 포함
-    private String roomCnt;
+    private String roomCnt; //공유주거에서 빈방개수
     private String roomName;
     private String roomAddrFl;
     private Boolean canLoan;
@@ -30,6 +30,11 @@ public class Room {
     private String description;
     private String pics; //url
 
+    private Integer priceMin;
+    private Integer priceMax;
+    private Integer depositMin;
+    private Integer depositMax;
+    private Integer maintenanceFee;
     private Integer contractMin;
 
     //FACILITY INFO ----
@@ -39,7 +44,7 @@ public class Room {
     private String facilitySecurity;
 
     //BUILDING INFO ----
-    private Integer buildingType;
+    private String buildingType;
     private Boolean canParking;
     private Boolean hasElevator;
 

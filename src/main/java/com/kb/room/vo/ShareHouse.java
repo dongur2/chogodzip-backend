@@ -13,11 +13,6 @@ public class ShareHouse {
 
     private String title;
 
-    private Integer priceMin;        // PRICE_MIN
-    private Integer priceMax;        // PRICE_MAX
-    private Integer depositMin;      // DEPOSIT_MIN
-    private Integer depositMax;      // DEPOSIT_MAX
-    private Integer maintenanceFee;  // MAINTENANCE_FEE
     private String genderLimit;      // GENDER_LIMIT
     private Integer ageMax;          // AGE_MAX
     private Integer ageMin;          // AGE_MIN

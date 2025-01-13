@@ -1,12 +1,15 @@
 package com.kb.room.service;
 
 import com.kb.room.dto.request.LocationDTO;
+import com.kb.room.dto.request.regist.RoomPostDTO;
 import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
 import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
 import com.kb.room.dto.response.map.ShareHouseMapDTO;
 import com.kb.user.dto.User;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface RoomService {
@@ -20,7 +23,10 @@ public interface RoomService {
     //관심매물 토글
     Boolean toggleInterest(Long userId, Long roomId);
 //    List<RoomTempDTO> fetchAllRooms();
-//    Integer addRoom(GosiwonPostDTO dto, List<MultipartFile> pics) throws IOException; //고시원 작성
+
+    //매물 작성
+    Long addRoom(Long writerId, RoomPostDTO dto, List<MultipartFile> pics) throws IOException; //고시원 작성
+
 //    List<RoomHomeDTO> fetchRoomsAtInterestArea(String interestArea);
 //    List<RoomHomeMapDTO> fetchRoomsAtInterestAreaMap(LocationDTO param);
 }

@@ -1,5 +1,11 @@
 package com.kb.room.controller;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kb.room.dto.request.regist.RoomPostDTO;
 import com.kb.room.service.RoomService;
 import com.kb.user.dto.User;
 import io.swagger.annotations.Api;
@@ -11,6 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @RestController @Primary
@@ -47,20 +58,27 @@ public class RoomController {
 //        return ResponseEntity.ok(result);
 //    }
 
-//    //고시원 매물 등록
-//    @PostMapping
-//    public ResponseEntity<Integer> createRoom(@RequestPart(value = "dto") String dtoJson, @RequestPart(value = "pics") List<MultipartFile> pics) throws IOException {
-//        //한글 처리
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-//        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-//        objectMapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
-//
-//        dtoJson = new String(dtoJson.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-//        GosiwonPostDTO dto = objectMapper.readValue(dtoJson, GosiwonPostDTO.class);
-//
-//        Integer roomId = roomTempService.addRoom(dto, pics);
-//        return new ResponseEntity<>(roomId, HttpStatus.OK);
-//    }
+    @PostMapping
+    public ResponseEntity<Long> createRoom(@AuthenticationPrincipal User user,
+                                              @RequestPart("roomData") String roomDataJson,
+                                              @RequestPart(value = "pics", required = false) List<MultipartFile> pics) throws IOException {
+        if(user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+        //넘어온 데이터를 DTO로 변환
+        RoomPostDTO dto = convertJsonDataToDTOWithKorean(roomDataJson);
+
+        //작성
+        Long roomId = roomService.addRoom(user.getUserId(), dto, pics);
+        return new ResponseEntity<>(roomId, HttpStatus.OK);
+    }
+
+    private RoomPostDTO convertJsonDataToDTOWithKorean(String jsonData) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        objectMapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+        jsonData = new String(jsonData.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+
+        return objectMapper.readValue(jsonData, RoomPostDTO.class);
+    }
 }
