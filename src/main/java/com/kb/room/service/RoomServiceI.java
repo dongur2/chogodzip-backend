@@ -3,6 +3,7 @@ package com.kb.room.service;
 import com.kb.common.util.S3Uploader;
 import com.kb.room.dto.request.regist.RoomPostDTO;
 import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.status.GuStatus;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
 import com.kb.room.dto.response.map.RoomMapDTO;
 import com.kb.room.dto.response.map.ShareHouseMapDTO;
@@ -80,6 +81,16 @@ public class RoomServiceI implements RoomService {
         return room;
     }
 
+    @Override //구의 해당 매물 유형 데이터 계산
+    public GuStatus calculateGuStatus(String typeCode, String gu) {
+        return switch (typeCode) {
+            case "HOUTP00001", "HOUTP00003", "HOUTP00006" -> roomMapper.calculateGosiwonPricesOfGu(gu);
+            case "HOUTP00002", "HOUTP00004", "HOUTP00005" -> roomMapper.calculateShareHousePricesOfGu(gu);
+            case "HOUTP00008", "HOUTP00009" -> roomMapper.calculateOnetwoRoomPricesOfGu(gu);
+            default -> throw new IllegalArgumentException();
+        };
+    }
+
     private <T extends RoomMapDTO> void populateRoomDetails(User user, List<T> rooms) {
         for (T room : rooms) {
             if (room.getCanLoan() != null && room.getCanLoan()) room.setLoans(selectLoans(room.getRoomId()));
@@ -145,7 +156,6 @@ public class RoomServiceI implements RoomService {
             }
         }
     }
-
 //    @Transactional(rollbackFor = Exception.class)
 //    public int registReply(Long userId, Long roomId, String reply) {
 //
@@ -153,15 +163,7 @@ public class RoomServiceI implements RoomService {
 //        return result;
 //    }
 //
-//
-//    public Gosiwon getOneGosiwons(Long id) {
-//        return roomMapper.findOneGosiwon(id);
-//    }
-//
-//    public int getFavoriteCnt(int roomId) {
-//        return roomMapper.findFavoriteCnt(roomId);
-//    }
-//
+
 //    public List<UserReview> getAllReview(Long roomId) {
 //        List<UserReview> reviewList = roomMapper.findAllReview(roomId);
 //        reviewList.forEach(review -> {
@@ -171,28 +173,8 @@ public class RoomServiceI implements RoomService {
 //        return reviewList;
 //    }
 //
-//    public GosiwonStatus calStatus(String location) {
-//        return roomMapper.calGosiwonStatus(location);
-//    }
-//
-//
-//    public Onetworoom getOneJachis(Long id) {
-//        return roomMapper.findOneJachi(id);
-//    }
-//
-//    public GosiwonStatus calRoomStatus(String location) {
-//        return roomMapper.calRoomStatus(location);
-//    }
-//
-//    public ShareHouse getOneShare(Long id) {
-//        return roomMapper.findOneShare(id);
-//    }
-//
-//    public GosiwonStatus calShareStauts(String location) {
-//
-//        return roomMapper.calShareStauts(location);
-//    }
-//
+
+
 //    public List<Room> myRoomList(Long userId) {
 //        return roomMapper.myRoomList(userId);
 //    }

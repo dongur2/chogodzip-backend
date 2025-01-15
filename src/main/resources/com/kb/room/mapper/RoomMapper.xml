@@ -245,29 +245,6 @@
         DELETE FROM INTEREST_ROOM WHERE USER_ID = #{userId} AND ROOM_ID = #{roomId}
     </delete>
 
-
-    <!--    <select id="findOneGosiwon" resultMap="gosiwonResultMap">-->
-<!--        SELECT *-->
-<!--        FROM GOSIWON g-->
-<!--                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
-<!--        WHERE g.ROOM_ID = #{id}-->
-<!--    </select>-->
-
-<!--    <select id="findOneJachi" resultMap="JachiResultMap">-->
-<!--        SELECT *-->
-<!--        FROM JACHI g-->
-<!--                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
-<!--        WHERE g.ROOM_ID = #{id}-->
-<!--    </select>-->
-
-<!--    <select id="findOneShare" resultMap="ShareHouseResultMap">-->
-<!--        SELECT *-->
-<!--        FROM SHAREHOUSE g-->
-<!--                 INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
-<!--        WHERE g.ROOM_ID = #{id}-->
-<!--    </select>-->
-
-
 <!--    <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">-->
 <!--        INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)-->
 <!--        VALUES (#{roomId}, #{userId}, #{reply}, NOW(), 'N')-->
@@ -285,20 +262,6 @@
 <!--        WHERE room_id = #{roomId} AND is_deleted = 'N'-->
 <!--    </select>-->
 
-<!--    &lt;!&ndash;  부동산 데이터 조회  &ndash;&gt;-->
-<!--    <select id="findRoomByRoomId" resultType="com.kb.room.vo.Room" parameterType="int">-->
-<!--        SELECT * FROM ROOM WHERE ROOM_ID = #{roomId}-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash;  고시원 데이터 조회  &ndash;&gt;-->
-<!--    <select id="findOneByRoomId" resultMap="gosiwonResultMap" parameterType="int">-->
-<!--        SELECT * FROM GOSIWON WHERE ROOM_ID = #{roomId}-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash;  모든 부동산 데이터 조회  &ndash;&gt;-->
-<!--    <select id="findAll" resultType="com.kb.room.vo.Room">-->
-<!--        SELECT * FROM ROOM-->
-<!--    </select>-->
 
 <!--    <select id="myRoomList" resultType="com.kb.room.vo.Room">-->
 <!--        SELECT * FROM ROOM where user_id = #{userId}-->
@@ -357,47 +320,34 @@
         INSERT INTO ROOM_LOAN (ROOM_ID, LOAN_ID) VALUES (#{roomId}, #{loanId})
     </insert>
 
-<!--    <select id="calGosiwonStatus" parameterType="string" resultMap="GosiwonStatusResultMap">-->
-<!--        SELECT-->
-<!--            MAX(g.PRICE_MAX) AS maxPrice,-->
-<!--            AVG(g.PRICE_MAX) AS avgPrice,-->
-<!--            MIN(g.PRICE_MAX) AS minPrice-->
-<!--        FROM-->
-<!--            GOSIWON g-->
-<!--                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
-<!--        WHERE-->
-<!--            r.ADDRESS IS NOT NULL-->
-<!--          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');-->
+    <!--  해당하는 구의 매물별 최고가/최저가/평균가 계산  -->
+    <select id="calculateGosiwonPricesOfGu" parameterType="string" resultType="com.kb.room.dto.response.detail.status.GuStatus">
+        SELECT
+            MAX(r.PRICE_MAX) AS maxPrice,
+            AVG(r.PRICE_MAX) AS avgPrice,
+            MIN(r.PRICE_MAX) AS minPrice
+        FROM GOSIWON g INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID
+        WHERE r.ADDRESS IS NOT NULL AND r.ADDRESS LIKE CONCAT('%', #{gu}, '%');
+    </select>
 
-<!--    </select>-->
+    <select id="calculateShareHousePricesOfGu" parameterType="string" resultType="com.kb.room.dto.response.detail.status.GuStatus">
+        SELECT
+            MAX(r.PRICE_MAX) AS maxPrice,
+            AVG(r.PRICE_MAX) AS avgPrice,
+            MIN(r.PRICE_MAX) AS minPrice
+        FROM SHAREHOUSE s INNER JOIN ROOM r ON s.ROOM_ID = r.ROOM_ID
+        WHERE r.ADDRESS IS NOT NULL AND r.ADDRESS LIKE CONCAT('%', #{gu}, '%');
+    </select>
 
-<!--    <select id="calRoomStatus" parameterType="string" resultMap="GosiwonStatusResultMap">-->
-<!--        SELECT-->
-<!--            MAX(g.PRICE_MAX) AS maxPrice,-->
-<!--            AVG(g.PRICE_MAX) AS avgPrice,-->
-<!--            MIN(g.PRICE_MAX) AS minPrice-->
-<!--        FROM-->
-<!--            SHAREHOUSE g-->
-<!--                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
-<!--        WHERE-->
-<!--            r.ADDRESS IS NOT NULL-->
-<!--          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');-->
+    <select id="calculateOnetwoRoomPricesOfGu" parameterType="string" resultType="com.kb.room.dto.response.detail.status.GuStatus">
+        SELECT
+            MAX(r.PRICE_MAX) AS maxPrice,
+            AVG(r.PRICE_MAX) AS avgPrice,
+            MIN(r.PRICE_MAX) AS minPrice
+        FROM ONETWOROOM o INNER JOIN ROOM r ON o.ROOM_ID = r.ROOM_ID
+        WHERE r.ADDRESS IS NOT NULL AND r.ADDRESS LIKE CONCAT('%', #{gu}, '%');
+    </select>
 
-<!--    </select>-->
-
-<!--    <select id="calShareStauts" parameterType="string" resultMap="GosiwonStatusResultMap">-->
-<!--        SELECT-->
-<!--            MAX(g.PRICE_MAX) AS maxPrice,-->
-<!--            AVG(g.PRICE_MAX) AS avgPrice,-->
-<!--            MIN(g.PRICE_MAX) AS minPrice-->
-<!--        FROM-->
-<!--            JACHI g-->
-<!--                INNER JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
-<!--        WHERE-->
-<!--            r.ADDRESS IS NOT NULL-->
-<!--          AND r.ADDRESS LIKE CONCAT('%', #{location}, '%');-->
-
-<!--    </select>-->
 
 <!--    &lt;!&ndash;  메인: 관심 지역 최신 4개 고시원 조회  &ndash;&gt;-->
 <!--    <select id="findLatestFourAtInterestArea" resultMap="gosiwonResultMap">-->
