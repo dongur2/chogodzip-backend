@@ -2,7 +2,6 @@ package com.kb.room.dto.response.map;
 
 import lombok.*;
 
-import java.util.Date;
 import java.util.List;
 
 @Setter @Getter
@@ -24,27 +23,9 @@ public abstract class RoomMapDTO {
     private Integer depositMax;
     private Integer maintenanceFee;
 
-    // Facilities
-    private String privateFacilities;
-    private String services;
-    private String languages;
-    private String etc;
-
-    private String facilityHeating;
-    private String facilityCooling;
-    private String facilityLife;
-    private String facilitySecurity;
-
-    // Building Information
-    private Boolean buildingType;
-    private Boolean canParking;
-    private Boolean hasElevator;
-
     private Boolean canLoan;
     private List<String> loans;
 
-    private String isSoldOut;
+    private Boolean isSoldOut;
     private Boolean isInterested;
-
-    private Date createdAt;
 }

@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 public class OnetwoRoomMapDTO extends RoomMapDTO{
     private Long otrId;
 
-    private String detailName; //호수
-    private String roomType; //~형
-
-    private String roomCnt;
     private String roomName;
+    private String detailName; //호수
+
+    private String roomType; //원룸타입/투룸/쓰리룸~
+
     private String roomAddrFl;
 }

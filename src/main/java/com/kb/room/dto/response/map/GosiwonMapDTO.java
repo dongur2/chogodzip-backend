@@ -15,6 +15,4 @@ public class GosiwonMapDTO extends RoomMapDTO{
     private String genderLimit;
     private Integer ageMax;
     private Integer ageMin;
-
-    private Boolean contractMin;
 }

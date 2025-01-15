@@ -146,7 +146,7 @@
     <!-- 대출 종류 조회 -->
     <select id="selectLoansByRoomId" parameterType="long" resultType="String">
         SELECT l.LOAN
-        FROM ROOM_WITH_LOAN r LEFT JOIN LOAN_TYPE l ON r.LOAN_ID = l.LOAN_ID
+        FROM ROOM_LOAN r LEFT JOIN LOAN_TYPE l ON r.LOAN_ID = l.LOAN_ID
         WHERE ROOM_ID = #{roomId}
     </select>
 

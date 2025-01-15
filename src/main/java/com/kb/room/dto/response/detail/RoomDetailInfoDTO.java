@@ -42,7 +42,7 @@ public abstract class RoomDetailInfoDTO {
     private String facilitySecurity;
 
     //BUILDING INFO ----
-    private Integer buildingType;
+    private String buildingType;
     private Boolean canParking;
     private Boolean hasElevator;
 
