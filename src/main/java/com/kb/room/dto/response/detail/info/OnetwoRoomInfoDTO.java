@@ -11,8 +11,11 @@ public class OnetwoRoomInfoDTO extends RoomDetailInfoDTO{
 
     private String roomName;
     private String detailName; //호수
-
     private String roomType; //원룸타입/투룸/쓰리룸~
-
-    private String roomAddrFl;
+    private String rentType;
+    private Double thisFl;
+    private Integer totalFl;
+    private Double pvArea;
+    private Double ttArea;
+    private Boolean hasMortgage;
 }

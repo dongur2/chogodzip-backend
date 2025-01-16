@@ -18,4 +18,5 @@ public class ShareHouse {
     private Integer ageMin;          // AGE_MIN
 
     private Integer accomoCnt;       // ACCOMO_CNT
+    private Integer validRoomCnt;
 }

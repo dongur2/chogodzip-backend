@@ -11,8 +11,6 @@ public class OnetwoRoomMapDTO extends RoomMapDTO{
 
     private String roomName;
     private String detailName; //호수
-
     private String roomType; //원룸타입/투룸/쓰리룸~
-
-    private String roomAddrFl;
+    private Double thisFl;
 }

@@ -76,7 +76,6 @@ CREATE TABLE GOSIWON
 (
     GSW_ID                  BIGINT PRIMARY KEY AUTO_INCREMENT,
 
-    -- 크롤링
     ROOM_ID                 BIGINT,
     TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
     GENDER_LIMIT            VARCHAR(22), -- GENDR00001:구분없음, GENDR00002:남성, GENDR00003:여성, GENDR00004:분리
@@ -92,13 +91,13 @@ CREATE TABLE SHAREHOUSE
 (
     SHH_ID                  BIGINT PRIMARY KEY AUTO_INCREMENT,
 
-    -- 크롤링
     ROOM_ID                 BIGINT,
     TITLE                   VARCHAR(255) NOT NULL, -- "NAME"
     GENDER_LIMIT            VARCHAR(22), -- GENDR00001:구분없음, GENDR00002:남성, GENDR00003:여성, GENDR00004:분리
     AGE_MAX                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MAX"
     AGE_MIN                 INT, -- 0 or NULL 이면 없음 // "ENTER AGE_MIN"
     ACCOMO_CNT              INT, -- 전체 숙소 수용 가능 인원
+    VALID_ROOM_CNT          INT, -- 공실 개수
 
     CONSTRAINT FK_SHAREHOUSE_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE
 )  AUTO_INCREMENT = 3000001;
@@ -109,10 +108,15 @@ CREATE TABLE ONETWOROOM
 (
     OTR_ID                  BIGINT PRIMARY KEY AUTO_INCREMENT,
 
-    -- 크롤링
     ROOM_ID                 BIGINT,
     DETAIL_NAME             VARCHAR(50), -- "NAME" // 해당 호수 또는 층
     ROOM_TYPE               VARCHAR(10), -- 원룸(오픈/분리/복층형)/투룸/쓰리룸 이상
+    RENT_TYPE               VARCHAR(5), -- 월세/전세
+    THIS_FL                 FLOAT, -- 현재 층
+    TOTAL_FL                INT, -- 전체 층
+    PV_AREA                 DECIMAL(10, 7), -- 전용면적
+    TT_AREA                 DECIMAL(10, 7), -- 공급면적
+    HAS_MORTGAGE            TINYINT(1), -- 융자유무
 
     CONSTRAINT FK_ONETWOROOM_ROOM FOREIGN KEY (ROOM_ID) REFERENCES ROOM(ROOM_ID) ON DELETE CASCADE
 )  AUTO_INCREMENT = 4000001;

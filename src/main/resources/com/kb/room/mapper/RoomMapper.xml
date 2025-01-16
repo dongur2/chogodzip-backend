@@ -5,127 +5,6 @@
 
 <mapper namespace="com.kb.room.mapper.RoomMapper">
 
-    <!--  ROOM_VO  -->
-    <resultMap id="room" type="com.kb.room.vo.Room">
-        <id property="roomId" column="ROOM_ID"/>
-        <result property="userId" column="USER_ID"/>
-        <result property="roomLat" column="ROOM_LAT"/>
-        <result property="roomLong" column="ROOM_LONG"/>
-        <result property="thumbnail" column="THUMBNAIL"/>
-        <result property="address" column="ADDRESS"/>
-        <result property="houseTypeCd" column="HOUSE_TYPE_CD"/>
-        <result property="houseTypeNm" column="HOUSE_TYPE_NM"/>
-        <result property="dongliNm" column="DONG_LI_NM"/>
-
-        <result property="roomCnt" column="ROOM_CNT" />
-        <result property="roomName" column="ROOM_NAME" />
-        <result property="roomAddrFl" column="ROOM_ADDR_FL" />
-        <result property="canLoan" column="CAN_LOAN"/>
-        <result property="postcode" column="POSTCODE" />
-
-        <result property="privateFacilities" column="PRIVATE_FACILITIES" />
-        <result property="services" column="SERVICES" />
-        <result property="languages" column="LANGUAGES" />
-        <result property="etc" column="ETC" />
-        <result property="description" column="DESCRIPTION" />
-        <result property="pics" column="PICS" />
-
-        <result property="contractMin" column="CONTRACT_MIN" />
-
-        <!-- FACILITY INFO -->
-        <result property="facilityHeating" column="FACILITY_HEATING" />
-        <result property="facilityCooling" column="FACILITY_COOLING" />
-        <result property="facilityLife" column="FACILITY_LIFE" />
-        <result property="facilitySecurity" column="FACILITY_SECURITY" />
-
-        <!-- BUILDING INFO -->
-        <result property="buildingType" column="BUILDING_TYPE" />
-        <result property="canParking" column="CAN_PARKING" />
-        <result property="hasElevator" column="HAS_ELEVATOR" />
-
-        <!-- SOLD OUT -->
-        <result property="isSoldOut" column="IS_SOLD_OUT" />
-
-        <result property="createdAt" column="CREATED_AT"/>
-        <result property="updatedAt" column="UPDATED_AT"/>
-    </resultMap>
-
-    <!--  ROOM for MAP  -->
-    <resultMap id="roomForMap" type="com.kb.room.vo.Room">
-        <id property="roomId" column="ROOM_ID"/>
-        <result property="userId" column="USER_ID"/>
-        <result property="roomLat" column="ROOM_LAT"/>
-        <result property="roomLong" column="ROOM_LONG"/>
-        <result property="thumbnail" column="THUMBNAIL"/>
-        <result property="address" column="ADDRESS"/>
-        <result property="houseTypeCd" column="HOUSE_TYPE_CD"/>
-        <result property="houseTypeNm" column="HOUSE_TYPE_NM"/>
-        <result property="dongliNm" column="DONG_LI_NM"/>
-
-        <result property="roomCnt" column="ROOM_CNT" />
-        <result property="roomName" column="ROOM_NAME" />
-        <result property="roomAddrFl" column="ROOM_ADDR_FL" />
-
-        <result property="canLoan" column="CAN_LOAN"/>
-
-        <result property="privateFacilities" column="PRIVATE_FACILITIES" />
-        <result property="services" column="SERVICES" />
-        <result property="languages" column="LANGUAGES" />
-        <result property="etc" column="ETC" />
-
-        <result property="priceMin" column="PRICE_MIN" />
-        <result property="priceMax" column="PRICE_MAX" />
-        <result property="depositMin" column="DEPOSIT_MIN" />
-        <result property="depositMax" column="DEPOSIT_MAX" />
-        <result property="maintenanceFee" column="MAINTENANCE_FEE" />
-        <result property="contractMin" column="CONTRACT_MIN" />
-
-        <!-- BUILDING INFO -->
-        <result property="buildingType" column="BUILDING_TYPE" />
-        <result property="canParking" column="CAN_PARKING" />
-        <result property="hasElevator" column="HAS_ELEVATOR" />
-
-        <!-- SOLD OUT -->
-        <result property="isSoldOut" column="IS_SOLD_OUT" />
-
-        <result property="createdAt" column="CREATED_AT"/>
-    </resultMap>
-
-    <!--  GOSIWON for MAP  -->
-    <resultMap id="gosiwonForMap" type="com.kb.room.vo.Gosiwon">
-        <id property="gswId" column="GSW_ID" />
-        <result property="title" column="TITLE" />
-        <result property="genderLimit" column="GENDER_LIMIT" />
-        <result property="ageMax" column="AGE_MAX" />
-        <result property="ageMin" column="AGE_MIN" />
-
-        <!-- Room Association -->
-        <association property="room" resultMap="roomForMap" />
-    </resultMap>
-
-    <!--  SHAREHOUSE for MAP  -->
-    <resultMap id="shareHouseForMap" type="com.kb.room.vo.ShareHouse">
-        <id property="shhId" column="SHH_ID" />
-        <result property="title" column="TITLE" />
-        <result property="genderLimit" column="GENDER_LIMIT" />
-        <result property="ageMax" column="AGE_MAX" />
-        <result property="ageMin" column="AGE_MIN" />
-        <result property="accomoCnt" column="ACCOMO_CNT" />
-
-        <!-- Room Association -->
-        <association property="room" resultMap="roomForMap" />
-    </resultMap>
-
-    <!--  ONETWOROOM for MAP  -->
-    <resultMap id="onetwoRoomForMap" type="com.kb.room.vo.OnetwoRoom">
-        <id property="otrId" column="OTR_ID" />
-        <result property="detailName" column="DETAIL_NAME" />
-        <result property="roomType" column="ROOM_TYPE" />
-
-        <!-- Room Association -->
-        <association property="room" resultMap="roomForMap" />
-    </resultMap>
-
     <!-- 대출 종류 조회 -->
     <select id="selectLoansByRoomId" parameterType="long" resultType="String">
         SELECT l.LOAN
@@ -279,16 +158,16 @@
     <!--  원/투룸 작성  -->
     <insert id="saveOneTwoRoom" parameterType="com.kb.room.vo.OnetwoRoom" useGeneratedKeys="true" keyProperty="gswId">
         <![CDATA[
-        INSERT INTO ONETWOROOM (ROOM_ID, DETAIL_NAME, ROOM_TYPE)
-        VALUES (#{room.roomId}, #{detailName}, #{roomType})
+            INSERT INTO ONETWOROOM (ROOM_ID, DETAIL_NAME, ROOM_TYPE, RENT_TYPE, THIS_FL, TOTAL_FL, PV_AREA, TT_AREA, HAS_MORTGAGE)
+            VALUES (#{room.roomId}, #{detailName}, #{roomType}, #{rentType}, #{thisFl}, #{totalFl}, #{pvArea}, #{ttArea}, #{hasMortgage})
         ]]>
     </insert>
 
     <!--  쉐어하우스 작성  -->
     <insert id="saveShareHouse" parameterType="com.kb.room.vo.ShareHouse" useGeneratedKeys="true" keyProperty="gswId">
         <![CDATA[
-        INSERT INTO SHAREHOUSE (ROOM_ID, TITLE, GENDER_LIMIT, AGE_MAX, AGE_MIN, ACCOMO_CNT)
-        VALUES (#{room.roomId}, #{title}, #{genderLimit}, #{ageMax}, #{ageMin}, #{accomoCnt})
+            INSERT INTO SHAREHOUSE (ROOM_ID, TITLE, GENDER_LIMIT, AGE_MAX, AGE_MIN, ACCOMO_CNT, VALID_ROOM_CNT)
+            VALUES (#{room.roomId}, #{title}, #{genderLimit}, #{ageMax}, #{ageMin}, #{accomoCnt}, #{validRoomCnt})
         ]]>
     </insert>
 

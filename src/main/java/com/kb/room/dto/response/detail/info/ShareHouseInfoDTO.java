@@ -9,13 +9,9 @@ import lombok.Setter;
 public class ShareHouseInfoDTO extends RoomDetailInfoDTO{
     private Long shhId;
     private String title;
-
     private String genderLimit;
     private Integer ageMax;
     private Integer ageMin;
-
-    private Integer contractMin;
-
-    private Integer roomCnt;
+    private Integer validRoomCnt;
     private Integer accomoCnt;
 }
