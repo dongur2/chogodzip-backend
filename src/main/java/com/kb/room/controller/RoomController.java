@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.room.dto.request.regist.RoomPostDTO;
+import com.kb.room.dto.response.detail.review.UserReviewDTO;
 import com.kb.room.dto.response.detail.status.GuStatus;
 import com.kb.room.service.RoomService;
 import com.kb.user.dto.User;
@@ -73,6 +74,18 @@ public class RoomController {
 
         Boolean isInterested = roomService.toggleInterest(user.getUserId(), roomId);
         return ResponseEntity.ok(isInterested);
+    }
+
+    @GetMapping("/{roomId}/reviews")
+    public ResponseEntity<List<UserReviewDTO>> getUserReviews(@PathVariable Long roomId) {
+        List<UserReviewDTO> list = roomService.getAllUserReviews(roomId);
+        return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("/{roomId}/reviews")
+    public HttpStatus createUserReview(@AuthenticationPrincipal User user, @PathVariable Long roomId, @RequestParam String content) {
+        if(user == null) return HttpStatus.UNAUTHORIZED;
+        return roomService.addUserReview(user.getUserId(), roomId, content);
     }
 
     @GetMapping("/gu/status")

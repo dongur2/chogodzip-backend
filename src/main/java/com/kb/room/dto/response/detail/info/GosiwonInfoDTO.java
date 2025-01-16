@@ -1,4 +1,4 @@
-package com.kb.room.dto.response.detail;
+package com.kb.room.dto.response.detail.info;
 
 import lombok.*;
 

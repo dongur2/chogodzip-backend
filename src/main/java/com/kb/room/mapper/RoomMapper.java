@@ -1,6 +1,7 @@
 package com.kb.room.mapper;
 
-import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.info.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.review.UserReviewDTO;
 import com.kb.room.dto.response.detail.status.GuStatus;
 import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.request.LocationDTO;
@@ -39,12 +40,10 @@ public interface RoomMapper {
     void deleteInterest(@Param("userId") Long userId, @Param("roomId") Long roomId);
 
 //    List<Room> findRoomByLocation(LocationDTO roomParam); //관심 지역 맵 매물 조회
-//
-//    int insertReply(UserReview review);
-//
-//    List<UserReview> findAllReview(Long roomId);
-//
-//    Room findRoomByRoomId(@Param("roomId") Integer roomId); //roomId로 부동산 단일 조회
+
+    //리뷰
+    List<UserReviewDTO> selectUserReviewsOfRoom(Long roomId);
+    int insertUserReview(@Param("userId")Long userId, @Param("roomId")Long roomId, @Param("content") String content);
 
 //    List<Gosiwon> findLatestFourAtInterestArea(@Param("address") String address); //관심지역 최신 매물 4개 조회
 
@@ -52,10 +51,7 @@ public interface RoomMapper {
     Long saveGosiwon(Gosiwon gosiwon); //고시원 작성
     Long saveOneTwoRoom(OnetwoRoom onetwoRoom); //원투룸 작성
     Long saveShareHouse(ShareHouse shareHouse); //공유주거 작성
-
     Long saveRoomWithLoan(RoomWithLoan roomWithLoan); //매물 & 대출 연결
-//
-//    int insertReply(@Param("userId")Long userId, @Param("roomId")Long roomId, @Param("reply") String reply);
-//
+
 //    List<Room> myRoomList(Long userId);
 }

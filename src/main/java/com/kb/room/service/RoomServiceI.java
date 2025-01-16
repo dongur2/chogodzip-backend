@@ -2,7 +2,8 @@ package com.kb.room.service;
 
 import com.kb.common.util.S3Uploader;
 import com.kb.room.dto.request.regist.RoomPostDTO;
-import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.info.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.review.UserReviewDTO;
 import com.kb.room.dto.response.detail.status.GuStatus;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
 import com.kb.room.dto.response.map.RoomMapDTO;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,6 +93,17 @@ public class RoomServiceI implements RoomService {
         };
     }
 
+    @Override //해당 매물의 모든 사용자 리뷰 조회
+    public List<UserReviewDTO> getAllUserReviews(Long roomId) {
+        return roomMapper.selectUserReviewsOfRoom(roomId);
+    }
+
+    @Override @Transactional //사용자 리뷰 작성
+    public HttpStatus addUserReview(Long userId, Long roomId, String content) {
+        int isCreated = roomMapper.insertUserReview(userId, roomId, content);
+        return isCreated > 0 ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+    }
+
     private <T extends RoomMapDTO> void populateRoomDetails(User user, List<T> rooms) {
         for (T room : rooms) {
             if (room.getCanLoan() != null && room.getCanLoan()) room.setLoans(selectLoans(room.getRoomId()));
@@ -156,24 +169,6 @@ public class RoomServiceI implements RoomService {
             }
         }
     }
-//    @Transactional(rollbackFor = Exception.class)
-//    public int registReply(Long userId, Long roomId, String reply) {
-//
-//        int result = roomMapper.insertReply(userId, roomId, reply);
-//        return result;
-//    }
-//
-
-//    public List<UserReview> getAllReview(Long roomId) {
-//        List<UserReview> reviewList = roomMapper.findAllReview(roomId);
-//        reviewList.forEach(review -> {
-////            review.setUserPic(memberMapper.findPicOfMember(review.getUserId()));
-////            review.setUserName(memberMapper.selectByNo(review.getUserId()).getUsername());
-//        });
-//        return reviewList;
-//    }
-//
-
 
 //    public List<Room> myRoomList(Long userId) {
 //        return roomMapper.myRoomList(userId);

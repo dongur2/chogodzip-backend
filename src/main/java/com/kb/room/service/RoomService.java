@@ -2,12 +2,14 @@ package com.kb.room.service;
 
 import com.kb.room.dto.request.LocationDTO;
 import com.kb.room.dto.request.regist.RoomPostDTO;
-import com.kb.room.dto.response.detail.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.info.RoomDetailInfoDTO;
+import com.kb.room.dto.response.detail.review.UserReviewDTO;
 import com.kb.room.dto.response.detail.status.GuStatus;
 import com.kb.room.dto.response.map.GosiwonMapDTO;
 import com.kb.room.dto.response.map.OnetwoRoomMapDTO;
 import com.kb.room.dto.response.map.ShareHouseMapDTO;
 import com.kb.user.dto.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,7 +22,11 @@ public interface RoomService {
 
     //상세 정보 조회
     RoomDetailInfoDTO getRoomInfo(User user, Long roomId);
-    GuStatus calculateGuStatus(String typeCode, String gu); //해당 구의 가격 데이터 조회
+    GuStatus calculateGuStatus(String typeCode, String gu);
+
+    //리뷰
+    List<UserReviewDTO> getAllUserReviews(Long roomId);
+    HttpStatus addUserReview(Long userId, Long roomId, String content);
 
     //관심매물 토글
     Boolean toggleInterest(Long userId, Long roomId);

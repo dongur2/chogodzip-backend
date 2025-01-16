@@ -126,23 +126,6 @@
         <association property="room" resultMap="roomForMap" />
     </resultMap>
 
-
-    <!--    <resultMap id="GosiwonStatusResultMap" type="com.kb.room.vo.GosiwonStatus">-->
-<!--        <result property="maxPrice" column="maxPrice" />-->
-<!--        <result property="avgPrice" column="avgPrice" />-->
-<!--        <result property="minPrice" column="minPrice" />-->
-<!--    </resultMap>-->
-
-
-<!--    <resultMap id="reviewResultMap" type="com.kb.room.dto.UserReview">-->
-<!--        <id property="reviewId" column="REVIEW_ID"/>-->
-<!--        <result property="roomId" column="ROOM_ID"/>-->
-<!--        <result property="userId" column="USER_ID"/>-->
-<!--        <result property="reviewContent" column="REVIEW_CONTENT"/>-->
-<!--        <result property="createdAt" column="CREATED_AT"/>-->
-<!--        <result property="isDeleted" column="IS_DELETED"/>-->
-<!--    </resultMap>-->
-
     <!-- 대출 종류 조회 -->
     <select id="selectLoansByRoomId" parameterType="long" resultType="String">
         SELECT l.LOAN
@@ -204,19 +187,19 @@
     </select>
 
     <!--  매물 상세 정보 조회  -->
-    <select id="selectGosiwonByRoomId" resultType="com.kb.room.dto.response.detail.GosiwonInfoDTO" parameterType="Long">
+    <select id="selectGosiwonByRoomId" resultType="com.kb.room.dto.response.detail.info.GosiwonInfoDTO" parameterType="Long">
         SELECT r.*, g.*
         FROM ROOM r JOIN GOSIWON g
         ON r.ROOM_ID = g.ROOM_ID
         WHERE r.ROOM_ID = #{roomId}
     </select>
-    <select id="selectShareHouseByRoomId" resultType="com.kb.room.dto.response.detail.ShareHouseInfoDTO" parameterType="Long">
+    <select id="selectShareHouseByRoomId" resultType="com.kb.room.dto.response.detail.info.ShareHouseInfoDTO" parameterType="Long">
         SELECT r.*, s.*
         FROM ROOM r JOIN SHAREHOUSE s
                          ON r.ROOM_ID = s.ROOM_ID
         WHERE r.ROOM_ID = #{roomId}
     </select>
-    <select id="selectOnetwoRoomByRoomId" resultType="com.kb.room.dto.response.detail.OnetwoRoomInfoDTO" parameterType="Long">
+    <select id="selectOnetwoRoomByRoomId" resultType="com.kb.room.dto.response.detail.info.OnetwoRoomInfoDTO" parameterType="Long">
         SELECT r.*, o.*
         FROM ROOM r JOIN ONETWOROOM o
                          ON r.ROOM_ID = o.ROOM_ID
@@ -245,23 +228,17 @@
         DELETE FROM INTEREST_ROOM WHERE USER_ID = #{userId} AND ROOM_ID = #{roomId}
     </delete>
 
-<!--    <insert id="insertReply" parameterType="com.kb.room.dto.UserReview">-->
-<!--        INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, REVIEW_CONTENT, CREATED_AT, IS_DELETED)-->
-<!--        VALUES (#{roomId}, #{userId}, #{reply}, NOW(), 'N')-->
-<!--    </insert>-->
+    <!--  모든 사용자 리뷰 조회  -->
+    <select id="selectUserReviewsOfRoom" resultType="com.kb.room.dto.response.detail.review.UserReviewDTO" parameterType="Long">
+        SELECT r.URV_ID urvId, r.ROOM_ID roomId, r.USER_ID userId, u.pic pic, u.NICKNAME nickname, r.CONTENT content, r.UPDATED_AT updatedAt, r.CREATED_AT createdAt
+        FROM USER_REVIEW r JOIN USER u ON r.USER_ID = u.USER_ID
+        WHERE r.ROOM_ID = #{roomId} AND r.IS_DELETED = false
+    </select>
 
-<!--    <select id="findFavoriteCnt" resultType="int">-->
-<!--        select count(*)-->
-<!--        from INTEREST_ROOM-->
-<!--        where room_id = #{roomId}-->
-<!--    </select>-->
-<!--  -->
-<!--    <select id="findAllReview" resultMap="reviewResultMap" parameterType="Long">-->
-<!--        SELECT *-->
-<!--        FROM USER_REVIEW-->
-<!--        WHERE room_id = #{roomId} AND is_deleted = 'N'-->
-<!--    </select>-->
-
+    <!-- 사용자 리뷰 작성 -->
+    <insert id="insertUserReview" useGeneratedKeys="true"  keyProperty="urvId">
+        INSERT INTO USER_REVIEW (ROOM_ID, USER_ID, CONTENT) VALUES (#{roomId}, #{userId}, #{content})
+    </insert>
 
 <!--    <select id="myRoomList" resultType="com.kb.room.vo.Room">-->
 <!--        SELECT * FROM ROOM where user_id = #{userId}-->
@@ -349,7 +326,7 @@
     </select>
 
 
-<!--    &lt;!&ndash;  메인: 관심 지역 최신 4개 고시원 조회  &ndash;&gt;-->
+    <!--    &lt;!&ndash;  메인: 관심 지역 최신 4개 고시원 조회  &ndash;&gt;-->
 <!--    <select id="findLatestFourAtInterestArea" resultMap="gosiwonResultMap">-->
 <!--        SELECT * FROM GOSIWON g-->
 <!--        JOIN ROOM r ON g.ROOM_ID = r.ROOM_ID-->
