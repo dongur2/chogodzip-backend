@@ -8,12 +8,14 @@ import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.service.CommunityService;
+import com.kb.user.dto.User;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class CommunityController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> post(@RequestBody CommunityPostDTO data) {
+    public ResponseEntity<Long> post(@AuthenticationPrincipal User user, @RequestBody CommunityPostDTO data) {
         return ResponseEntity.ok(service.add(data));
     }
 
@@ -43,31 +45,31 @@ public class CommunityController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Long> update(@PathVariable("id") Long id, @RequestBody CommunityModifyDTO dto) {
+    public ResponseEntity<Long> update(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @RequestBody CommunityModifyDTO dto) {
         dto.setCommunityId(id);
         return ResponseEntity.ok(service.modifyPostContent(dto));
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus delete(@PathVariable("id") Long id) {
+    public HttpStatus delete(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
         service.delete(id);
         return HttpStatus.OK;
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDetailDTO> postComment(@RequestBody CommentPostDTO dto) {
+    public ResponseEntity<CommentDetailDTO> postComment(@AuthenticationPrincipal User user, @RequestBody CommentPostDTO dto) {
         CommentDetailDTO cmt = service.postCmt(dto);
         return ResponseEntity.ok(cmt);
     }
 
     @PatchMapping("/{id}/comments")
-    public ResponseEntity<CommentDetailDTO> updateComment(@RequestBody CommentModifyDTO dto) {
+    public ResponseEntity<CommentDetailDTO> updateComment(@AuthenticationPrincipal User user, @RequestBody CommentModifyDTO dto) {
         CommentDetailDTO cmt = service.editCmt(dto);
         return ResponseEntity.ok(cmt);
     }
 
     @DeleteMapping("/{id}/comments")
-    public HttpStatus deleteComment(@PathVariable("id") Long communityId, @RequestParam("cmtId") Long cmtId) {
+    public HttpStatus deleteComment(@AuthenticationPrincipal User user, @PathVariable("id") Long communityId, @RequestParam("cmtId") Long cmtId) {
         service.deleteCmt(communityId, cmtId);
         return HttpStatus.OK;
     }

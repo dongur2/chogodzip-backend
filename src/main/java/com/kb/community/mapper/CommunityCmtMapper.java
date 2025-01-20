@@ -1,15 +1,17 @@
 package com.kb.community.mapper;
 
-import com.kb.community.vo.CommunityCmt;
+import com.kb.community.dto.request.CommentModifyDTO;
+import com.kb.community.dto.request.CommentPostDTO;
+import com.kb.community.dto.response.CommentDetailDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 
 public interface CommunityCmtMapper {
-    void saveCmt(CommunityCmt cmt);
-    CommunityCmt findOneByCmtId(@Param("cmtId") Long cmtId);
-    List<CommunityCmt> findAllByCommunityId(@Param("communityId") Long communityId);
-    void updateCmt(@Param("cmtId") Long cmtId, @Param("content") String content);
+    Long saveCmt(CommentPostDTO cmt);
+    CommentDetailDTO findOneByCmtId(@Param("cmtId") Long cmtId);
+    List<CommentDetailDTO> findAllByCommunityId(@Param("communityId") Long communityId);
+    void updateCmt(CommentModifyDTO cmt);
     void deleteCmtByCmtId(@Param("cmtId") Long cmtId);
 }

@@ -8,17 +8,9 @@ import java.util.Date;
 @NoArgsConstructor @AllArgsConstructor
 public class CommunityCmt {
     private Long cmtId;
-
     private Long communityId;
-
-    private Long mNo;
-    private String memberId; // DB 미저장
-    private String memberName; // DB 미저장
-
+    private Long userId;
     private String content;
-
     private Date createdAt;
     private Date updatedAt;
-
-    private Boolean isDeleted;
 }

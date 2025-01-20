@@ -12,7 +12,6 @@ CREATE TABLE COMMUNITY
     TAG             VARCHAR(50), -- REPI(정책,투자)/REHT(핫이슈)/RERV(후기)/CTRV(계약,입주후기)/ITRV(인테리어)/LNQS(대출)/LTQS(분양,청약)
     PICS            TEXT, -- 작성글에 포함된 이미지 이름.확장자 "|"로 구분
     VIEWS           INT default 0,
-    IS_DELETED      TINYINT(1) default 0, -- 0:존재 1:삭제
     UPDATED_AT      DATETIME default now(),
     CREATED_AT      DATETIME default now(),
 
@@ -28,7 +27,6 @@ CREATE TABLE COMMUNITY_CMT
     CONTENT             VARCHAR(300),
     CREATED_AT          DATETIME DEFAULT now(),
     UPDATED_AT          DATETIME DEFAULT now(),
-    IS_DELETED          TINYINT(1) default 0, -- 0:존재 1:삭제
 
     CONSTRAINT FK_COMMUNITY_CMT_COMMUNITY FOREIGN KEY (COMMUNITY_ID) REFERENCES COMMUNITY(COMMUNITY_ID) ON DELETE CASCADE,
     CONSTRAINT FK_COMMUNITY_CMT_USER FOREIGN KEY (USER_ID) REFERENCES USER(USER_ID)

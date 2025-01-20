@@ -15,10 +15,12 @@ import java.util.List;
 public interface CommunityService {
     List<CommunityListDTO> getAll();
     CommunityDetailDTO getDetail(Long id);
+    Integer getHits(Long id, Integer views);
+
     Long add(CommunityPostDTO dto);
     void delete(Long id);
     Long modifyPostContent(CommunityModifyDTO dto);
-    Integer getHits(Long id, Integer views);
+
     CommentDetailDTO postCmt(CommentPostDTO dto);
     CommentDetailDTO editCmt(CommentModifyDTO dto);
     void deleteCmt(Long communityId, Long cmtId);

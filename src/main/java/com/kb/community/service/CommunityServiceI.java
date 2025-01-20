@@ -8,9 +8,6 @@ import com.kb.community.dto.response.CommentDetailDTO;
 import com.kb.community.dto.response.CommunityDetailDTO;
 import com.kb.community.dto.response.CommunityListDTO;
 import com.kb.community.mapper.CommunityMapper;
-import com.kb.community.vo.Community;
-import com.kb.member.mapper.MemberMapper;
-import com.kb.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -26,16 +23,12 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class CommunityServiceI implements CommunityService {
     @Autowired private CommunityMapper communityMapper;
-    @Autowired private MemberMapper memberMapper;
-
     @Autowired private CommunityCmtService cmtService;
-    @Autowired
-    private MemberService memberService;
 
     //커뮤니티 모든 글 조회
     @Override
     public List<CommunityListDTO> getAll() {
-        return communityMapper.findAll().stream().map(CommunityListDTO::from).toList();
+        return communityMapper.findAll();
     }
 
     //커뮤니티 상세글 조회
@@ -43,15 +36,11 @@ public class CommunityServiceI implements CommunityService {
     public CommunityDetailDTO getDetail(Long id) {
         CommunityDetailDTO dto = null;
         try {
-            dto = CommunityDetailDTO.from(communityMapper.findById(id));
-            dto.setMemberPic(memberService.getPicOfMember(dto.getMNo())); //프사
+            dto = communityMapper.findById(id);
 
             //댓글 조회
             List<CommentDetailDTO> cmts = cmtService.getAll(id);
-            if(cmts != null) {
-                cmts.forEach(c -> c.setMemberPic(memberService.getPicOfMember(c.getMNo())));
-                dto.setComments(cmts);
-            }
+            if(cmts != null) dto.setComments(cmts);
 
             //조회하면서 조회수 카운트
             Integer hits = getHits(id, dto.getViews());
@@ -66,21 +55,21 @@ public class CommunityServiceI implements CommunityService {
     //커뮤니티 작성
     @Override @Transactional
     public Long add(CommunityPostDTO dto) {
-        Community vo = dto.toVO();
         try {
-            vo.setMNo(memberMapper.selectById(dto.getMemberId()).getMno());
-            communityMapper.save(vo);
+            return communityMapper.save(dto);
+
         } catch (Exception e) {
             log.error("게시글 작성 실패 {}", e);
         }
-        return vo.getCommunityId();
+
+        return null;
     }
 
     //커뮤니티 삭제처리
     @Override @Transactional
     public void delete(Long id) {
         try {
-            communityMapper.updateIsDeletedByCommunityId(id);
+            communityMapper.delete(id);
         } catch (Exception e) { log.error("게시글 삭제 처리 실패 {}", e); }
     }
 
@@ -88,7 +77,7 @@ public class CommunityServiceI implements CommunityService {
     @Override @Transactional
     public Long modifyPostContent(CommunityModifyDTO dto) {
        try {
-           communityMapper.update(dto.toVO());
+           communityMapper.update(dto);
        } catch (Exception e) { log.error("게시글 삭제 처리 실패 {}", e); }
 
        return dto.getCommunityId();
@@ -110,7 +99,6 @@ public class CommunityServiceI implements CommunityService {
         CommentDetailDTO saved = null;
         try {
            saved  = cmtService.save(dto);
-           saved.setMemberPic(memberService.getMember(dto.getMemberId()).getProfileImg());
         } catch (Exception e) { log.error("댓글 작성에 실패했습니다 : {}", e); }
         return saved;
     }

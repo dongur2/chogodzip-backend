@@ -8,9 +8,7 @@ import java.util.Date;
 @NoArgsConstructor @AllArgsConstructor
 public class Community {
     private Long communityId;
-    private Long mNo;
-    private String memberId; //DB 미저장
-    private String memberName; //DB 미저장
+    private Long userId;
     private String title;
     private String content;
     private String tag;
@@ -19,6 +17,5 @@ public class Community {
     private Date createdAt;
     private Date updatedAt;
 
-    private Boolean isDeleted;
     private Integer views;
 }
