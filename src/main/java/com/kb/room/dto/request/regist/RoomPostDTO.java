@@ -33,12 +33,12 @@ public class RoomPostDTO {
                 .canLoan(!loanInfo.loans.isEmpty())
                 .postcode(basicInfo.postcode)
 
-                .privateFacilities(String.join("|", basicInfo.privateFacilities))
-                .services(String.join("|", basicInfo.services))
-                .languages(String.join("|", basicInfo.languages))
-                .etc(String.join("|", basicInfo.etc))
+                .privateFacilities(String.join(" | ", basicInfo.privateFacilities))
+                .services(String.join(" | ", basicInfo.services))
+                .languages(String.join(" | ", basicInfo.languages))
+                .etc(String.join(" | ", basicInfo.etc))
                 .description(basicInfo.description)
-                .pics(String.join("|", pics))
+                .pics(String.join(" | ", pics))
 
                 .priceMin(basicInfo.priceMin)
                 .priceMax(basicInfo.priceMax)
@@ -47,10 +47,10 @@ public class RoomPostDTO {
                 .maintenanceFee(basicInfo.maintenanceFee)
                 .contractMin(basicInfo.contractMin)
 
-                .facilityHeating(String.join("|", facilitiesInfo.facilityHeating))
-                .facilityCooling(String.join("|", facilitiesInfo.facilityCooling))
-                .facilityLife(String.join("|", facilitiesInfo.facilityLife))
-                .facilitySecurity(String.join("|", facilitiesInfo.facilitySecurity))
+                .facilityHeating(String.join(" | ", facilitiesInfo.facilityHeating))
+                .facilityCooling(String.join(" | ", facilitiesInfo.facilityCooling))
+                .facilityLife(String.join(" | ", facilitiesInfo.facilityLife))
+                .facilitySecurity(String.join(" | ", facilitiesInfo.facilitySecurity))
 
                 .buildingType(buildingInfo.buildingType)
                 .canParking(buildingInfo.canParking)
@@ -75,6 +75,12 @@ public class RoomPostDTO {
                 .room(room)
                 .detailName(basicInfo.detailAddress)
                 .roomType(basicInfo.roomCntType)
+                .rentType(basicInfo.rentType)
+                .thisFl(basicInfo.thisFloor)
+                .totalFl(basicInfo.totalFloor)
+                .pvArea(basicInfo.privateArea)
+                .ttArea(basicInfo.totalArea)
+                .hasMortgage(loanInfo.hasMortgage)
                 .build();
     }
 
@@ -124,7 +130,7 @@ public class RoomPostDTO {
 
         //원투룸
         private Double thisFloor;
-        private Double totalFloor;
+        private Integer totalFloor;
         private Double privateArea;
         private Double totalArea;
         private String roomCntType;
